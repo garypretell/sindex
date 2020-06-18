@@ -1,0 +1,237 @@
+<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" class="btn" (click)="scroll(home)"> <strong><em>
+                            <h2>Sindex </h2>
+                        </em></strong><span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" class="btn" (click)="scroll(precio)">PRECIOS
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" class="btn" (click)="scroll(contacto)">BENEFICIOS
+                    </a>
+                </li>
+            </ul>
+            <button type="button" class="btn btn-outline-primary" (click)="signInWithGoogle()"> Acceder</button>&nbsp;
+            <button type="button" class="btn btn-outline-success" (click)="signInWithGoogle()"> Contacto</button>&nbsp;
+            <button type="button" class="btn btn-outline-dark" (click)="registro()">Registrar</button>
+        </form>
+    </div>
+</nav>
+
+
+<section #home>
+    <div class="row">
+        <div class="col-lg-9 mb-1">
+            <div class="card bg-dark">
+                <img src="../../../../assets/iglesia2.svg" class="img-fluid hero" alt="...">
+                <div class="card-img-overlay">
+                    <h2 class="card-title">Sistema de Indexación Parroquial</h2>
+                    <p class="card-text">Registra, busca e imprime tus registros.</p>
+                    <button class="btn btn-outline-dark">Tutorial</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 mb-1 padre">
+            <div class="card text-white bg-dark mb-3 text-center ">
+                <div class="card-body">
+                    <h5 class="card-title"> <em>Sindex... </em> </h5>
+                    <hr>
+                    <p class="card-text"><strong> Sindex es un software diseñado para almacenar ilimitadamente sus
+                            documentos.
+                            Permite el registro, la búsqueda y la impresión de Registros Parroquiales. </strong> </p>
+                    <hr>
+                    <button id="iniciar" class="btn btn-primary btn-lg" (click)="signInWithGoogle()">Iniciar
+                        Sesión</button><br>
+                    <p></p>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Importante!</strong> Solo inicie sesión después de haberse registrado.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<section class="section text-center" #precio>
+    <div class="row justify-content-center ">
+        <h1>Precios para el <b>desarrollo, mantenimiento y seguridad</b> de su información.</h1>
+        <h5> Sindex es un software desarrollado para el registro y control de los documentos Parroquiales, asi mismo
+            permite la transferencia de documentos entre parroquias.</h5>
+        <h5>Contribuya con la actualización y mantenimiento de la aplicación. </h5>
+    </div>
+    <br>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card" style="max-width: 25rem;">
+                <img src="../../../../assets/dia.svg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"> <strong>PLAN MENSUAL(20PEN)</strong> </h5>
+                    <p class="card-text">Adquiera un plan mensual y vea sus beneficios en el siguiente enlace.</p>
+                    <a class="btn btn-outline-danger">Detalles</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card" style="max-width: 25rem;">
+                <img src="../../../../assets/mes2.svg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"> <strong> PLAN ANUAL(200PEN)</strong> </h5>
+                    <p class="card-text">Evite pagos mensuales y adquiera un descuento significativo por adquirir este
+                        plan.</p>
+                    <a class="btn btn-outline-info">Detalles</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="contact" class="section" #contacto>
+    <div class="container-fluid text-center">
+        <h1>Beneficios de la api <b>Sindex.</b></h1>
+    </div><br>
+    <div class="container">
+        <div class="row justify-content-md-center text-center">
+            <div class="col-lg-3 align-self-center">
+                <div class="card" style="max-width: 40rem;">
+                    <img src="../../../assets/registra.svg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <strong>1. REGISTRE SU INFORMACIÓN</strong> </h5>
+                        <p class="card-text">Almacenamiento ilimitada de sus documentos clasificados por Libros.</p>
+                        <a class="btn btn-outline-danger">Detalles</a>
+                    </div>
+                </div>
+            </div><br>
+            <div class="col-lg-3">
+                <div class="card" style="max-width: 40rem;">
+                    <img src="../../../assets/almacenamientonube.svg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <strong>2. ALMACENAMIENTO EN LA NUBE</strong> </h5>
+                        <p class="card-text">Sus datos no se perderán ni sufrirán daños por parte de terceros.</p>
+                        <a class="btn btn-outline-danger">Detalles</a>
+                    </div>
+                </div>
+            </div><br>
+            <div class="col-lg-3 align-self-center">
+                <div class="card" style="max-width: 40rem;">
+                    <img src="../../../assets/busqueda.svg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <strong>3. BÚSQUEDAS AL INSTANTE</strong> </h5>
+                        <p class="card-text">Obtenga su información al instante gracias a la potencia de nuestros
+                            servidores.</p>
+                        <a class="btn btn-outline-danger">Detalles</a>
+                    </div>
+                </div>
+            </div><br>
+            <div class="col-lg-3 align-self-center">
+                <div class="card" style="max-width: 40rem;">
+                    <img src="../../../assets/registra.svg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <strong>4. IMPRIMA SU DOCUMENTO</strong> </h5>
+                        <p class="card-text">Plantillas personalizadas para la impresión de todos sus documentos.</p>
+                        <a class="btn btn-outline-danger">Detalles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="footer" #footer class="bg-dark section">
+    <div class="container">
+        <ul class="list-inline">
+            <li class="list-inline-item footer-menu"><a class="btn" (click)="scroll(home)">Home</a></li>
+            <li class="list-inline-item footer-menu"><a class="btn" (click)="scroll(precio)">Precios</a></li>
+            <li class="list-inline-item footer-menu"><a class="btn" (click)="scroll(contacto)">Contacto</a></li>
+        </ul>
+        <ul class="list-inline">
+            <li class="list-inline-item"><i class="fa fa-instagram" aria-hidden="true"></i></li>
+            <li class="list-inline-item"><i class="fa fa-twitter" aria-hidden="true"></i></li>
+            <li class="list-inline-item"><i class="fa fa-youtube-play" aria-hidden="true"></i></li>
+            <li class="list-inline-item"><i class="fa fa-dribbble" aria-hidden="true"></i></li>
+            <li class="list-inline-item"><i class="fa fa-facebook-official" aria-hidden="true"></i></li>
+        </ul>
+        <small>©2020 All Rights Reserved. Created by <a href="https://themesbootstrap.com.mx/" class="font-weight-bold"
+                target="_blank" rel="noopener">Sindex</a></small>
+    </div>
+</div>
+<div #myModal class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form class="form">
+                <div class="modal-body">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            Registrar SINDEX
+                        </div>
+                        <div class="card-body">
+                            <div class="form">
+                                <div class="row justify-content-center">
+                                    <div class="col-6 text-center">
+                                        <div class="input-group"
+                                            *ngIf="proyectoService.proyectos$ | async; let proyectos">
+                                            <div class="input-group-prepend" for="diocesis">
+                                                <label class="input-group-text" for="diocesis">Diocesis</label>
+                                            </div>
+                                            <label for="diocesis" [hidden]='true'>Diocesis</label>
+                                            <select class="form-control text-uppercase" id="diocesis" name="diocesis"
+                                                [(ngModel)]="diocesis" (change)="diocesisChanged(diocesis)">
+                                                <option selected disabled>Seleccione...</option>
+                                                <option class="align-content-between" [ngValue]="d.id"
+                                                    *ngFor="let d of proyectos">
+                                                    {{ d.nombre }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p></p>
+                                <div class="row justify-content-center">
+                                    <div class="col-6 text-center">
+                                        <div class="input-group" *ngIf="parroquias$ | async; let parroquias">
+                                            <div class="input-group-prepend" for="parroquia">
+                                                <label class="input-group-text" for="parroquia">Parroquia</label>
+                                            </div>
+                                            <label for="parroquia" [hidden]='true'>Parroquia</label>
+                                            <select class="form-control text-uppercase" id="parroquia" name="parroquia"
+                                                [(ngModel)]="parroquia" (change)="parroquiasChanged(parroquia)">
+                                                <option selected disabled>Seleccione...</option>
+                                                <option class="align-content-between" [ngValue]="d.id"
+                                                    *ngFor="let d of parroquias">
+                                                    {{ d.nombre }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row justify-content-center" [hidden]="ocultar">
+                                    <div class="row justify-content-center">
+                                        <div class="col text-center">
+                                            <button class="btn btn-outline-primary" (click)="createWithGoogle()"
+                                                type="button">
+                                                <i class="fa fa-google" aria-hidden="true"></i> Google</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
