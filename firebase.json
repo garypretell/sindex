@@ -1,0 +1,19 @@
+{
+  "hosting": [
+    {
+      "target": "sipar",
+      "public": "dist/sipar",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}

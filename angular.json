@@ -117,8 +117,16 @@
               "devServerTarget": "sipar:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
-    }},
-  "defaultProject": "sipar"
+    }
+  },
+  "defaultProject": "sipar",
+  "cli": {
+    "analytics": false
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "magnum-50f46": {
+      "hosting": {
+        "sipar": [
+          "magnum-50f46"
+        ]
+      }
+    }
+  }
+}
