@@ -18,23 +18,23 @@ export class AuthService {
   user: Observable<User>;
   constructor(private afs: AngularFirestore, private afAuth: AngularFireAuth) {
     this.authenticated$ = afAuth.authState.pipe(map(user => !!user));
-    this.user$ = this.afAuth.authState
-      .switchMap(user => {
+    this.user$ = this.afAuth.authState.pipe(
+      switchMap(user => {
         if (user) {
           return this.afs.doc<any>(`usuarios/${user.uid}`).valueChanges();
         } else {
           return of(null);
         }
-      });
+      }));
 
-    this.user = this.afAuth.authState
-      .switchMap(user => {
+    this.user = this.afAuth.authState.pipe(
+      switchMap(user => {
         if (user) {
           return this.afs.doc<User>(`usuarios/${user.uid}`).valueChanges();
         } else {
           return of(null);
         }
-      });
+      }));
 
   }
 

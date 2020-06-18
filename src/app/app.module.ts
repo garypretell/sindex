@@ -8,13 +8,18 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { SignInComponent } from './auth/components/sign-in';
+
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+import { SuperGuard, AuthGuard, EditorGuard, RequireAuthGuard, RequireUnauthGuard, AdminGuard } from './auth/guards';
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SignInComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +32,15 @@ import { environment } from '../environments/environment';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    RequireAuthGuard,
+    RequireUnauthGuard,
+    AdminGuard,
+    EditorGuard,
+    AuthGuard,
+    SuperGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

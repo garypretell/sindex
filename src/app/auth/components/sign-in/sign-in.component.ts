@@ -3,10 +3,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-import { ProyectoService } from 'src/app/proyecto/proyecto.service';
 import { Observable, of} from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SendMessage } from 'src/app/transferencia/utils/SendMessage';
 import { map, switchMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 declare var jQuery: any;
@@ -29,14 +26,11 @@ export class SignInComponent implements OnInit {
     public meta: Meta, public title: Title,
     public auth: AuthService,
     public router: Router,
-    public proyectoService: ProyectoService,
     public afs: AngularFirestore,
-    public formBuilder: FormBuilder,
-    public sendMessage: SendMessage,
     public afAuth: AngularFireAuth,
 
   ) {
-    this.meta.updateTag({ name: 'description', content: 'Sign In' }); 
+    this.meta.updateTag({ name: 'description', content: 'Sign In' });
     this.title.setTitle('Sindex');
     this.ocultar = true;
     this.diocesis = 'vacio';
@@ -77,14 +71,14 @@ export class SignInComponent implements OnInit {
 
   signInWithGoogle() {
     this.auth.signInWithGoogle().then(() => {
-      this.auth.user$ = this.afAuth.authState
-        .switchMap(user => {
+      this.auth.user$ = this.afAuth.authState.pipe(
+        switchMap(user => {
           if (user) {
             return this.afs.doc(`usuarios/${user.uid}`).valueChanges();
           } else {
             return of(null);
           }
-        });
+        }));
       this.postSignIn();
     });
   }
@@ -93,23 +87,4 @@ export class SignInComponent implements OnInit {
     this.router.navigate(['/Home']);
   }
 
-  diocesisChanged(data) {
-    this.diocesis = data;
-    console.log(this.diocesis);
-    this.parroquiasCollection = this.afs.collection<any>
-      (`Parroquias`, ref => ref.where('diocesis', '==', data).orderBy('nombre', 'desc'));
-    this.parroquias$ = this.parroquiasCollection.valueChanges({ idField: 'id' });
-  }
-
-  parroquiasChanged(data) {
-    this.ocultar = false;
-  }
-
-  scroll(el: HTMLElement) {
-    el.scrollIntoView();
-  }
-
-  registro() {
-    jQuery(this.myModal.nativeElement).modal('show');
-  }
 }
