@@ -4,7 +4,7 @@ export class Diocesis {
     departamento: string;
     registrosCount: number;
     transferencia: boolean;
-    estado: string;
+    estado: boolean;
     createdAt: Date;
 
 
@@ -15,6 +15,5 @@ export class Diocesis {
     this.transferencia = diocesis.transferencia;
     this.estado = diocesis.estado;
     this.createdAt = diocesis.createdAt;
-
   }
 }

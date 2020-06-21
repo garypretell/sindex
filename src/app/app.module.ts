@@ -9,17 +9,19 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { SignInComponent } from './auth/components/sign-in';
+import { DiocesisComponent } from './diocesis/components/diocesis.component';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { SuperGuard, AuthGuard, EditorGuard, RequireAuthGuard, RequireUnauthGuard, AdminGuard } from './auth/guards';
-import { AuthService } from './auth/auth.service';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    SignInComponent
+    SignInComponent,
+    DiocesisComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +35,6 @@ import { AuthService } from './auth/auth.service';
     AngularFirestoreModule
   ],
   providers: [
-    AuthService,
     RequireAuthGuard,
     RequireUnauthGuard,
     AdminGuard,
