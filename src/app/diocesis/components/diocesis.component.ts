@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ViewChild, ElementRef } from '@angular/core';
 import { DiocesisService } from '../diocesis.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import {
   FormGroup,
   FormControl,
@@ -36,6 +37,19 @@ export class DiocesisComponent implements OnInit, OnDestroy {
   departamentos: any;
   diocesisEditObj: any;
   editar: boolean;
+
+  single: any[];
+  view: any[] = [800, 400];
+
+  // options
+  gradient = true;
+  showLegend = true;
+  showLabels = true;
+  isDoughnut = false;
+
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
   constructor(
     public formBuilder: FormBuilder,
     public afs: AngularFirestore,
@@ -45,6 +59,24 @@ export class DiocesisComponent implements OnInit, OnDestroy {
   ) {
     this.diocesisEditObj = {};
     this.editar = false;
+    this.single = [
+      {
+        name: 'Germany',
+        value: 8940000
+      },
+      {
+        name: 'USA',
+        value: 5000000
+      },
+      {
+        name: 'France',
+        value: 7200000
+      },
+        {
+        name: 'UK',
+        value: 6200000
+      }
+    ];
   }
 
   ngOnInit() {
@@ -131,5 +163,17 @@ export class DiocesisComponent implements OnInit, OnDestroy {
 
   trackByFn(index, item) {
     return item.id;
+  }
+
+  onSelect(data): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate(data): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate(data): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 }

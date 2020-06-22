@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -32,7 +34,8 @@ import { SuperGuard, AuthGuard, EditorGuard, RequireAuthGuard, RequireUnauthGuar
     BrowserAnimationsModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    NgxChartsModule
   ],
   providers: [
     RequireAuthGuard,
