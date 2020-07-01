@@ -40,6 +40,7 @@ export class DiocesisComponent implements OnInit, OnDestroy {
 
   single: any[];
   view: any[] = [800, 400];
+  midata: any[];
 
   // options
   gradient = true;
@@ -80,6 +81,11 @@ export class DiocesisComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    this.afs.collection('charts', ref => ref.where('code', '==', 'aa')).valueChanges().subscribe(data => {
+      console.log(data);
+      this.midata = data;
+    });
 
     this.addDiocesisForm = this.formBuilder.group({
       nombre:  ['', [Validators.required ]],

@@ -10,20 +10,24 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { SignInComponent } from './auth/components/sign-in';
+import { SignInComponent } from './auth/components/sign-in/sign-in.component';
 import { DiocesisComponent } from './diocesis/components/diocesis.component';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { SuperGuard, AuthGuard, EditorGuard, RequireAuthGuard, RequireUnauthGuard, AdminGuard } from './auth/guards';
+import { InicioComponent } from './inicio/components/inicio.component';
+import { DocumentoComponent } from './documento/components/documento.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SignInComponent,
-    DiocesisComponent
+    DiocesisComponent,
+    InicioComponent,
+    DocumentoComponent
   ],
   imports: [
     BrowserModule,

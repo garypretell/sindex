@@ -1,0 +1,33 @@
+import { Injectable } from '@angular/core';
+import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DocumentoService {
+  documentosCollection: AngularFirestoreCollection<any>;
+  documentos$: Observable<any[]>;
+  documentoDoc: AngularFirestoreDocument<any>;
+  constructor(public afs: AngularFirestore,  private http: HttpClient) {
+    this.documentosCollection = afs.collection<any>('Documentos', ref => ref.orderBy('createdAt', 'desc'));
+    this.documentos$ = this.documentosCollection.valueChanges({idField: 'id'});
+   }
+
+
+   getDocumento() { return this.documentos$; }
+
+   addDocumento(documento: any) { return this.documentosCollection.add(documento); }
+
+   deleteDocumento(documento: any) {
+    this.documentoDoc = this.afs.doc(`Documento/${documento.id}`);
+    documento.estado = false;
+    return this.documentoDoc.update(documento);
+   }
+
+   updateDocumento(documento: any) {
+    this.documentoDoc = this.afs.doc(`Documento/${documento.id}`);
+    return this.documentoDoc.update(documento);
+   }
+}
