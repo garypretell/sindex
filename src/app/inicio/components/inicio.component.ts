@@ -32,9 +32,7 @@ export class InicioComponent implements OnInit, OnDestroy {
   showLegend = true;
   showLabels = true;
   isDoughnut = false;
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
+
   p: 1;
   searchDoc: any = { name: '' };
   diocesis: any;
@@ -83,15 +81,15 @@ export class InicioComponent implements OnInit, OnDestroy {
   }
 
   onSelect(data): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    // console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }
 
   onActivate(data): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
+    // console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
 
   onDeactivate(data): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
   signOut() {

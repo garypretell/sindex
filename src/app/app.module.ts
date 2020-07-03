@@ -22,6 +22,7 @@ import { SuperGuard, AuthGuard, EditorGuard, RequireAuthGuard, RequireUnauthGuar
 import { InicioComponent } from './inicio/components/inicio.component';
 import { DocumentoComponent } from './documento/components/documento.component';
 import { AppHeaderComponent } from './app-header.component';
+import { ParroquiaComponent } from './parroquia/components/parroquia.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { AppHeaderComponent } from './app-header.component';
     SignInComponent,
     DiocesisComponent,
     InicioComponent,
-    DocumentoComponent
+    DocumentoComponent,
+    ParroquiaComponent
   ],
   imports: [
     BrowserModule,
