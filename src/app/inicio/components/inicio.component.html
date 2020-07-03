@@ -1,157 +1,91 @@
 <br>
-<div
-  *ngIf="!auth.canSuper(auth.user$ | async) && !auth.canDelete(auth.user$ | async) &&  !auth.canEdit(auth.user$ | async); else principal">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 topmargin-sm">
-        <h3>Estas listo para iniciar? <b>contáctanos.</b></h3>
-        <p>
-          Rellene el formulario y nos comunicaremos con usted. Envíanos tus sugerencias al correo
-          electrónico: <b>pretellgf@gpsoft.org</b>
-        </p>
-      </div>
-      <div class="col-md-6 mt-4">
-        <form [formGroup]="pedidosForm">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <input type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" id="name"
-                  formControlName="nombres" placeholder="Nombres" />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <input type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" id="lastname"
-                  formControlName="apellidos" placeholder="Apellidos" />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <input type="email" class="form-control" id="email" formControlName="correo" placeholder="Correo" />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <input type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" id="company"
-                  formControlName="diocesis" placeholder="Nombre de la Diócesis" />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <input type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" id="parroquia"
-                  formControlName="parroquia" placeholder="Parroquia Principal" />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <input
-                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                  type="number" maxlength="9" minlength="9" class="form-control" formControlName="celular" id="phone"
-                  placeholder="Celular" />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <small id="emailHelp" class="form-text text-muted">*Todos los campos son
-                  obligatorios.</small>
-              </div>
-            </div>
-
-            <div class="col-md-12">
-              <button class="btn btn-dark full-width" (click)="alerta()" [disabled]="!pedidosForm.valid">Enviar</button>
-            </div>
+<div class="row">
+  <div class="col-md-3 mb-2">
+      <div class="row justify-content-between">
+          <div class="col-4">
+              <p><strong>Documentos</strong> </p>
           </div>
-        </form>
+          <div class="col-4 text-right">
+              <a href="#" class="badge badge-primary"><i class="fa fa-file-o" aria-hidden="true"> </i> Nuevo </a>
+          </div>
       </div>
-    </div>
+      <input type="search" class="form-control text-uppercase mb-3" placeholder="Buscar Documentos"
+          [(ngModel)]="searchDoc.name">
+      <ng-container *ngIf="documentoService.documentos$ | async as documentos">
+          <div *ngFor="let documento of documentos  | filterBy: searchDoc">
+              <a href="#" class="list-group-item list-group-item-action">
+                  <div class="d-flex w-100 justify-content-between">
+                      <small class="text-primary"> <i class="fa fa-file-text-o" aria-hidden="true"></i> <strong>
+                              {{ documento.name | uppercase }}</strong> </small>
+                  </div>
+              </a>
+          </div>
+      </ng-container>
+      <hr>
+      <h6>¿Qué documentos debo agregar?</h6>
+      <p class="text-muted small mt-3">
+          <strong>SINDEX </strong>trabaja con plantillas personalizadas adecuadas para cada tipo de documento.
+      </p>
+      <p class="text-muted small mt-0">Si desea agregar un nuevo documento, usted deberá crear su propia plantilla
+          siguiendo estos pasos:</p>
+      <button type="button" class="btn btn-outline-primary btn-sm">Crear Plantillas...</button>
+  </div>
+  <div class="col-md-6 mb-2 bg-light">
+      <br>
+      <div class="row">
+          <div class="col text-uppercase" id="pie-chart-parent">
+              <h4><em> {{(diocesis)?.nombre | uppercase}}</em>
+                 </h4>
+              <ngx-charts-advanced-pie-chart [view]="view" [results]="midata" (select)="onSelect($event)"
+                  (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+              </ngx-charts-advanced-pie-chart>
+          </div>
+      </div>
+      <hr>
+      <div class="row">
+          <div class="col">
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">Seleccione una parroquia e inicie...</h5>
+                      <p class="card-text"><strong>SINDEX</strong>, le permite crear de forma ilimitada las diferentes
+                          parroquias que cada diócesis tiene a su cargo.</p>
+                      <a href="#" class="btn btn-primary"> Mi Parroquia</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="col-md-3 mb-2 bg-light">
+      <br>
+      <div id="myToast" role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="false">
+          <div class="toast-header">
+              <strong class="mr-auto"><i class="fa fa-comment" aria-hidden="true"></i> Importante...</strong>
+              <small>11 mins ago</small>
+              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="toast-body">
+              Bienvenido!! Antes de iniciar, usted puede descargar el manual de usuario. <a href="#"
+              class="badge badge-primary">Descargar</a>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col">
+              <div class="card border-primary mb-3">
+                  <div class="card-body text-primary">
+                      <h5 class="card-title">Acerca de ...</h5>
+                      <p class="text-muted">El Sistema de Administración Parroquial (SINDEX) surge bajo la necesidad de administrar de manera eficiente los documentos parroquiales.
+
+                         </p>
+                         <p class="text-muted">
+                          (SINDEX) busca proporcionar las nuevas herramientas de la tecnología a las diferentes parroquias para que de una manera práctica pueda tener acceso a una información veraz y oportuna.
+                         </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+
   </div>
 
 </div>
-<ng-template #principal>
-  <div class="container-lg">
-    <div class="row">
-      <div class="col-md-6 topmargin-sm">
-        <h3 [innerHTML] = "'BIENVENIDA' "></h3>
-        <hr>
-        <p>
-          {{ 'MANUAL'  }} <a href="#"
-            class="badge badge-primary">{{'DESCARGAR'  }}</a></p>
-        <p [innerHTML] = "'BIENVENIDA1' "></p>
-        <p [innerHTML] = "'BIENVENIDA2' "></p>
-        <h5> {{ 'CONTACT' }}</h5>
-        <p></p>
-        <form [formGroup]="pedidosForm2">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <input type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" id="name"
-                  formControlName="nombres" placeholder="{{'NOMBRES' }}" />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <input type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" id="lastname"
-                  formControlName="apellidos" placeholder="{{'APELLIDOS' }}" />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <input
-                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                  type="number" maxlength="9" minlength="9" class="form-control" formControlName="celular" id="phone"
-                  placeholder="{{'CELULAR' }}" />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <textarea class="form-control" oninput="this.value = this.value.toUpperCase()" id="mensaje"
-                  formControlName="mensaje" placeholder="{{'MENSAJE' }}" rows="3"></textarea>
-
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <small id="emailHelp" class="form-text text-muted">*{{'CAMPOS' }}.</small>
-              </div>
-            </div>
-
-            <div class="col-md-12">
-              <button class="btn btn-dark full-width" (click)="alerta2()"
-                [disabled]="!pedidosForm2.valid">{{'ENVIAR' }}</button>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="col-md-6 mt-4">
-        <div class="list-group">
-          <a href="#" class="list-group-item list-group-item-action active">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">{{'NOVEDADES' }}</h5>
-              <small>{{currentDate | date:'dd-MM-yyyy'}}</small>
-            </div>
-            <small><strong>{{ 'ACTUALIZACIONES' }} </strong> </small>
-          </a>
-          <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">Transferencia de Documentos</h5>
-              <small class="text-muted">8 days ago</small>
-            </div>
-            <p class="mb-1">Envía y recibe documentos de otras parroquias electrónicamente.</p>
-            <small class="text-muted">Sólo para tu Diócesis.</small>
-          </a>
-          <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">Mensajería (Chat)</h5>
-              <small class="text-muted">3 days ago</small>
-            </div>
-            <p class="mb-1">Si necesitas enviar mensajes a otra parroquia de tu diócesis, usa esta herramienta.</p>
-            <small class="text-muted">Se mostrarán los últimos 30 mensajes.</small>
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-

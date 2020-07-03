@@ -11,7 +11,7 @@ export class DocumentoService {
   documentos$: Observable<any[]>;
   documentoDoc: AngularFirestoreDocument<any>;
   constructor(public afs: AngularFirestore,  private http: HttpClient) {
-    this.documentosCollection = afs.collection<any>('Documentos', ref => ref.orderBy('createdAt', 'desc'));
+    this.documentosCollection = afs.collection<any>('charts');
     this.documentos$ = this.documentosCollection.valueChanges({idField: 'id'});
    }
 

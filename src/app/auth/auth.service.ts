@@ -14,10 +14,9 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
   providedIn: 'root'
 })
 export class AuthService {
-  miproyecto$: any;
   authenticated$: Observable<boolean>;
   user$: Observable<any>;
-  user: Observable<User>;
+
   constructor(private afs: AngularFirestore, private afAuth: AngularFireAuth) {
     this.authenticated$ = afAuth.authState.pipe(map(user => !!user));
     this.user$ = this.afAuth.authState.pipe(
@@ -28,16 +27,6 @@ export class AuthService {
           return of(null);
         }
       }));
-
-    this.user = this.afAuth.authState.pipe(
-      switchMap(user => {
-        if (user) {
-          return this.afs.doc<User>(`usuarios/${user.uid}`).valueChanges();
-        } else {
-          return of(null);
-        }
-      }));
-
   }
 
   async signIn(provider: firebase.auth.AuthProvider) {

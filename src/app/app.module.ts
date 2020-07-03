@@ -6,6 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import {NgxPaginationModule} from 'ngx-pagination';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,11 +21,13 @@ import { environment } from '../environments/environment';
 import { SuperGuard, AuthGuard, EditorGuard, RequireAuthGuard, RequireUnauthGuard, AdminGuard } from './auth/guards';
 import { InicioComponent } from './inicio/components/inicio.component';
 import { DocumentoComponent } from './documento/components/documento.component';
+import { AppHeaderComponent } from './app-header.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    AppHeaderComponent,
     SignInComponent,
     DiocesisComponent,
     InicioComponent,
@@ -39,7 +43,9 @@ import { DocumentoComponent } from './documento/components/documento.component';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
-    NgxChartsModule
+    NgxChartsModule,
+    NgxPaginationModule,
+    FilterPipeModule
   ],
   providers: [
     RequireAuthGuard,

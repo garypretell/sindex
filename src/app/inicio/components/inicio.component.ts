@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 
 import { Router } from '@angular/router';
+import { DocumentoService } from 'src/app/documento/documento.service';
 declare var jQuery: any;
 declare const $;
 
@@ -22,52 +23,81 @@ declare const $;
   styleUrls: ['./inicio.component.css']
 })
 export class InicioComponent implements OnInit, OnDestroy {
-  @ViewChild('myToast') myToast: ElementRef;
   private unsubscribe$ = new Subject();
-  currentDate: any;
-    pedidosForm: FormGroup;
-    pedidosForm2: FormGroup;
-  constructor(
-    public auth: AuthService,
-    public formBuilder: FormBuilder,
-    public afs: AngularFirestore,
-    private router: Router
-  ) {  }
-
-  ngOnInit() {
-    this.pedidosForm = this.formBuilder.group({
-      apellidos: ['', [Validators.required]],
-      nombres: ['', [Validators.required]],
-      correo: ['', [Validators.required]],
-      diocesis: ['', [Validators.required]],
-      parroquia: ['', [Validators.required]],
-      celular: ['', [Validators.required]],
-      estado: [''],
-      fecha: ['']
-    });
-
-    this.pedidosForm2 = this.formBuilder.group({
-      apellidos: ['', [Validators.required]],
-      nombres: ['', [Validators.required]],
-      celular: ['', [Validators.required]],
-      mensaje: ['', [Validators.required]],
-      estado: [''],
-      fecha: ['']
-    });
-    this.currentDate = new Date();
-    // this.load();
+  @ViewChild('myToast') myToast: ElementRef;
+  midata: any[];
+  view: any[] = [700, 250];
+  // options
+  gradient = true;
+  showLegend = true;
+  showLabels = true;
+  isDoughnut = false;
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+  p: 1;
+  searchDoc: any = { name: '' };
+  diocesis: any;
+  constructor(public formBuilder: FormBuilder,
+              private afs: AngularFirestore,
+              public auth: AuthService,
+              private router: Router,
+              public documentoService: DocumentoService) {
   }
 
+  sub;
+  async ngOnInit() {
+    const { uid } = await this.auth.getUser();
+    this.sub = this.afs.doc(`usuarios/${uid}`).valueChanges().subscribe((data: any) => {
+      this.diocesis = data.diocesis;
+    });
+
+    this.sub = this.afs.collection('charts', ref => ref.where('code', '==', 'aa')).valueChanges()
+      .subscribe(data => {
+        this.midata = data;
+      });
+    $('#myToast').toast('show');
+  }
 
   ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-  alerta() {
-
+    this.sub.unsubscribe();
+    // this.unsubscribe$.next();
+    // this.unsubscribe$.complete();
   }
 
-  alerta2() {
-
+  getColor(documento) {
+    switch (documento) {
+      case true:
+        return 'green';
+      case false:
+        return 'black';
+    }
   }
+
+  showModal() {
+    // jQuery(this.myModal.nativeElement).modal('show');
+  }
+
+  trackByFn(index, item) {
+    return item.id;
+  }
+
+  onSelect(data): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate(data): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate(data): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
+
+  signOut() {
+    this.auth.signOut().then(() => {
+      this.router.navigate(['/']);
+    });
+  }
+
 }

@@ -71,19 +71,11 @@ export class SignInComponent implements OnInit {
 
   signInWithGoogle() {
     this.auth.signInWithGoogle().then(() => {
-      this.auth.user$ = this.afAuth.authState.pipe(
-        switchMap(user => {
-          if (user) {
-            return this.afs.doc(`usuarios/${user.uid}`).valueChanges();
-          } else {
-            return of(null);
-          }
-        }));
       this.postSignIn();
     });
   }
 
-  postSignIn(): void {
+  postSignIn() {
     this.router.navigate(['/Home']);
   }
 

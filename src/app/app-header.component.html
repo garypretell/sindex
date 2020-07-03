@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light" *ngIf="(auth.user$) | async">
+  <a class="navbar-brand" [routerLink]="['/Home']">Sindex</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" >
+        <a #proyectosLink routerLinkActive="active" class="nav-link more" [routerLink]="['/Chat']"  *ngIf="auth.canDelete(auth.user$ | async) && super === false">
+          Chat</a>
+      </li>
+      <li class="nav-item" *ngIf="auth.canSuper(auth.user$ | async)">
+        <a #proyectosLink routerLinkActive="active" class="nav-link more" [routerLink]="['/proyectos']">
+          Diócesis</a>
+      </li>
+      <li class="nav-item" *ngIf="auth.canDelete(auth.user$ | async)">
+        <a #proyectosLink routerLinkActive="active" class="nav-link more" (click)="goParroquia()">
+          Parroquias</a>
+      </li>
+      <li class="nav-item" *ngIf="auth.canEdit(auth.user$ | async)">
+        <a #proyectosLink routerLinkActive="active" class="nav-link more" (click)="goLibro()">
+          Mis Documentos</a>
+      </li>
+      <li class="nav-item" *ngIf="auth.canDelete(auth.user$ | async)">
+        <a #proyectosLink routerLinkActive="active" class="nav-link more" [routerLink]="['/usuarios']">
+          Usuarios</a>
+      </li>
+      <li class="nav-item dropdown" *ngIf="auth.canDelete(auth.user$ | async) && super === false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Directorio
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" [routerLink]="['/Diacono']">Diácono</a>
+          <a class="dropdown-item" [routerLink]="['/Obispo']">Obispo</a>
+          <a class="dropdown-item" [routerLink]="['/Presbitero']">Presbítero</a>
+          <div class="dropdown-divider"></div>
+        </div>
+      </li>
+      <li class="nav-item" *ngIf="auth.canDelete(auth.user$ | async) && super === false">
+        <a #proyectosLink routerLinkActive="active" class="nav-link" [routerLink]="['/Transferencias']">
+          Transferir Documentos</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <img src="{{ foto }}" (click)="signOut()" alt="Cerrar Sesión" width="40" class="rounded-circle more" data-toggle="tooltip" data-placement="bottom" title="Cerrar Sesión" >
+
+      <!-- <a class="header__link" (click)="signOut()" href="#"><strong>
+          <i class="fa fa-sign-out" aria-hidden="true"></i> Cerrar Sesión &nbsp;({{ name$ }})</strong></a> -->
+    </form>
+  </div>
+</nav>
+
+
