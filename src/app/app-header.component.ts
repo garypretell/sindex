@@ -28,8 +28,6 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   transferencia: any;
   super: boolean;
   parroquia: any;
-  roomChats$: Observable<any>;
-  user: Observable<any>;
   miparroquia: any;
   midiocesis: any;
   foto: any;
@@ -46,11 +44,11 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   }
   sub;
   ngOnInit() {
+
     this.sub = this.afAuth.authState.subscribe(data => {
       if (data) {
         this.name$ = data.displayName;
         this.foto = data.photoURL;
-        this.user = this.afs.doc(`usuarios/${data.uid}`).valueChanges();
       }
     });
 
@@ -96,7 +94,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
     this.auth.user$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       if (data) {
         this.codigo = data.diocesis.id;
-        this.router.navigate(['/Diocesis', this.codigo, 'parroquias']);
+        this.router.navigate(['/diocesis', this.codigo, 'parroquias']);
       }
     });
   }

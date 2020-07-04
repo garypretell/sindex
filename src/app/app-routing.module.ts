@@ -5,13 +5,25 @@ import { RequireUnauthGuard, RequireAuthGuard, EditorGuard } from './auth/guards
 import { DiocesisComponent } from './diocesis/components/diocesis.component';
 import { InicioComponent } from './inicio/components/inicio.component';
 import { DocumentoComponent } from './documento/components/documento.component';
+import { ParroquiaComponent } from './parroquia/components/parroquia.component';
+import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
 
 
 const routes: Routes = [
-  { path: '', component: SignInComponent, canActivate: [RequireUnauthGuard]  },
-  { path: 'diocesis', component: DiocesisComponent, canActivate: [EditorGuard]  },
-  { path: 'documentos', component: DocumentoComponent, canActivate: [EditorGuard]  },
-  { path: 'Home', component: InicioComponent,  canActivate: [RequireAuthGuard]  }
+  { path: '', component: SignInComponent, canActivate: [RequireUnauthGuard] },
+  { path: 'Home', component: InicioComponent, canActivate: [RequireAuthGuard] },
+  { path: 'documentos', component: DocumentoComponent, canActivate: [EditorGuard] },
+  {
+    path: 'diocesis', component: DiocesisComponent, canActivate: [EditorGuard],
+    children: [
+      {
+        path: ':id', component: MidiocesisComponent, canActivate: [EditorGuard],
+        children: [
+          { path: 'parroquias', component: ParroquiaComponent, canActivate: [EditorGuard] }
+        ]
+      }
+    ]
+  }
 ];
 
 @NgModule({

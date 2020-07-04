@@ -36,6 +36,7 @@ export class InicioComponent implements OnInit, OnDestroy {
   p: 1;
   searchDoc: any = { name: '' };
   diocesis: any;
+  parroquia: any;
   constructor(public formBuilder: FormBuilder,
               private afs: AngularFirestore,
               public auth: AuthService,
@@ -48,6 +49,7 @@ export class InicioComponent implements OnInit, OnDestroy {
     const { uid } = await this.auth.getUser();
     this.sub = this.afs.doc(`usuarios/${uid}`).valueChanges().subscribe((data: any) => {
       this.diocesis = data.diocesis;
+      this.parroquia = data.parroquia;
     });
 
     this.sub = this.afs.collection('charts', ref => ref.where('code', '==', 'aa')).valueChanges()
@@ -96,6 +98,10 @@ export class InicioComponent implements OnInit, OnDestroy {
     this.auth.signOut().then(() => {
       this.router.navigate(['/']);
     });
+  }
+
+  goParroquia(){
+    this.router.navigate(['/diocesis', this.diocesis.id, 'parroquia', this.parroquia.id]);
   }
 
 }
