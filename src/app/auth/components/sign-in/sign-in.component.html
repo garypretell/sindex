@@ -1,115 +1,392 @@
-<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+    <form class="form-inline my-2 mr-lg-2">
+      <img
+        src="../../../../assets/indexing.jpg"
+        alt="Sindex"
+        width="40"
+        class="rounded-circle more"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="Sindex"
+      />
+      <a class="nav-link" class="btn" (click)="scroll(home)">
+        <strong
+          ><em>
+            SINDEX
+          </em></strong
+        ><span class="sr-only">(current)</span></a
+      >
+    </form>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" class="btn" [routerLink]="['/diocesis']">
+            <strong
+              ><em>
+                PROYECTOS
+              </em></strong
+            ><span class="sr-only">(current)</span></a
+          >
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" class="btn" > <strong><em>
-                            <h4>Sindex </h4>
-                        </em></strong><span class="sr-only">(current)</span></a>
-            </li>
+          <li class="nav-item active">
+            <a class="nav-link" class="btn" (click)="scroll(precios)">
+              <strong> PRECIOS</strong>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" class="btn" (click)="scroll(beneficios)">
+              <strong> BENEFICIOS</strong>
+            </a>
+          </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" class="btn">PRECIOS
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" class="btn" [routerLink]="['/diocesis']">DIOCESIS
-                    </a>
-                </li>
-            </ul>
-            <button type="button" class="btn btn-outline-primary" (click)="signInWithGoogle()"> Acceder</button>&nbsp;
-            <button type="button" class="btn btn-outline-success" (click)="signInWithGoogle()"> Contacto</button>&nbsp;
-            <button type="button" class="btn btn-outline-dark">Registrar</button>
-        </form>
+        <button type="button" class="btn btn-outline-dark mr-2">
+          Registrar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="signInWithGoogle()"
+        >
+          Acceder
+        </button>
+        <!-- <button type="button" class="btn btn-outline-success" (click)="signInWithGoogle()"> Contacto</button>&nbsp; -->
+      </form>
     </div>
-</nav>
-
-<div class="container mt-4">
-    <div class="row mb-3">
-        <div class="col-md-3 ml-auto"><strong><i>Buscar:</i></strong>
-            <input type="search" name="limpiar" id="limpiar" class="form-control text-uppercase"
-                [(ngModel)]="searchObject.nombre">
+  </nav>
+  <section class="bg-light mt-2 inicio" #home>
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-md-8">
+          <h3><strong>Sistema de Administración Parroquial</strong></h3>
+          <button type="button" class="btn btn-outline-primary btn-sm">
+            Ver Tutorial
+          </button>
+          <hr />
+          <ngx-charts-advanced-pie-chart
+            (window:resize)="onResize($event)"
+            [view]="view"
+            [results]="midata"
+            (select)="onSelect($event)"
+            (activate)="onActivate($event)"
+            (deactivate)="onDeactivate($event)"
+          >
+          </ngx-charts-advanced-pie-chart>
+          <hr />
+          <p class="text-muted">
+            *Antes de iniciar, usted puede descargar el manual de usuario.
+            <a href="#" class="badge badge-primary">Descargar</a>
+          </p>
         </div>
+        <div class="col-md-4">
+          <div class="shadow list-group">
+            <a href="#" class="list-group-item list-group-item-action active">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">NOVEDADES</h5>
+                <small>{{ currentDate | date: "dd-MM-yyyy" }}</small>
+              </div>
+              <small><strong>últimas actualizaciones... </strong> </small>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Transferencia de Documentos</h5>
+                <small class="text-muted">8 days ago</small>
+              </div>
+              <p class="mb-1">
+                Envía y recibe documentos de otras parroquias electrónicamente.
+              </p>
+              <small class="text-muted">Sólo para tu Diócesis.</small>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Mensajería (Chat)</h5>
+                <small class="text-muted">3 days ago</small>
+              </div>
+              <p class="mb-1">
+                Si necesitas enviar mensajes a otra parroquia de tu diócesis,
+                usa esta herramienta.
+              </p>
+              <small class="text-muted"
+                >Se mostrarán los últimos 30 mensajes.</small
+              >
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Almacenamiento en la Nube</h5>
+                <small class="text-muted">1 month ago</small>
+              </div>
+              <p class="mb-1">
+                Almacena tu fondo documental en nuestros repositorios de forma
+                ilimitada.
+              </p>
+              <small class="text-muted"
+                >Se mostrarán los últimos 30 mensajes.</small
+              >
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="row row-cols-1 row-cols-md-3">
-        <div class="col mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-2" width="50" alt="avatar">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                        content. This content is a little bit longer.</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-2" width="50" alt="avatar">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                        content. This content is a little bit longer.</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-2" width="50" alt="avatar">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                        content. This content is a little bit longer.</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-2" width="50" alt="avatar">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                        content. This content is a little bit longer.</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-2" width="50" alt="avatar">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                        content. This content is a little bit longer.</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-2" width="50" alt="avatar">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                        content. This content is a little bit longer.</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-
-
+  </section>
+  <section class="section text-center" #precios>
+    <br />
+    <div class="row justify-content-center">
+      <h1>
+        Precios para el <b>desarrollo, mantenimiento y seguridad</b> de su
+        información.
+      </h1>
+      <h5>
+        Sindex es un software desarrollado para el registro y control de los
+        documentos Parroquiales, asi mismo permite la transferencia de
+        documentos entre parroquias.
+      </h5>
+      <h5>
+        Contribuya con la actualización y mantenimiento de la aplicación.
+      </h5>
     </div>
-</div>
+    <br />
+    <div class="container">
+      <div class="row row-cols-1 row-cols-md-2 justify-content-center">
+        <div class="col mb-4">
+          <div class="card">
+            <img
+              src="../../../../assets/dia.svg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title"><strong>PLAN MENSUAL(20PEN)</strong></h5>
+              <p class="card-text">
+                Adquiera un plan mensual y vea sus beneficios en el siguiente
+                enlace.
+              </p>
+              <button class="btn btn-outline-danger">Detalles</button>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-4">
+          <div class="card">
+            <img
+              src="../../../../assets/mes.svg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title"><strong> PLAN ANUAL(200PEN)</strong></h5>
+              <p class="card-text">
+                Adquiera un descuento significativo por adquirir este plan.
+              </p>
+              <button class="btn btn-outline-info">Detalles</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="bg-light inicio" #beneficios>
+    <div class="container">
+      <div class="row mb-3">
+        <div class="col-md-3 ml-auto">
+          <strong><i>Buscar:</i></strong>
+          <input
+            type="search"
+            name="limpiar"
+            id="limpiar"
+            class="form-control text-uppercase"
+            [(ngModel)]="searchObject.nombre"
+          />
+        </div>
+      </div>
+      <div class="row row-cols-1 row-cols-md-2">
+        <div class="col mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <img
+                  src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg"
+                  class="rounded-circle mr-2"
+                  width="50"
+                  alt="avatar"
+                />Card title
+              </h5>
+              <p class="card-text">
+                This is a wider card with supporting text below as a natural
+                lead-in to additional content. This content is a little bit
+                longer.
+              </p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <img
+                  src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg"
+                  class="rounded-circle mr-2"
+                  width="50"
+                  alt="avatar"
+                />Card title
+              </h5>
+              <p class="card-text">
+                This is a wider card with supporting text below as a natural
+                lead-in to additional content. This content is a little bit
+                longer.
+              </p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <img
+                  src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg"
+                  class="rounded-circle mr-2"
+                  width="50"
+                  alt="avatar"
+                />Card title
+              </h5>
+              <p class="card-text">
+                This is a wider card with supporting text below as a natural
+                lead-in to additional content. This content is a little bit
+                longer.
+              </p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <img
+                  src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg"
+                  class="rounded-circle mr-2"
+                  width="50"
+                  alt="avatar"
+                />Card title
+              </h5>
+              <p class="card-text">
+                This is a wider card with supporting text below as a natural
+                lead-in to additional content. This content is a little bit
+                longer.
+              </p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <img
+                  src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg"
+                  class="rounded-circle mr-2"
+                  width="50"
+                  alt="avatar"
+                />Card title
+              </h5>
+              <p class="card-text">
+                This is a wider card with supporting text below as a natural
+                lead-in to additional content. This content is a little bit
+                longer.
+              </p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <img
+                  src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg"
+                  class="rounded-circle mr-2"
+                  width="50"
+                  alt="avatar"
+                />Card title
+              </h5>
+              <p class="card-text">
+                This is a wider card with supporting text below as a natural
+                lead-in to additional content. This content is a little bit
+                longer.
+              </p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div id="footer" #footer class="section" style="background-color: #656d72;">
+    <div class="container">
+      <ul class="list-inline">
+        <li class="list-inline-item footer-menu">
+          <a class="btn" (click)="scroll(home)">Home</a>
+        </li>
+        <li class="list-inline-item footer-menu">
+          <a class="btn" (click)="scroll(precios)">Precios</a>
+        </li>
+        <li class="list-inline-item footer-menu">
+          <a class="btn" (click)="scroll(beneficios)">Beneficios</a>
+        </li>
+      </ul>
+      <ul class="list-inline">
+        <li class="list-inline-item">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </li>
+        <li class="list-inline-item">
+          <i class="fa fa-twitter" aria-hidden="true"></i>
+        </li>
+        <li class="list-inline-item">
+          <i class="fa fa-youtube-play" aria-hidden="true"></i>
+        </li>
+        <li class="list-inline-item">
+          <i class="fa fa-dribbble" aria-hidden="true"></i>
+        </li>
+        <li class="list-inline-item">
+          <i class="fa fa-facebook-official" aria-hidden="true"></i>
+        </li>
+      </ul>
+      <small
+        >©2020 All Rights Reserved. Created by
+        <a
+          href="https://themesbootstrap.com.mx/"
+          class="font-weight-bold"
+          target="_blank"
+          rel="noopener"
+          >Sindex</a
+        ></small
+      >
+    </div>
+  </div>
+</body>

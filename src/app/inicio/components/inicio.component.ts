@@ -26,12 +26,7 @@ export class InicioComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject();
   @ViewChild('myToast') myToast: ElementRef;
   midata: any[];
-  view: any[] = [700, 250];
-  // options
-  gradient = true;
-  showLegend = true;
-  showLabels = true;
-  isDoughnut = false;
+  view: any;
 
   p: 1;
   searchDoc: any = { name: '' };
@@ -42,6 +37,7 @@ export class InicioComponent implements OnInit, OnDestroy {
               public auth: AuthService,
               private router: Router,
               public documentoService: DocumentoService) {
+              this.view = [900, 400];
   }
 
   sub;
@@ -92,6 +88,10 @@ export class InicioComponent implements OnInit, OnDestroy {
 
   onDeactivate(data): void {
     // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onResize(event) {
+    this.view = [event.target.innerWidth / 1.35, 400];
   }
 
   signOut() {
