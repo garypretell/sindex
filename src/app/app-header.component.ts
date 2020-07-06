@@ -94,7 +94,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
     this.auth.user$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       if (data) {
         this.codigo = data.diocesis.id;
-        this.router.navigate(['/diocesis', this.codigo, 'parroquias']);
+        this.router.navigate(['/diocesis', this.codigo, 'parroquia', data.parroquia.id]);
       }
     });
   }

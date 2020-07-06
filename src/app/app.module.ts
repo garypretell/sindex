@@ -8,6 +8,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { FilterPipeModule } from 'ngx-filter-pipe';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +26,8 @@ import { AppHeaderComponent } from './app-header.component';
 import { ParroquiaComponent } from './parroquia/components/parroquia.component';
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
 import { AccountComponent } from './account/components/account.component';
+import { ChatComponent } from './chat/components/chat.component';
+import { ChatUserComponent } from './chat-user/chat-user.component';
 
 
 @NgModule({
@@ -37,7 +40,9 @@ import { AccountComponent } from './account/components/account.component';
     DocumentoComponent,
     ParroquiaComponent,
     MidiocesisComponent,
-    AccountComponent
+    AccountComponent,
+    ChatComponent,
+    ChatUserComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +56,8 @@ import { AccountComponent } from './account/components/account.component';
     AngularFirestoreModule,
     NgxChartsModule,
     NgxPaginationModule,
-    FilterPipeModule
+    FilterPipeModule,
+    NgxSpinnerModule
   ],
   providers: [
     RequireAuthGuard,

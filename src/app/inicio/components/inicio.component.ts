@@ -27,7 +27,7 @@ export class InicioComponent implements OnInit, OnDestroy {
   @ViewChild('myToast') myToast: ElementRef;
   midata: any[];
   view: any;
-
+  pedidosForm: FormGroup;
   p: 1;
   searchDoc: any = { name: '' };
   diocesis: any;
@@ -42,6 +42,18 @@ export class InicioComponent implements OnInit, OnDestroy {
 
   sub;
   async ngOnInit() {
+
+    this.pedidosForm = this.formBuilder.group({
+      apellidos: ['', [Validators.required]],
+      nombres: ['', [Validators.required]],
+      correo: ['', [Validators.required]],
+      diocesis: ['', [Validators.required]],
+      parroquia: ['', [Validators.required]],
+      celular: ['', [Validators.required]],
+      estado: [''],
+      fecha: ['']
+    });
+
     const { uid } = await this.auth.getUser();
     this.sub = await this.afs.doc(`usuarios/${uid}`).valueChanges().subscribe((data: any) => {
       this.diocesis = data.diocesis;
@@ -52,6 +64,7 @@ export class InicioComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.midata = data;
       });
+
     $('#myToast').toast('show');
   }
 
@@ -102,6 +115,9 @@ export class InicioComponent implements OnInit, OnDestroy {
 
   goParroquia(){
     this.router.navigate(['/diocesis', this.diocesis.id, 'parroquia', this.parroquia.id]);
+  }
+
+  alerta() {
   }
 
 }
