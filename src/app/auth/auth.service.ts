@@ -77,7 +77,7 @@ export class AuthService {
       estado: true,
       roles: {
         subscriber: true,
-        editor: false,
+        editor: true,
         admin: false,
         super: false
       }

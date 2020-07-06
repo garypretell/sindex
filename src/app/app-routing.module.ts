@@ -7,12 +7,14 @@ import { InicioComponent } from './inicio/components/inicio.component';
 import { DocumentoComponent } from './documento/components/documento.component';
 import { ParroquiaComponent } from './parroquia/components/parroquia.component';
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
+import { AccountComponent } from './account/components/account.component';
 
 
 const routes: Routes = [
   { path: '', component: SignInComponent, canActivate: [RequireUnauthGuard] },
   { path: 'Home', component: InicioComponent, canActivate: [RequireAuthGuard] },
   { path: 'documentos', component: DocumentoComponent, canActivate: [EditorGuard] },
+  { path: 'registrar', component: AccountComponent, canActivate: [RequireUnauthGuard] },
   {
     path: 'diocesis', component: DiocesisComponent, canActivate: [EditorGuard],
     children: [

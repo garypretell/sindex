@@ -112,4 +112,8 @@ export class SignInComponent implements OnInit {
     this.view = [event.target.innerWidth / 1.35, 400];
   }
 
+  goAccount() {
+    this.router.navigate(['/registrar']);
+  }
+
 }

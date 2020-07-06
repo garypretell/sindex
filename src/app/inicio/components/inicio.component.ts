@@ -37,13 +37,13 @@ export class InicioComponent implements OnInit, OnDestroy {
               public auth: AuthService,
               private router: Router,
               public documentoService: DocumentoService) {
-              this.view = [900, 400];
+              this.view = [innerWidth / 1.5, 400];
   }
 
   sub;
   async ngOnInit() {
     const { uid } = await this.auth.getUser();
-    this.sub = this.afs.doc(`usuarios/${uid}`).valueChanges().subscribe((data: any) => {
+    this.sub = await this.afs.doc(`usuarios/${uid}`).valueChanges().subscribe((data: any) => {
       this.diocesis = data.diocesis;
       this.parroquia = data.parroquia;
     });

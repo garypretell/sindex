@@ -24,6 +24,7 @@ import { DocumentoComponent } from './documento/components/documento.component';
 import { AppHeaderComponent } from './app-header.component';
 import { ParroquiaComponent } from './parroquia/components/parroquia.component';
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
+import { AccountComponent } from './account/components/account.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component'
     InicioComponent,
     DocumentoComponent,
     ParroquiaComponent,
-    MidiocesisComponent
+    MidiocesisComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,

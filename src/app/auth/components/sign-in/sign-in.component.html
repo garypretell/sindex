@@ -1,7 +1,8 @@
 <body>
-  <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light mt-2">
     <form class="form-inline my-2 mr-lg-2">
       <img
+        loading="lazy"
         src="../../../../assets/indexing.jpg"
         alt="Sindex"
         width="40"
@@ -10,7 +11,7 @@
         data-placement="bottom"
         title="Sindex"
       />
-      <a class="nav-link" class="btn" (click)="scroll(home)">
+      <a class="nav-link" class="btn text-primary" (click)="scroll(home)">
         <strong
           ><em>
             SINDEX
@@ -32,7 +33,11 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" class="btn" [routerLink]="['/diocesis']">
+          <a
+            class="nav-link"
+            class="btn text-primary"
+            [routerLink]="['/diocesis']"
+          >
             <strong
               ><em>
                 PROYECTOS
@@ -44,17 +49,25 @@
       <form class="form-inline my-2 my-lg-0">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" class="btn" (click)="scroll(precios)">
+            <a
+              class="nav-link"
+              class="btn text-primary"
+              (click)="scroll(precios)"
+            >
               <strong> PRECIOS</strong>
             </a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" class="btn" (click)="scroll(beneficios)">
+            <a
+              class="nav-link"
+              class="btn text-primary"
+              (click)="scroll(beneficios)"
+            >
               <strong> BENEFICIOS</strong>
             </a>
           </li>
         </ul>
-        <button type="button" class="btn btn-outline-dark mr-2">
+        <button type="button" class="btn btn-outline-dark mr-2" (click)="goAccount()" >
           Registrar
         </button>
         <button
@@ -77,7 +90,7 @@
             Ver Tutorial
           </button>
           <hr />
-          <ngx-charts-advanced-pie-chart
+          <ngx-charts-advanced-pie-chart class="text-uppercase"
             (window:resize)="onResize($event)"
             [view]="view"
             [results]="midata"
@@ -164,6 +177,7 @@
         <div class="col mb-4">
           <div class="card">
             <img
+              loading="lazy"
               src="../../../../assets/dia.svg"
               class="card-img-top"
               alt="..."
@@ -181,6 +195,7 @@
         <div class="col mb-4">
           <div class="card">
             <img
+              loading="lazy"
               src="../../../../assets/mes.svg"
               class="card-img-top"
               alt="..."
@@ -198,7 +213,106 @@
     </div>
   </section>
   <section class="bg-light inicio" #beneficios>
+    <div class="container-fluid text-center">
+      <h1>Beneficios de la api <b>Sindex.</b></h1>
+    </div>
+    <br />
     <div class="container">
+      <div class="row justify-content-md-center text-center">
+        <div class="col-lg-3 align-self-center">
+          <div class="card" style="max-width: 40rem;">
+            <img
+              loading="lazy"
+              src="../../../assets/registra.svg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">
+                <strong>1. REGISTRE SU INFORMACIÓN</strong>
+              </h5>
+              <p class="card-text">
+                Almacenamiento ilimitada de sus documentos clasificados por
+                Libros.
+              </p>
+              <button type="button" class="btn btn-outline-dark">
+                Detalles
+              </button>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="col-lg-3">
+          <div class="card" style="max-width: 40rem;">
+            <img
+              loading="lazy"
+              src="../../../assets/almacenamientonube.svg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">
+                <strong>2. ALMACENAMIENTO EN LA NUBE</strong>
+              </h5>
+              <p class="card-text">
+                Sus datos no se perderán ni sufrirán daños por parte de
+                terceros.
+              </p>
+              <button type="button" class="btn btn-outline-dark">
+                Detalles
+              </button>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="col-lg-3 align-self-center">
+          <div class="card" style="max-width: 40rem;">
+            <img
+              loading="lazy"
+              src="../../../assets/busqueda.svg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">
+                <strong>3. BÚSQUEDAS AL INSTANTE</strong>
+              </h5>
+              <p class="card-text">
+                Obtenga su información al instante gracias a la potencia de
+                nuestros servidores.
+              </p>
+              <button type="button" class="btn btn-outline-dark">
+                Detalles
+              </button>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="col-lg-3 align-self-center">
+          <div class="card" style="max-width: 40rem;">
+            <img
+              loading="lazy"
+              src="../../../assets/registra.svg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">
+                <strong>4. IMPRIMA SU DOCUMENTO</strong>
+              </h5>
+              <p class="card-text">
+                Plantillas personalizadas para la impresión de todos sus
+                documentos.
+              </p>
+              <button type="button" class="btn btn-outline-dark">
+                Detalles
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="container">
       <div class="row mb-3">
         <div class="col-md-3 ml-auto">
           <strong><i>Buscar:</i></strong>
@@ -345,7 +459,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </section>
   <div id="footer" #footer class="section" style="background-color: #656d72;">
     <div class="container">
@@ -379,13 +493,7 @@
       </ul>
       <small
         >©2020 All Rights Reserved. Created by
-        <a
-          href="https://themesbootstrap.com.mx/"
-          class="font-weight-bold"
-          target="_blank"
-          rel="noopener"
-          >Sindex</a
-        ></small
+        <a href="" class="font-weight-bold" rel="noopener">Sindex</a></small
       >
     </div>
   </div>
