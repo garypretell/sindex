@@ -27,7 +27,7 @@
       </li>
       <li class="nav-item" *ngIf="auth.canDelete(auth.user$ | async)">
         <a #proyectosLink routerLinkActive="active" class="nav-link more" (click)="goParroquia()">
-          Parroquias</a>
+          Parroquia</a>
       </li>
       <li class="nav-item" *ngIf="auth.canEdit(auth.user$ | async)">
         <a #proyectosLink routerLinkActive="active" class="nav-link more" (click)="goLibro()">

@@ -35,7 +35,7 @@ export class ChatUserComponent implements OnInit, OnDestroy, AfterViewInit {
   async ngOnDestroy() {
     const { uid } = await this.auth.getUser();
     const recibe = 'recibe_' + uid;
-    this.afs.collection(`mensajes`, ref => ref.where('chatId', '==', this.chatId)
+    await this.afs.collection(`mensajes`, ref => ref.where('chatId', '==', this.chatId)
     .where('recibe', '==', uid).where('estado', '==', recibe)).valueChanges({idField: 'id' }).pipe(map(m => {
       m.map((data: any) => {
       this.afs.doc(`mensajes/${data.id}`).update({estado: 'leido'});
@@ -65,15 +65,17 @@ export class ChatUserComponent implements OnInit, OnDestroy, AfterViewInit {
   trackByCreated(i, msg) {
     return msg.createdAt;
   }
-  
+
   async actualizaSalida() {
     const { uid } = await this.auth.getUser();
     const recibe = 'recibe_' + uid;
     this.afs.collection(`mensajes`, ref => ref.where('chatId', '==', this.chatId)
     .where('recibe', '==', uid).where('estado', '==', recibe)).valueChanges({idField: 'id' }).pipe(map(m => {
-      m.map((data: any) => {
-      this.afs.doc(`mensajes/${data.id}`).update({estado: 'leido'});
-      });
+      if (m) {
+        m.map((data: any) => {
+          this.afs.doc(`mensajes/${data.id}`).update({estado: 'leido'});
+          });
+      }
     }), takeUntil(this.unsubscribe$) ).subscribe();
     return this.router.navigate(['Chat']);
   }

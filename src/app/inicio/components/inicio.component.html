@@ -124,7 +124,7 @@
           <h4>
             <em> {{ diocesis?.nombre | uppercase }}</em>
           </h4>
-          <ngx-charts-advanced-pie-chart (window:resize)="onResize($event)" [view]="view" [results]="midata"
+          <ngx-charts-advanced-pie-chart  [view]="view" [results]="midata"
             (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
           </ngx-charts-advanced-pie-chart>
           <hr />

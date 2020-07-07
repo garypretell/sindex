@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, Observable, combineLatest } from 'rxjs';
-import { map, flatMap } from 'rxjs/operators';
+import { map, flatMap, takeUntil } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../../auth/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -34,9 +34,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  collection() {
-    this.auth.user$.pipe(map(da => {
-      this.roomChats$ = this.afs.collection('usuarios', ref => ref.where('diocesis.id', '==', da.diocesis.id)
+  async collection() {
+    await this.auth.user$.pipe(map(da => {
+      if (da) {
+        this.roomChats$ = this.afs.collection('usuarios', ref => ref.where('diocesis.id', '==', da.diocesis.id)
         .where('roles.admin', '==', true)
         .orderBy('lastSesion', 'desc')).valueChanges().pipe(map(datos => {
           return datos.map((change: any) => {
@@ -56,7 +57,8 @@ export class ChatComponent implements OnInit, OnDestroy {
         }),
           flatMap(feeds => combineLatest(feeds))
         );
-    })).subscribe();
+      }
+    }), takeUntil(this.unsubscribe$)).subscribe();
   }
 
   conectar(item) {
