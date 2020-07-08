@@ -72,32 +72,25 @@
         <div class="col-md-3 mb-2">
           <div class="row justify-content-between">
             <div class="col-4">
-              <p><strong>Documentos</strong></p>
+              <p><strong>Parroquias</strong></p>
             </div>
-            <div class="col-4 text-right">
-              <a href="#" class="badge badge-primary"><i class="fa fa-file-o" aria-hidden="true"> </i> Nuevo
+            <div class="col-4 text-right" *ngIf="auth.canDelete(auth.user$ | async)">
+              <a href="#" class="badge badge-primary" ><i class="fa fa-file-o" aria-hidden="true" > </i> Nuevo
               </a>
             </div>
           </div>
-          <input type="search" class="form-control text-uppercase mb-3" placeholder="Buscar Documentos"
-            [(ngModel)]="searchDoc.name" />
-          <ng-container *ngIf="documentoService.documentos$ | async as documentos">
-            <div class="col-md-10 modal-body2">
-              <div class="media" *ngFor="let documento of documentos | filterBy: searchDoc">
+          <input type="search" class="form-control text-uppercase mb-3" placeholder="Buscar Parroquias"
+            [(ngModel)]="searchDoc.nombre" />
+          <ng-container *ngIf="parroquias$ | async as parroquias">
+            <div class="col-md-11 modal-body2">
+              <div class="media" *ngFor="let parroquia of parroquias | filterBy: searchDoc">
                 <div class="media-body">
-                  <small class="text-primary" [ngStyle]="{ color: getColor(documento.principal) }">
-                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                    <strong> {{ documento.name | uppercase }}</strong>
-                  </small>
-                  <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" [style.width.%]="
-                            (documento.value * 100) / documento.total_imagenes
-                          " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                      {{
-                            (documento.value * 100) / documento.total_imagenes
-                              | number: "1.0-0"
-                          }}%
-                    </div>
+                  <div class="d-flex w-100 justify-content-between">
+                    <small  [ngStyle]="{ color: getColor(parroquia.estado) }">
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                      <strong> {{ parroquia.nombre | uppercase }}</strong>
+                    </small>
+                    <span role="button" class="badge badge-info align-self-center">Detalles</span>
                   </div>
                   <p></p>
                   <hr />
@@ -144,7 +137,7 @@
               </div>
             </div>
             <div class="col-4">
-              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <div class="shadow alert alert-warning alert-dismissible fade show" role="alert">
                 <strong>Importante!</strong> Antes de iniciar, usted puede descargar el manual de usuario.
                   <a href="#" class="badge badge-primary">Descargar</a>
            

@@ -104,7 +104,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
       if (data) {
         const diocesis = data.diocesis.id;
         const parroquia = data.parroquia.id;
-        this.router.navigate(['/Diocesis', diocesis, 'Parroquia', parroquia, 'Documentos']);
+        this.router.navigate(['/diocesis', diocesis, 'parroquia', parroquia, 'documentos']);
       }
     });
   }

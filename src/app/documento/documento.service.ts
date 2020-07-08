@@ -16,7 +16,10 @@ export class DocumentoService {
    }
 
 
-   getDocumento() { return this.documentos$; }
+   getDocumentos() { return this.documentos$; }
+   getDocumento(id) {
+    return this.afs.collection(`Documentos`, ref => ref.where('parroquia', '==', id)).valueChanges({idField: 'id'});
+  }
 
    addDocumento(documento: any) { return this.documentosCollection.add(documento); }
 

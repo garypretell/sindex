@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { switchMap, map } from 'rxjs/operators';
-import { Subject, Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { Subject, Observable, of } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-parroquia',
@@ -16,7 +16,7 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
   estaparroquia: any = {};
   searchObject: any = {};
   principal: boolean;
-  fechaActual: any;
+  today: number = Date.now();
 
   items: Observable<any[]>;
   data: any;
@@ -24,52 +24,37 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
   midiocesis;
   miparroquia: any;
 
-  single: any[];
-  multi: any[];
-
-  view: any[];
-
-  // options
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = true;
-  showXAxisLabel = true;
-  xAxisLabel = 'DOCUMENTO';
-  showYAxisLabel = true;
-  yAxisLabel = 'REGISTROS';
-
-  constructor(public auth: AuthService,
-              public afs: AngularFirestore,
-              private activatedroute: ActivatedRoute
-              ) {
-              }
+  constructor(
+    public auth: AuthService,
+    public afs: AngularFirestore,
+    private activatedroute: ActivatedRoute,
+    public router: Router,
+  ) {
+  }
 
   sub;
   ngOnInit() {
-    this.view = [innerWidth / 2.0, 300];
-    this.fechaActual = new Date();
     this.sub = this.auth.user$.pipe(switchMap((m: any) => {
-      return this.afs.doc(`Parroquias/${m.parroquia.id}`).valueChanges().pipe(map((data: any) => {
-        if (data) {
-          this.miparroquia = m.parroquia.id;
-          this.principal = data.principal;
-          this.estaparroquia = data;
-        }
-      }));
+      if (m) {
+        return this.afs.doc(`Parroquias/${m.parroquia.id}`).valueChanges().pipe(map((data: any) => {
+          if (data) {
+            this.miparroquia = m.parroquia.id;
+            this.principal = data.principal;
+            this.estaparroquia = data;
+          }
+        }));
+      }
+      else {
+        return of(null);
+      }
     }),
-    switchMap(d => {
-      return this.activatedroute.paramMap.pipe(map(params => {
-        this.items = this.afs.collection<any>(`Parroquias`, ref => ref.where('diocesis', '==', params.get('d'))
-        .orderBy('createdAt', 'asc')).valueChanges({ idField: 'id' });
-        this.data = params.get('d');
-      }));
-    })).subscribe();
-
-    this.sub = this.afs.collection('charts', ref => ref.where('code', '==', 'aa')).valueChanges()
-      .subscribe(data => {
-        this.single = data;
-      });
+      switchMap(d => {
+        return this.activatedroute.paramMap.pipe(map(params => {
+          this.items = this.afs.collection<any>(`Parroquias`, ref => ref.where('diocesis', '==', params.get('d'))
+            .orderBy('createdAt', 'asc')).valueChanges({ idField: 'id' });
+          this.data = params.get('d');
+        }));
+      })).subscribe();
   }
 
   ngOnDestroy() {
@@ -90,8 +75,8 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
     console.log(event);
   }
 
-  onResize(event) {
-    this.view = [event.target.innerWidth / 1.8, 300];
+  goDocumentos(parroquia) {
+    this.router.navigate(['/diocesis', parroquia.diocesis, 'parroquia', parroquia.id, 'documentos']);
   }
 
 }

@@ -18,7 +18,8 @@ const routes: Routes = [
   { path: 'documentos', component: DocumentoComponent, canActivate: [EditorGuard] },
   { path: 'registrar', component: AccountComponent, canActivate: [RequireUnauthGuard] },
   { path: 'Chat', component: ChatComponent, canActivate: [AdminGuard] },
-  { path: 'diocesis/:d/parroquia/:p', component: ParroquiaComponent, canActivate: [EditorGuard] },
+  { path: 'diocesis/:d/parroquia/:p', component: ParroquiaComponent, canActivate: [AdminGuard] },
+  { path: 'diocesis/:d/parroquia/:p/documentos', component: DocumentoComponent,  canActivate: [EditorGuard] },
   { path: 'chats/:id', component: ChatUserComponent, canActivate: [AdminGuard] },
   {
     path: 'diocesis', component: DiocesisComponent, canActivate: [EditorGuard],

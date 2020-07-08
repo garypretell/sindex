@@ -1,107 +1,99 @@
-<div class="container-fluid mt-5">
-  <div class="row">
-    <ng-container *ngIf="!auth.canSuper(auth.user$ | async) && principal === true; else secundario" >
-      <div class="col-md-4 mb-4" >
+
+  <div class="d-flex w-100 justify-content-center mt-5">
+    <div class="row">
+      <ng-container *ngIf="
+        !auth.canSuper(auth.user$ | async) && principal === true;
+        else secundario">
+      <div class="col mb-4" *ngIf="items | async; let parroquias">
         <input type="search" class="form-control text-uppercase mb-3" placeholder="Buscar Parroquia"
-              [(ngModel)]="searchObject.nombre" />
-        <div class="list-group altura" *ngIf="items | async; let parroquias;">
+          [(ngModel)]="searchObject.nombre" />
+        <div class="shadow-lg list-group" >
           <a href="#" class="list-group-item list-group-item-action active">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">Administrar Parroquias</h5>
-              <small>3 days ago</small>
+              <small>{{today | date}}</small>
             </div>
-            <p class="mb-1">Crear, modificar y eliminar parroquias pertenecientes a su Diócesis.</p>
+            <p class="mb-1">
+              Crear, modificar y eliminar parroquias pertenecientes a su
+              Diócesis.
+            </p>
             <small>Listado de Parroquias.</small>
           </a>
           <div *ngFor="let parroquia of parroquias | filterBy: searchObject">
-            <a class="list-group-item list-group-item-action" >
+            <a class="list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{ parroquia.nombre }}</h5>
                 <form class="form-inline">
-                  <span role='button' class="badge badge-danger align-self-center mr-3">Eliminar</span>
-                  <span role='button' class="badge badge-primary align-self-center">Editar</span>
+                  <span role="button" class="badge badge-danger align-self-center mr-3">Eliminar</span>
+                  <span role="button" class="badge badge-primary align-self-center">Editar</span>
                 </form>
               </div>
               <p class="mb-3">
-                Banco: {{ parroquia.banco | uppercase }}<br>
+                Banco: {{ parroquia.banco | uppercase }}<br />
                 #Cuenta: {{ parroquia.cuenta }}
               </p>
               <div class="d-flex w-100 justify-content-between">
                 <form class="form-inline">
-                  <button type="button" class="btn btn-outline-info btn-sm mr-2">Documentos</button>
-                  <button type="button" class="btn btn-outline-dark btn-sm">Pagos</button>
+                  <button (click)="goDocumentos(parroquia)" type="button" class="btn btn-outline-info btn-sm mr-2">
+                    Documentos
+                  </button>
+                  <button type="button" class="btn btn-outline-dark btn-sm">
+                    Pagos
+                  </button>
                 </form>
-                <button type="button" class="btn btn-outline-secondary btn-sm" alt='Gráfica'><i class="fa fa-bar-chart" aria-hidden="true"></i></button>
               </div>
-              
             </a>
           </div>
         </div>
       </div>
     </ng-container>
-    
     <ng-template #secundario>
-      <div class="col-md-4 mb-4">
-        <div class="shadow list-group">
-          <a routerLink ="" class="list-group-item list-group-item-action active bg-info border border-info">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">{{ estaparroquia.nombre | titlecase}} </h5>
-              <small>{{ fechaActual | date: "dd-MM-yyyy" }}</small>
-            </div>
-            <p class="mb-1">Actualice su información.</p>
-            <small>Datos de la parroquia...</small>
-          </a>
-          <a class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">Información</h5>
-              <span role='button' class="badge badge-info align-self-center">Editar</span>
-            </div>
-            <p class="mb-1">
-              Banco: {{ estaparroquia.banco | uppercase }}<br>
-              #Cuenta: {{ estaparroquia.cuenta }}
-            </p>
-            <small class="text-muted">Edite la información de su parroquia.</small>
-          </a>
-          <a class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">Pagos</h5>
-              <span role='button' class="badge badge-info align-self-center">Editar</span>
-            </div>
-            <p class="mb-1">
-             Actualiza tus pagos y disfruta de todos nuestros beneficios.
-            </p>
-            <small class="text-muted">Se mostrarán los pagos. (Historial de Pagos)</small>
-          </a>
-          <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">Promociones</h5>
-              <span role='button' class="badge badge-info align-self-center">Editar</span>
-            </div>
-            <p class="mb-1">
-              Adquiere nuestras actualizaciones y disfruta de todos los beneficios.
-            </p>
-            <small class="text-muted">Actualiza tu paquete actual.</small>
-          </a>
-        </div>
-      </div>
+        <div class="col mb-4">
+          <div class="shadow-lg list-group" >
+            <a routerLink="" class="list-group-item list-group-item-action active bg-info border border-info">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ estaparroquia.nombre | titlecase }}</h5>
+                <small>{{today | date}}</small>
+              </div>
+              <p class="mb-1">Actualice su información.</p>
+              <small>Datos de la parroquia...</small>
+            </a>
+            <a class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Información</h5>
+                <span role="button" class="badge badge-info align-self-center">Editar</span>
+              </div>
+              <p class="mb-1">
+                Banco: {{ estaparroquia.banco | uppercase }}<br />
+                #Cuenta: {{ estaparroquia.cuenta }}
+              </p>
+              <small class="text-muted">Edite la información de su parroquia.</small>
+            </a>
+            <a class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Pagos</h5>
+                <span role="button" class="badge badge-info align-self-center">Editar</span>
+              </div>
+              <p class="mb-1">
+                Actualiza tus pagos y disfruta de todos nuestros beneficios.
+              </p>
+              <small class="text-muted">Se mostrarán los pagos. (Historial de Pagos)</small>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Promociones</h5>
+                <span role="button" class="badge badge-info align-self-center">Editar</span>
+              </div>
+              <p class="mb-1">
+                Adquiere nuestras actualizaciones y disfruta de todos los
+                beneficios.
+              </p>
+              <small class="text-muted">Actualiza tu paquete actual.</small>
+            </a>
+          </div>
+        </div>    
     </ng-template>
-    <div class="col-md-8 mb-4">
-      <div class="shadow-lg card">
-        <div class="card-body">
-          <h5 class="card-title">
-            {{ estaparroquia.nombre | uppercase}} <small class="text-muted">(avance del proyecto)</small>
-          </h5>
-          
-          <div class="row justify-content-center align-items-center mt-4">
-            <ngx-charts-bar-vertical (window:resize)="onResize($event)" [view]="view" [results]="single"
-            [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
-            [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
-            [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
-          </ngx-charts-bar-vertical>
-        </div>
-          
-        </div>
-      </div>
     </div>
+    
+    
   </div>
-</div>

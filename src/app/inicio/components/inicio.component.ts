@@ -14,6 +14,7 @@ import {
 
 import { Router } from '@angular/router';
 import { DocumentoService } from 'src/app/documento/documento.service';
+import { ParroquiaService } from 'src/app/parroquia/parroquia.service';
 declare var jQuery: any;
 declare const $;
 
@@ -29,13 +30,15 @@ export class InicioComponent implements OnInit, OnDestroy {
   view: any;
   pedidosForm: FormGroup;
   p: 1;
-  searchDoc: any = { name: '' };
+  searchDoc: any = { nombre: '' };
   diocesis: any;
   parroquia: any;
+  parroquias$: Observable<any>;
   constructor(public formBuilder: FormBuilder,
               private afs: AngularFirestore,
               public auth: AuthService,
               private router: Router,
+              public parroquiaService: ParroquiaService,
               public documentoService: DocumentoService) {
               this.view = [innerWidth / 1.5, 400];
   }
@@ -55,9 +58,12 @@ export class InicioComponent implements OnInit, OnDestroy {
     });
 
     const { uid } = await this.auth.getUser();
-    this.sub = await this.afs.doc(`usuarios/${uid}`).valueChanges().subscribe((data: any) => {
-      this.diocesis = data.diocesis;
-      this.parroquia = data.parroquia;
+    this.sub = this.afs.doc(`usuarios/${uid}`).valueChanges().subscribe((data: any) => {
+      if (data) {
+        this.diocesis = data.diocesis;
+        this.parroquia = data.parroquia;
+        this.parroquias$ = this.parroquiaService.getParroquia(data.diocesis.id);
+      }
     });
 
     this.sub = this.afs.collection('charts', ref => ref.where('code', '==', 'aa')).valueChanges()
@@ -74,8 +80,8 @@ export class InicioComponent implements OnInit, OnDestroy {
     // this.unsubscribe$.complete();
   }
 
-  getColor(documento) {
-    switch (documento) {
+  getColor(estado) {
+    switch (estado) {
       case true:
         return 'green';
       case false:
