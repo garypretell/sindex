@@ -25,13 +25,13 @@ export class ParroquiaService {
    addparroquia(parroquia: any) { return this.parroquiasCollection.add(parroquia); }
 
    deleteparroquia(parroquia: any) {
-    this.parroquiaDoc = this.afs.doc(`parroquia/${parroquia.id}`);
+    this.parroquiaDoc = this.afs.doc(`Parroquias/${parroquia.id}`);
     parroquia.estado = false;
     return this.parroquiaDoc.update(parroquia);
    }
 
    updateparroquia(parroquia: any) {
-    this.parroquiaDoc = this.afs.doc(`parroquia/${parroquia.id}`);
+    this.parroquiaDoc = this.afs.doc(`Parroquias/${parroquia.id}`);
     return this.parroquiaDoc.update(parroquia);
    }
 }
