@@ -1,99 +1,148 @@
-
-  <div class="d-flex w-100 justify-content-center mt-5">
-    <div class="row">
-      <ng-container *ngIf="
-        !auth.canSuper(auth.user$ | async) && principal === true;
-        else secundario">
-      <div class="col mb-4" *ngIf="items | async; let parroquias">
-        <input type="search" class="form-control text-uppercase mb-3" placeholder="Buscar Parroquia"
-          [(ngModel)]="searchObject.nombre" />
-        <div class="shadow-lg list-group" >
-          <a href="#" class="list-group-item list-group-item-action active">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">Administrar Parroquias</h5>
-              <small>{{today | date}}</small>
+<div class="row mt-5" *ngIf="!auth.canSuper(auth.user$ | async) && principal === true; else secundario">
+  <ng-container *ngIf="items | async; let parroquias">
+    <div class="col-md-8 offset-md-2">
+      <div class="shadow-lg card">
+        <h5 class="card-header bg-primary text-white">Administrar Parroquias</h5>
+        <div class="card-body">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="card-title">Parroquias</h5>
+            <button type="button" class="btn btn-outline-primary">Agregar Parroquia </button>
+          </div>
+          <p class="card-text">Listado de parroquias pertenecientes a su diócesis.</p>
+          <input type="search" class="form-control text-uppercase mb-3" placeholder="Buscar Parroquia"
+            [(ngModel)]="searchObject.nombre" />
+          <div class="list-group altura">
+            <div *ngFor="let parroquia of parroquias | filterBy: searchObject">
+              <a class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1" [ngStyle]="{'color':getColor(parroquia.estado)}">{{ parroquia.nombre }}</h5>
+                  <form class="form-inline">
+                    <span role="button" class="badge badge-danger align-self-center mr-3" (click)="deleteParroquia(parroquia)" >Eliminar</span>
+                    <span role="button" class="badge badge-primary align-self-center" (click)="editParroquia(parroquia)">Editar</span>
+                  </form>
+                </div>
+                <p class="mb-3">
+                  Banco: {{ parroquia.banco | uppercase }}<br />
+                  #Cuenta: {{ parroquia.cuenta }}
+                </p>
+                <div class="d-flex w-100 justify-content-between">
+                  <form class="form-inline">
+                    <button (click)="goDocumentos(parroquia)" type="button" class="btn btn-outline-info btn-sm mr-2">
+                      Documentos
+                    </button>
+                    <button type="button" class="btn btn-outline-dark btn-sm">
+                      Pagos
+                    </button>
+                  </form>
+                </div>
+              </a>
             </div>
-            <p class="mb-1">
-              Crear, modificar y eliminar parroquias pertenecientes a su
-              Diócesis.
-            </p>
-            <small>Listado de Parroquias.</small>
-          </a>
-          <div *ngFor="let parroquia of parroquias | filterBy: searchObject">
-            <a class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ parroquia.nombre }}</h5>
-                <form class="form-inline">
-                  <span role="button" class="badge badge-danger align-self-center mr-3">Eliminar</span>
-                  <span role="button" class="badge badge-primary align-self-center">Editar</span>
-                </form>
-              </div>
-              <p class="mb-3">
-                Banco: {{ parroquia.banco | uppercase }}<br />
-                #Cuenta: {{ parroquia.cuenta }}
-              </p>
-              <div class="d-flex w-100 justify-content-between">
-                <form class="form-inline">
-                  <button (click)="goDocumentos(parroquia)" type="button" class="btn btn-outline-info btn-sm mr-2">
-                    Documentos
-                  </button>
-                  <button type="button" class="btn btn-outline-dark btn-sm">
-                    Pagos
-                  </button>
-                </form>
-              </div>
-            </a>
           </div>
         </div>
       </div>
-    </ng-container>
-    <ng-template #secundario>
-        <div class="col mb-4">
-          <div class="shadow-lg list-group" >
-            <a routerLink="" class="list-group-item list-group-item-action active bg-info border border-info">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ estaparroquia.nombre | titlecase }}</h5>
-                <small>{{today | date}}</small>
-              </div>
-              <p class="mb-1">Actualice su información.</p>
-              <small>Datos de la parroquia...</small>
-            </a>
-            <a class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Información</h5>
-                <span role="button" class="badge badge-info align-self-center">Editar</span>
-              </div>
-              <p class="mb-1">
-                Banco: {{ estaparroquia.banco | uppercase }}<br />
-                #Cuenta: {{ estaparroquia.cuenta }}
-              </p>
-              <small class="text-muted">Edite la información de su parroquia.</small>
-            </a>
-            <a class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Pagos</h5>
-                <span role="button" class="badge badge-info align-self-center">Editar</span>
-              </div>
-              <p class="mb-1">
-                Actualiza tus pagos y disfruta de todos nuestros beneficios.
-              </p>
-              <small class="text-muted">Se mostrarán los pagos. (Historial de Pagos)</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Promociones</h5>
-                <span role="button" class="badge badge-info align-self-center">Editar</span>
-              </div>
-              <p class="mb-1">
-                Adquiere nuestras actualizaciones y disfruta de todos los
-                beneficios.
-              </p>
-              <small class="text-muted">Actualiza tu paquete actual.</small>
-            </a>
-          </div>
-        </div>    
-    </ng-template>
     </div>
-    
-    
+  </ng-container>
+</div>
+<ng-template #secundario>
+  <div class="col-md-8 offset-md-2 mt-5">
+    <div class="shadow-lg card">
+      <h5 class="card-header bg-info text-white">{{estaparroquia.nombre | uppercase}}</h5>
+      <div class="card-body">
+        <a class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Información</h5>
+            <span role="button" class="badge badge-info align-self-center">Editar</span>
+          </div>
+          <p class="mb-1">
+            Banco: {{ estaparroquia.banco | uppercase }}<br />
+            #Cuenta: {{ estaparroquia.cuenta }}
+          </p>
+          <small class="text-muted">Edite la información de su parroquia.</small>
+        </a>
+        <a class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Pagos</h5>
+            <span role="button" class="badge badge-info align-self-center">Editar</span>
+          </div>
+          <p class="mb-1">
+            Actualiza tus pagos y disfruta de todos nuestros beneficios.
+          </p>
+          <small class="text-muted">Se mostrarán los pagos. (Historial de Pagos)</small>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Promociones</h5>
+            <span role="button" class="badge badge-info align-self-center">Editar</span>
+          </div>
+          <p class="mb-1">
+            Adquiere nuestras actualizaciones y disfruta de todos los
+            beneficios.
+          </p>
+          <small class="text-muted">Actualiza tu paquete actual.</small>
+        </a>
+      </div>
+    </div>
   </div>
+</ng-template>
+<div #editModal class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form" (ngSubmit)="updateParroquia(parroquiatoEdit)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Parroquia</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="nombreEdit2">Parroquia:</label>
+                            <input type="text" class="form-control text-uppercase" id="nombreEdit2" name="nombreEdit2"
+                                [(ngModel)]="parroquiatoEdit.nombre" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="secre">Es secretaria de toda la diócesis?</label>
+                            <select class="form-control" id="secre" name="secre"
+                                [(ngModel)]="parroquiatoEdit.principal">
+                                <option [ngValue]="true">Si</option>
+                                <option [ngValue]="false">No</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="nombrebanco">Nombre del Banco:</label>
+                            <input type="text" class="form-control text-uppercase" id="nombrebanco" name="nombrebanco"
+                                [(ngModel)]="parroquiatoEdit.banco" oninput="this.value = this.value.toUpperCase()">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="nombrecuenta">Numero de Cuenta:</label>
+                            <input type="text" class="form-control text-uppercase" id="nombrecuenta" name="nombrecuenta"
+                                [(ngModel)]="parroquiatoEdit.cuenta">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="estado">Estado:</label>
+                            <select class="form-control" id="estado" name="estado" [(ngModel)]="parroquiatoEdit.estado">
+                                <option [ngValue]="true">Activo</option>
+                                <option [ngValue]="false">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
