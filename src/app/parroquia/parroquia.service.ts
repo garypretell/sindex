@@ -34,7 +34,6 @@ export class ParroquiaService {
     });
   }
 
-<<<<<<< HEAD
   async removeParroquias(parroquia: any) {
     const diocesis: any = {
       id: parroquia.parroquia,
@@ -43,14 +42,10 @@ export class ParroquiaService {
     await this.afs.doc(`Diocesis/${parroquia.diocesis}`).update({
       parroquias: firestore.FieldValue.arrayRemove(diocesis)
     });
-=======
-   deleteparroquia(parroquia: any) {
->>>>>>> f37edb87ed913314e8453616aab47694a93fc7b0
     this.parroquiaDoc = this.afs.doc(`Parroquias/${parroquia.id}`);
     parroquia.estado = false;
     return this.parroquiaDoc.update(parroquia);
 
-<<<<<<< HEAD
   }
 
   async updateParroquias(parroquia: any) {
@@ -63,9 +58,6 @@ export class ParroquiaService {
         parroquias: firestore.FieldValue.arrayUnion(diocesis)
       });
     }
-=======
-   updateparroquia(parroquia: any) {
->>>>>>> f37edb87ed913314e8453616aab47694a93fc7b0
     this.parroquiaDoc = this.afs.doc(`Parroquias/${parroquia.id}`);
     return this.parroquiaDoc.update(parroquia);
   }
