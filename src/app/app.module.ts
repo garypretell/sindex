@@ -8,7 +8,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -56,8 +55,7 @@ import { ChatUserComponent } from './chat-user/chat-user.component';
     AngularFirestoreModule,
     NgxChartsModule,
     NgxPaginationModule,
-    FilterPipeModule,
-    NgxSpinnerModule
+    FilterPipeModule
   ],
   providers: [
     RequireAuthGuard,

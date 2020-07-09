@@ -3,7 +3,6 @@ import { Subject, Observable, combineLatest } from 'rxjs';
 import { map, flatMap, takeUntil } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../../auth/auth.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ChatService } from '../chat.service';
 
 @Component({
@@ -16,17 +15,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   roomChats$: Observable<any>;
 
   constructor(public auth: AuthService,
-              private spinner: NgxSpinnerService,
               public chatService: ChatService,
               public afs: AngularFirestore
               ) { }
 
   ngOnInit() {
     this.collection();
-    this.spinner.show();
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 500);
   }
 
   ngOnDestroy() {
