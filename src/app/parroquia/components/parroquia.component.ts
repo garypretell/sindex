@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
->>>>>>> f37edb87ed913314e8453616aab47694a93fc7b0
 import { AuthService } from 'src/app/auth/auth.service';
 import { ParroquiaService } from '../parroquia.service';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
@@ -10,11 +6,7 @@ import { switchMap, map, takeUntil } from 'rxjs/operators';
 import { Subject, Observable, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-<<<<<<< HEAD
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-=======
-import { ParroquiaService } from '../parroquia.service';
->>>>>>> f37edb87ed913314e8453616aab47694a93fc7b0
 declare var jQuery: any;
 declare const $;
 
@@ -25,16 +17,11 @@ declare const $;
 })
 export class ParroquiaComponent implements OnInit, OnDestroy {
   @ViewChild('editModal') editModal: ElementRef;
-<<<<<<< HEAD
   @ViewChild('addModal') addModal: ElementRef;
   private unsubscribe$ = new Subject();
 
   public addParroquiaForm: FormGroup;
 
-=======
-  private unsubscribe$ = new Subject();
-
->>>>>>> f37edb87ed913314e8453616aab47694a93fc7b0
   parroquiatoEdit: any = {};
   estaparroquia: any = {};
   searchObject: any = {};
@@ -127,11 +114,7 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Si, Eliminar!'
     }).then((result) => {
       if (result.value) {
-<<<<<<< HEAD
         this.parroquiaService.removeParroquias(parroquia);
-=======
-        this.parroquiaService.deleteparroquia(parroquia);
->>>>>>> f37edb87ed913314e8453616aab47694a93fc7b0
         Swal.fire(
           'Eliminado!',
           'La Parroquia ha sido eliminada.',
@@ -153,7 +136,6 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
     jQuery(this.editModal.nativeElement).modal('hide');
   }
 
-<<<<<<< HEAD
   addParroquia() {
     const mifecha = new Date(Date.now());
     mifecha.setMonth(mifecha.getMonth() + 1);
@@ -192,8 +174,6 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
     jQuery(this.addModal.nativeElement).modal('show');
   }
 
-=======
->>>>>>> f37edb87ed913314e8453616aab47694a93fc7b0
   getColor(estado) {
     switch (estado) {
       case true:
@@ -203,7 +183,6 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
     }
   }
 
-<<<<<<< HEAD
   mensajeAccept() {
     const Toast = Swal.mixin({
       toast: true,
@@ -232,6 +211,4 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
     });
   }
 
-=======
->>>>>>> f37edb87ed913314e8453616aab47694a93fc7b0
 }
