@@ -21,6 +21,7 @@ import { environment } from '../environments/environment';
 
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
 import { PagoComponent } from './pago/pago/pago.component';
+import { PlantillaComponent } from './plantilla/plantilla/plantilla.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { PagoComponent } from './pago/pago/pago.component';
     AppComponent,
     AppHeaderComponent,
     DiocesisComponent,
-    MidiocesisComponent
+    MidiocesisComponent,
+    PlantillaComponent
   ],
   imports: [
     BrowserModule,
