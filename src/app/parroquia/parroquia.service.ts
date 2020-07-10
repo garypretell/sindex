@@ -20,7 +20,7 @@ export class ParroquiaService {
    getparroquias() { return this.parroquias$; }
 
    getParroquia(id) {
-     return this.afs.collection(`Parroquias`, ref => ref.where('diocesis', '==', id)).valueChanges({idField: 'id'});
+     return  this.afs.collection(`Parroquias`, ref => ref.where('diocesis', '==', id)).valueChanges({idField: 'id'});
    }
 
    async createParroquias(parroquia) {

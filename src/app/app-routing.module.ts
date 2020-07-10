@@ -1,26 +1,52 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { SignInComponent } from './auth/components/sign-in/sign-in.component';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { RequireUnauthGuard, RequireAuthGuard, EditorGuard, AdminGuard } from './auth/guards';
 import { DiocesisComponent } from './diocesis/components/diocesis.component';
-import { InicioComponent } from './inicio/components/inicio.component';
-import { DocumentoComponent } from './documento/components/documento.component';
-import { ParroquiaComponent } from './parroquia/components/parroquia.component';
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
 import { AccountComponent } from './account/components/account.component';
-import { ChatComponent } from './chat/components/chat.component';
-import { ChatUserComponent } from './chat-user/chat-user.component';
-
+import { PagoComponent } from './pago/pago/pago.component';
 
 const routes: Routes = [
-  { path: '', component: SignInComponent, canActivate: [RequireUnauthGuard] },
-  { path: 'Home', component: InicioComponent, canActivate: [RequireAuthGuard] },
-  { path: 'documentos', component: DocumentoComponent, canActivate: [EditorGuard] },
-  { path: 'registrar', component: AccountComponent, canActivate: [RequireUnauthGuard] },
-  { path: 'Chat', component: ChatComponent, canActivate: [AdminGuard] },
-  { path: 'diocesis/:d/parroquia/:p', component: ParroquiaComponent, canActivate: [AdminGuard] },
-  { path: 'diocesis/:d/parroquia/:p/documentos', component: DocumentoComponent,  canActivate: [EditorGuard] },
-  { path: 'chats/:id', component: ChatUserComponent, canActivate: [AdminGuard] },
+  {
+    path: '',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
+    canActivate: [RequireUnauthGuard]
+  },
+  {
+    path: 'Home',
+    loadChildren: () => import('./inicio/inicio.module').then(m => m.InicioModule),
+    canActivate: [RequireAuthGuard]
+  },
+  {
+    path: 'diocesis/:d/parroquia/:p',
+    loadChildren: () => import('./parroquia/parroquia.module').then(m => m.ParroquiaModule),
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'diocesis/:d/parroquia/:p/documentos',
+    loadChildren: () => import('./documento/documento.module').then(m => m.DocumentoModule),
+    canActivate: [EditorGuard]
+  },
+  {
+    path: 'Chat',
+    loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule),
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'chats/:id',
+    loadChildren: () => import('./chat-user/chat-user.module').then(m => m.ChatUserModule),
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'registrar',
+    loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
+    canActivate: [RequireUnauthGuard]
+  },
+  {
+    path: 'diocesis/:d/parroquia/:p/pagos',
+    loadChildren: () => import('./pago/pago.module').then(m => m.PagoModule),
+    canActivate: [EditorGuard]
+  },
   {
     path: 'diocesis', component: DiocesisComponent, canActivate: [EditorGuard],
     children: [
@@ -32,7 +58,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,
+    {
+      // enableTracing: true, // <-- debugging purposes only
+      preloadingStrategy: PreloadAllModules
+    })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

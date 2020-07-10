@@ -2,16 +2,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-// components
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SignInComponent } from './components/sign-in';
-// modules
 import { AuthRoutesModule } from './auth.routes';
 
-// services
 import { RequireAuthGuard, RequireUnauthGuard, AdminGuard, EditorGuard, AuthGuard, SuperGuard } from './guards';
-import { AuthService } from './auth.service';
+import { SignInComponent } from './components/sign-in/sign-in.component';
+import { FilterPipeModule } from 'ngx-filter-pipe';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -21,11 +19,12 @@ import { AuthService } from './auth.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AuthRoutesModule
-
+    AuthRoutesModule,
+    NgxChartsModule,
+    NgxPaginationModule,
+    FilterPipeModule
   ],
   providers: [
-    AuthService,
     RequireAuthGuard,
     RequireUnauthGuard,
     AdminGuard,

@@ -8,7 +8,9 @@ import { AuthService } from '../auth.service';
 import { map } from 'rxjs/operators';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class RequireUnauthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 

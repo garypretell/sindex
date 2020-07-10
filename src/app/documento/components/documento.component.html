@@ -17,16 +17,28 @@
                 <h5 class="mb-1">{{documento.name | uppercase }}</h5>
                 <small class="text-muted">{{documento.value}} registro(s)</small>
               </div>
-              <div class="progress mb-3 border border-info">
+              <div class="progress mb-1 border border-info">
                 <div class="progress-bar bg-light text-dark " role="progressbar"
-                  [style.width.%]="(documento.value*100)/documento.total_imagenes" aria-valuenow="25" aria-valuemin="0"
+                  [style.width.%]="(documento.value*100)/documento.total_aprox" aria-valuenow="25" aria-valuemin="0"
                   aria-valuemax="100">
-                  {{(documento.value*100)/documento.total_imagenes  | number:'1.0-0'}}%
+                  {{(documento.value*100)/documento.total_aprox  | number:'1.0-0'}}%
                 </div>
               </div>
+              <div class="custom-control custom-switch mb-3">
+                <input type="checkbox" class="custom-control-input" id="customSwitch1"
+                    [(ngModel)]="documento.plantilla" [ngModelOptions]="{ standalone: true }" disabled/>
+                <label class="custom-control-label text-primary" for="customSwitch1">
+                    Plantilla predeterminada</label>
+            </div>
               <div class="d-flex w-100 justify-content-between">
-                <button type="button" class="btn btn-outline-dark btn-sm">Buscar</button>
-                <button type="button" class="btn btn-outline-primary btn-sm">Libros</button>
+                <form class="form-inline">
+                  <button type="button" class="btn btn-outline-dark btn-sm mr-2"  *ngIf="auth.canDelete(auth.user$ | async)" (click)="editDocumento(documento)" ><i class="fa fa-cog" aria-hidden="true"></i></button>
+                  <button type="button" class="btn btn-outline-info btn-sm mr-2"  *ngIf="auth.canDelete(auth.user$ | async) && documento.plantilla === false" (click)="editDocumento(documento)" >Plantillas</button>
+                </form>
+                <form class="form-inline">
+                  <button type="button" class="btn btn-outline-info btn-sm mr-2">Buscar</button>
+                  <button type="button" class="btn btn-outline-primary btn-sm">Libros</button>
+                </form>
               </div>
             </a>
           </div>
@@ -81,3 +93,42 @@
     <strong class="text-info"> Loading... </strong>
   </div>
 </ng-template>
+
+<div #editModal class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form class="form" (ngSubmit)="updateDocumento(documentotoEdit)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Documento - {{documentotoEdit.name | titlecase}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row mb-3">
+                    <div class="col">
+                        <label for="total_aprox">Cantidad Aproximada:</label>
+                        <input type="number" class="form-control" id="total_aprox" name="total_aprox"
+                            [(ngModel)]="documentotoEdit.total_aprox">
+                    </div>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" [(ngModel)]="documentotoEdit.plantilla" [value]="true">
+                    <label class="custom-control-label" for="customRadio1">Usar plantilla predeterminada</label>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" [(ngModel)]="documentotoEdit.plantilla" [value]="false">
+                    <label class="custom-control-label" for="customRadio2">Diseñar plantilla</label>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-primary" type="submit">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
+
+

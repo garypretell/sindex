@@ -11,43 +11,30 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AppHeaderComponent } from './app-header.component';
 
-import { SignInComponent } from './auth/components/sign-in/sign-in.component';
 import { DiocesisComponent } from './diocesis/components/diocesis.component';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
-import { SuperGuard, AuthGuard, EditorGuard, RequireAuthGuard, RequireUnauthGuard, AdminGuard } from './auth/guards';
-import { InicioComponent } from './inicio/components/inicio.component';
-import { DocumentoComponent } from './documento/components/documento.component';
-import { AppHeaderComponent } from './app-header.component';
-import { ParroquiaComponent } from './parroquia/components/parroquia.component';
+
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
-import { AccountComponent } from './account/components/account.component';
-import { ChatComponent } from './chat/components/chat.component';
-import { ChatUserComponent } from './chat-user/chat-user.component';
+import { PagoComponent } from './pago/pago/pago.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AppHeaderComponent,
-    SignInComponent,
     DiocesisComponent,
-    InicioComponent,
-    DocumentoComponent,
-    ParroquiaComponent,
-    MidiocesisComponent,
-    AccountComponent,
-    ChatComponent,
-    ChatUserComponent
+    MidiocesisComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule,
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -57,14 +44,7 @@ import { ChatUserComponent } from './chat-user/chat-user.component';
     NgxPaginationModule,
     FilterPipeModule
   ],
-  providers: [
-    RequireAuthGuard,
-    RequireUnauthGuard,
-    AdminGuard,
-    EditorGuard,
-    AuthGuard,
-    SuperGuard
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

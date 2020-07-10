@@ -86,8 +86,8 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  goPago() {
-
+  goPago(parroquia) {
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia',  parroquia.id, 'pagos']);
   }
 
   enableEditar($event, estaparroquia) {

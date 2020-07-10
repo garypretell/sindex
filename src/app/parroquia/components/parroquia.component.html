@@ -31,7 +31,7 @@
                       <button (click)="goDocumentos(parroquia)" type="button" class="btn btn-outline-info btn-sm mr-2">
                         Documentos
                       </button>
-                      <button type="button" class="btn btn-outline-dark btn-sm">
+                      <button type="button" class="btn btn-outline-dark btn-sm" (click)="goPago(parroquia)">
                         Pagos
                       </button>
                     </form>
@@ -52,7 +52,7 @@
           <a class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">Información</h5>
-              <span role="button" class="badge badge-info align-self-center">Editar</span>
+              <span role="button" class="badge badge-info align-self-center" (click)="editParroquia(estaparroquia)">Editar</span>
             </div>
             <p class="mb-1">
               Banco: {{ estaparroquia.banco | uppercase }}<br />
@@ -63,7 +63,7 @@
           <a class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">Pagos</h5>
-              <span role="button" class="badge badge-info align-self-center">Editar</span>
+              <span role="button" class="badge badge-info align-self-center" (click)="goPago(estaparroquia)">Editar</span>
             </div>
             <p class="mb-1">
               Actualiza tus pagos y disfruta de todos nuestros beneficios.
@@ -96,7 +96,7 @@
   
 <div #addModal class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <form class="form" [formGroup]="addParroquiaForm">
                 <div class="modal-header">
@@ -147,7 +147,7 @@
 </div>
 <div #editModal class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <form class="form" (ngSubmit)="updateParroquia(parroquiatoEdit)">
                 <div class="modal-header">
@@ -164,7 +164,7 @@
                                 [(ngModel)]="parroquiatoEdit.nombre" readonly>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-3" *ngIf="principal === true">
                         <div class="col">
                             <label for="secre">Es secretaria de toda la diócesis?</label>
                             <select class="form-control" id="secre" name="secre"
@@ -189,7 +189,7 @@
                                 [(ngModel)]="parroquiatoEdit.cuenta">
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-3" *ngIf="principal === true">
                         <div class="col">
                             <label for="estado">Estado:</label>
                             <select class="form-control" id="estado" name="estado" [(ngModel)]="parroquiatoEdit.estado">

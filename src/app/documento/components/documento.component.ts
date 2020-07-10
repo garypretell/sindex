@@ -2,9 +2,11 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { AuthService } from 'src/app/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { DocumentoService } from '../documento.service';
+declare var jQuery: any;
+declare const $;
 
 @Component({
   selector: 'app-documento',
@@ -12,8 +14,13 @@ import { DocumentoService } from '../documento.service';
   styleUrls: ['./documento.component.css']
 })
 export class DocumentoComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject();
+  @ViewChild('editModal') editModal: ElementRef;
   documentos$: Observable<any>;
   parroquia$: Observable<any>;
+  documentotoEdit: any = {};
+
+  plantilla: boolean;
 
   midiocesis: any;
   miparroquia: any;
@@ -43,6 +50,7 @@ export class DocumentoComponent implements OnInit, OnDestroy {
 
   sub;
   ngOnInit() {
+    this.plantilla = true;
     this.view = [innerWidth / 2.0, 300];
     this.sub = this.activatedroute.paramMap.pipe(map(params => {
       this.documentos$ = this.afs.collection('Documentos', ref => ref.where('parroquia', '==', params.get('p'))
@@ -55,7 +63,10 @@ export class DocumentoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
+
   onSelect(event) {
     console.log(event);
   }
@@ -80,4 +91,19 @@ export class DocumentoComponent implements OnInit, OnDestroy {
     });
     this.afs.doc(`Parroquias/${this.miparroquia}`).set({registrar: true}, {merge: true});
   }
+
+  updateDocumento(documento) {
+    const id = documento.parroquia + '_' + documento.id;
+    this.afs.doc(`Documentos/${id}`).update(this.documentotoEdit);
+    jQuery(this.editModal.nativeElement).modal('hide');
+  }
+
+  editDocumento(documento) {
+    const id = documento.parroquia + '_' + documento.id;
+    this.afs.doc(`Documentos/${id}`).valueChanges().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.documentotoEdit = data;
+    });
+    jQuery(this.editModal.nativeElement).modal('show');
+  }
+
 }

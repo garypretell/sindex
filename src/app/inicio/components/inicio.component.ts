@@ -1,6 +1,6 @@
+import { AuthService } from '../../auth/auth.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ViewChild, ElementRef } from '@angular/core';
-import { AuthService } from '../../auth/auth.service';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { of, Observable, from, Subject } from 'rxjs';
@@ -45,7 +45,6 @@ export class InicioComponent implements OnInit, OnDestroy {
 
   sub;
   async ngOnInit() {
-
     this.pedidosForm = this.formBuilder.group({
       apellidos: ['', [Validators.required]],
       nombres: ['', [Validators.required]],
@@ -58,11 +57,15 @@ export class InicioComponent implements OnInit, OnDestroy {
     });
 
     const { uid } = await this.auth.getUser();
-    this.sub = this.afs.doc(`usuarios/${uid}`).valueChanges().subscribe((data: any) => {
+    this.sub = this.afs.doc(`usuarios/${uid}`).valueChanges().subscribe(async (data: any) => {
       if (data) {
         this.diocesis = data.diocesis;
         this.parroquia = data.parroquia;
-        this.parroquias$ = this.parroquiaService.getParroquia(data.diocesis.id);
+        if (this.diocesis) {
+          this.parroquias$ =  this.parroquiaService.getParroquia(this.diocesis.id);
+        }
+      } else {
+        return of(null);
       }
     });
 
