@@ -4,6 +4,7 @@ import { map, flatMap, takeUntil } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../../auth/auth.service';
 import { ChatService } from '../chat.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -16,11 +17,16 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   constructor(public auth: AuthService,
               public chatService: ChatService,
-              public afs: AngularFirestore
+              public afs: AngularFirestore,
+              private activatedroute: ActivatedRoute,
               ) { }
 
-  ngOnInit() {
-    this.collection();
+  async ngOnInit() {
+   await this.collection();
+    // this.sub = this.activatedroute.data.pipe(map((data: { chats: Observable<any[]> }) => {
+    //   console.log(data.chats);
+    //   this.roomChats$ = data.chats;
+    // })).subscribe();
   }
 
   ngOnDestroy() {

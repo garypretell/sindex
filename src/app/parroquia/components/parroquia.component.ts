@@ -16,6 +16,9 @@ declare const $;
   styleUrls: ['./parroquia.component.css']
 })
 export class ParroquiaComponent implements OnInit, OnDestroy {
+  message: string;
+  parroquia: any;
+  showdetalle: boolean;
   @ViewChild('editModal') editModal: ElementRef;
   @ViewChild('addModal') addModal: ElementRef;
   private unsubscribe$ = new Subject();
@@ -46,6 +49,9 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
 
   sub;
   ngOnInit() {
+
+    this.parroquiaService.currentMessage.subscribe(message => this.message = message);
+    this.showdetalle = false;
     this.sub = this.auth.user$.pipe(switchMap((m: any) => {
       if (m) {
         return this.afs.doc(`Parroquias/${m.parroquia.id}`).valueChanges().pipe(map((data: any) => {
@@ -61,13 +67,15 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
       }
     }),
       switchMap(d => {
-        return this.activatedroute.paramMap.pipe(map(params => {
-          this.midiocesis = params.get('d');
-          this.items = this.afs.collection<any>(`Parroquias`, ref => ref.where('diocesis', '==', params.get('d'))
-            .orderBy('createdAt', 'asc')).valueChanges({ idField: 'id' });
-          this.data = params.get('d');
+        return this.activatedroute.data.pipe(map((data: { parroquias: Observable<any[]> }) => {
+          this.items = data.parroquias;
         }));
-      })).subscribe();
+      })
+    ).subscribe();
+
+    this.activatedroute.paramMap.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
+      this.midiocesis = params.get('d');
+    });
 
     this.addParroquiaForm = this.formBuilder.group({
       nombre: ['', [Validators.required]],
@@ -87,7 +95,7 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
   }
 
   goPago(parroquia) {
-    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia',  parroquia.id, 'pagos']);
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', parroquia.id, 'pagos']);
   }
 
   enableEditar($event, estaparroquia) {
@@ -99,6 +107,7 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
   }
 
   goDocumentos(parroquia) {
+    this.newMessage(parroquia.nombre);
     this.router.navigate(['/diocesis', parroquia.diocesis, 'parroquia', parroquia.id, 'documentos']);
   }
 
@@ -132,6 +141,7 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
   }
 
   updateParroquia(parroquia) {
+    console.log(parroquia.id);
     this.afs.doc(`Parroquias/${parroquia.id}`).update(this.parroquiatoEdit);
     jQuery(this.editModal.nativeElement).modal('hide');
   }
@@ -209,6 +219,10 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
       text: 'Esta parroquia ya existe!',
       // footer: '<a href>Why do I have this issue?</a>'
     });
+  }
+
+  newMessage(message) {
+    this.parroquiaService.changeMessage(message);
   }
 
 }

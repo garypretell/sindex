@@ -5,6 +5,8 @@ import { DiocesisComponent } from './diocesis/components/diocesis.component';
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
 import { AccountComponent } from './account/components/account.component';
 import { PagoComponent } from './pago/pago/pago.component';
+import { ParroquiaResolverGuard } from './parroquia/parroquia-resolver.guard';
+import { ChatResolverGuard } from './chat/chat-resolver.guard';
 
 const routes: Routes = [
   {
@@ -20,17 +22,14 @@ const routes: Routes = [
   {
     path: 'diocesis/:d/parroquia/:p',
     loadChildren: () => import('./parroquia/parroquia.module').then(m => m.ParroquiaModule),
-    canActivate: [AdminGuard]
-  },
-  {
-    path: 'diocesis/:d/parroquia/:p/documentos',
-    loadChildren: () => import('./documento/documento.module').then(m => m.DocumentoModule),
-    canActivate: [EditorGuard]
+    canActivate: [EditorGuard],
+    resolve: { parroquias: ParroquiaResolverGuard}
   },
   {
     path: 'Chat',
     loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule),
-    canActivate: [AdminGuard]
+    canActivate: [AdminGuard],
+    // resolve: { chats: ChatResolverGuard}
   },
   {
     path: 'chats/:id',

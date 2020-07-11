@@ -1,6 +1,6 @@
-<div  *ngIf="(auth.user$) | async; else loading" >
+<div  *ngIf="(auth.user$) | async; else loading">
   <div class="row mt-5" *ngIf="principal === true">
-    <ng-container *ngIf="items | async; let parroquias">
+    <ng-container *ngIf="items | async as parroquias">
       <div class="col-md-8 offset-md-2">
         <div class="shadow-lg card">
           <h5 class="card-header bg-primary text-white">Administrar Parroquias</h5>
@@ -49,10 +49,21 @@
       <div class="shadow-lg card">
         <h5 class="card-header bg-info text-white">{{estaparroquia.nombre | uppercase}}</h5>
         <div class="card-body">
+          <div class="container-fluid">
+            <div class="row justify-content-between mb-2">
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <strong><i class="fa fa-commenting-o" aria-hidden="true"></i> Mensaje!</strong> Para inigresar registros, click en el botón Documentos.
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+                <button type="button" class="btn btn-outline-secondary align-self-center" (click)="goDocumentos(estaparroquia)" >Documentos 🖱</button>
+            </div>
+          </div>
           <a class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">Información</h5>
-              <span role="button" class="badge badge-info align-self-center" (click)="editParroquia(estaparroquia)">Editar</span>
+              <span role="button" class="badge badge-info align-self-center" (click)="editParroquia(estaparroquia)" *ngIf="auth.canDelete(auth.user$ | async)">Editar</span>
             </div>
             <p class="mb-1">
               Banco: {{ estaparroquia.banco | uppercase }}<br />
@@ -63,7 +74,7 @@
           <a class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">Pagos</h5>
-              <span role="button" class="badge badge-info align-self-center" (click)="goPago(estaparroquia)">Editar</span>
+              <span role="button" class="badge badge-info align-self-center" (click)="goPago(estaparroquia)" *ngIf="auth.canDelete(auth.user$ | async)">Editar</span>
             </div>
             <p class="mb-1">
               Actualiza tus pagos y disfruta de todos nuestros beneficios.
@@ -73,7 +84,7 @@
           <a href="#" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">Promociones</h5>
-              <span role="button" class="badge badge-info align-self-center">Editar</span>
+              <span role="button" class="badge badge-info align-self-center" *ngIf="auth.canDelete(auth.user$ | async)">Editar</span>
             </div>
             <p class="mb-1">
               Adquiere nuestras actualizaciones y disfruta de todos los
@@ -93,7 +104,6 @@
     <strong class="text-info"> Loading... </strong>
   </div>
 </ng-template>
-  
 <div #addModal class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -207,3 +217,7 @@
         </div>
     </div>
 </div> 
+
+
+<router-outlet></router-outlet>
+  

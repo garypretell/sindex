@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Input } from '@angular/core';
+import {Location} from '@angular/common';
 import { AuthService } from 'src/app/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { map, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { DocumentoService } from '../documento.service';
+import { ParroquiaService } from 'src/app/parroquia/parroquia.service';
 declare var jQuery: any;
 declare const $;
 
@@ -14,6 +16,8 @@ declare const $;
   styleUrls: ['./documento.component.css']
 })
 export class DocumentoComponent implements OnInit, OnDestroy {
+  message: string;
+
   private unsubscribe$ = new Subject();
   @ViewChild('editModal') editModal: ElementRef;
   documentos$: Observable<any>;
@@ -41,23 +45,25 @@ export class DocumentoComponent implements OnInit, OnDestroy {
   yAxisLabel = 'REGISTROS';
   nombreGrafica: any;
   constructor(
+    private location: Location,
     public auth: AuthService,
-    public afs: AngularFirestore,
+    private afs: AngularFirestore,
     private activatedroute: ActivatedRoute,
-    public documentoService: DocumentoService
+    public documentoService: DocumentoService,
+    public parroquiaService: ParroquiaService
   ) {
+    this.view = [innerWidth / 2.0, 300];
   }
 
   sub;
   ngOnInit() {
-    this.plantilla = true;
-    this.view = [innerWidth / 2.0, 300];
+    this.sub = this.parroquiaService.currentMessage.subscribe(message => this.message = message);
     this.sub = this.activatedroute.paramMap.pipe(map(params => {
+      this.parroquia$ = this.afs.doc(`Parroquias/${params.get('p')}`).valueChanges();
       this.documentos$ = this.afs.collection('Documentos', ref => ref.where('parroquia', '==', params.get('p'))
       .orderBy('name', 'asc')).valueChanges();
       this.midiocesis = params.get('d');
       this.miparroquia = params.get('p');
-      this.parroquia$ = this.afs.doc(`Parroquias/${params.get('p')}`).valueChanges();
     })).subscribe();
   }
 
@@ -104,6 +110,10 @@ export class DocumentoComponent implements OnInit, OnDestroy {
       this.documentotoEdit = data;
     });
     jQuery(this.editModal.nativeElement).modal('show');
+  }
+
+  backClicked() {
+    this.location.back();
   }
 
 }

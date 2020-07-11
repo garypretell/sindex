@@ -25,14 +25,14 @@
         <a #proyectosLink routerLinkActive="active" class="nav-link more" [routerLink]="['/proyectos']">
           Diócesis</a>
       </li>
-      <li class="nav-item" *ngIf="auth.canDelete(auth.user$ | async)">
+      <li class="nav-item" *ngIf="auth.canEdit(auth.user$ | async)">
         <a #proyectosLink routerLinkActive="active" class="nav-link more" (click)="goParroquia()">
           Parroquias</a>
       </li>
-      <li class="nav-item" *ngIf="auth.canEdit(auth.user$ | async)">
+      <!-- <li class="nav-item" *ngIf="auth.canEdit(auth.user$ | async)">
         <a #proyectosLink routerLinkActive="active" class="nav-link more" (click)="goLibro()">
           Mis Documentos</a>
-      </li>
+      </li> -->
       <li class="nav-item" *ngIf="auth.canDelete(auth.user$ | async)">
         <a #proyectosLink routerLinkActive="active" class="nav-link more" [routerLink]="['/usuarios']">
           Usuarios</a>

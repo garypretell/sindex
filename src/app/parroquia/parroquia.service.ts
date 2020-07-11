@@ -3,11 +3,15 @@ import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore 
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { firestore } from 'firebase/app';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ParroquiaService {
+  private messageSource = new BehaviorSubject('default message');
+  currentMessage = this.messageSource.asObservable();
+
   parroquiasCollection: AngularFirestoreCollection<any>;
   parroquias$: Observable<any[]>;
   parroquiaDoc: AngularFirestoreDocument<any>;
@@ -61,4 +65,8 @@ export class ParroquiaService {
     this.parroquiaDoc = this.afs.doc(`Parroquias/${parroquia.id}`);
     return this.parroquiaDoc.update(parroquia);
   }
+
+  changeMessage(message: string) {
+    this.messageSource.next(message);
+   }
 }
