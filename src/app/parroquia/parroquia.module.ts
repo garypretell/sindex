@@ -9,10 +9,11 @@ import { ParroquiaRoutingModule } from './parroquia.route';
 import { ParroquiaComponent } from './components/parroquia.component';
 import { DocumentoComponent } from '../documento/components/documento.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { LibroComponent } from '../libro/libro.component';
 
 
 @NgModule({
-  declarations: [ParroquiaComponent, DocumentoComponent],
+  declarations: [ParroquiaComponent, DocumentoComponent, LibroComponent],
   imports: [
     CommonModule,
     FormsModule,

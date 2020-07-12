@@ -29,6 +29,7 @@
     "rxjs": "^6.5.5",
     "rxjs-compat": "^6.5.5",
     "sweetalert2": "^9.15.2",
+    "swiper": "^6.0.2",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },

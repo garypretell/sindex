@@ -20,9 +20,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
-import { PagoComponent } from './pago/pago/pago.component';
 import { PlantillaComponent } from './plantilla/plantilla/plantilla.component';
-
 
 @NgModule({
   declarations: [

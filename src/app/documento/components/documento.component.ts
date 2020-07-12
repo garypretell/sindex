@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Input } from '@ang
 import {Location} from '@angular/common';
 import { AuthService } from 'src/app/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { DocumentoService } from '../documento.service';
@@ -47,6 +47,7 @@ export class DocumentoComponent implements OnInit, OnDestroy {
   constructor(
     private location: Location,
     public auth: AuthService,
+    public router: Router,
     private afs: AngularFirestore,
     private activatedroute: ActivatedRoute,
     public documentoService: DocumentoService,
@@ -114,6 +115,18 @@ export class DocumentoComponent implements OnInit, OnDestroy {
 
   backClicked() {
     this.location.back();
+  }
+
+  goLibro(documento) {
+    // const array = ['BAUTISMO', 'MATRIMONIO', 'DEFUNCION', 'CONFIRMACION'];
+    // const value = documento.nombre;
+    // const isInArray = array.includes(value);
+
+    // if ( isInArray === false) {
+    //   return this.router.navigate
+    //   (['/Diocesis', this.midiocesis, 'Parroquia', this.miparroquia, 'Documento', documento.nombre, 'Registro']);
+    // }
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos', documento.id, 'libros']);
   }
 
 }

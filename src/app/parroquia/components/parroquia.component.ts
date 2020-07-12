@@ -6,6 +6,7 @@ import { switchMap, map, takeUntil } from 'rxjs/operators';
 import { Subject, Observable, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 declare var jQuery: any;
 declare const $;
@@ -141,7 +142,6 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
   }
 
   updateParroquia(parroquia) {
-    console.log(parroquia.id);
     this.afs.doc(`Parroquias/${parroquia.id}`).update(this.parroquiatoEdit);
     jQuery(this.editModal.nativeElement).modal('hide');
   }

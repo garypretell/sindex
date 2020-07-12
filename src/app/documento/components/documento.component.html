@@ -45,7 +45,7 @@
                 </form>
                 <form class="form-inline">
                   <button type="button" class="btn btn-outline-info btn-sm mr-2">Buscar</button>
-                  <button type="button" class="btn btn-outline-primary btn-sm">Libros</button>
+                  <button type="button" class="btn btn-outline-primary btn-sm" (click)="goLibro(documento)" >Libros</button>
                 </form>
               </div>
             </a>
@@ -138,3 +138,5 @@
         </div>
     </div>
 </div>
+
+<router-outlet></router-outlet>

@@ -42,11 +42,6 @@ const routes: Routes = [
     canActivate: [RequireUnauthGuard]
   },
   {
-    path: 'diocesis/:d/parroquia/:p/pagos',
-    loadChildren: () => import('./pago/pago.module').then(m => m.PagoModule),
-    canActivate: [EditorGuard]
-  },
-  {
     path: 'diocesis', component: DiocesisComponent, canActivate: [EditorGuard],
     children: [
       {
