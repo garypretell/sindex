@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { InicioService } from 'src/app/inicio/inicio.service';
 declare var jQuery: any;
 declare const $;
 
@@ -17,26 +18,16 @@ declare const $;
   styleUrls: ['./parroquia.component.css']
 })
 export class ParroquiaComponent implements OnInit, OnDestroy {
-  message: string;
-  parroquia: any;
-  showdetalle: boolean;
+  private unsubscribe$ = new Subject();
   @ViewChild('editModal') editModal: ElementRef;
   @ViewChild('addModal') addModal: ElementRef;
-  private unsubscribe$ = new Subject();
+
+  searchObject: any = {};
+  isAdmin: boolean;
+  parroquiatoEdit: any = {};
+  parroquias$: Observable<any>;
 
   public addParroquiaForm: FormGroup;
-
-  parroquiatoEdit: any = {};
-  estaparroquia: any = {};
-  searchObject: any = {};
-  principal: boolean;
-  today: number = Date.now();
-
-  items: Observable<any[]>;
-  data: any;
-
-  midiocesis: any;
-  miparroquia: any;
 
   constructor(
     public auth: AuthService,
@@ -44,39 +35,16 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
     public afs: AngularFirestore,
     private activatedroute: ActivatedRoute,
     public router: Router,
+    private inicioService: InicioService,
     public parroquiaService: ParroquiaService
   ) {
   }
 
   sub;
   ngOnInit() {
-
-    this.parroquiaService.currentMessage.subscribe(message => this.message = message);
-    this.showdetalle = false;
-    this.sub = this.auth.user$.pipe(switchMap((m: any) => {
-      if (m) {
-        return this.afs.doc(`Parroquias/${m.parroquia.id}`).valueChanges().pipe(map((data: any) => {
-          if (data) {
-            this.miparroquia = m.parroquia.id;
-            this.principal = data.principal;
-            this.estaparroquia = data;
-          }
-        }));
-      }
-      else {
-        return of(null);
-      }
-    }),
-      switchMap(d => {
-        return this.activatedroute.data.pipe(map((data: { parroquias: Observable<any[]> }) => {
-          this.items = data.parroquias;
-        }));
-      })
-    ).subscribe();
-
-    this.activatedroute.paramMap.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
-      this.midiocesis = params.get('d');
-    });
+    this.sub = this.activatedroute.data.pipe(map((data: { parroquias: Observable<any[]> }) => {
+      this.parroquias$ = data.parroquias;
+    })).subscribe();
 
     this.addParroquiaForm = this.formBuilder.group({
       nombre: ['', [Validators.required]],
@@ -87,6 +55,13 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
       diocesis: [''],
       usuarios: ['']
     });
+
+    this.inicioService.currentAdmin.pipe(map(admin => {
+      if (admin === false) {
+        return this.router.navigate(['/Home']);
+      }
+    }), takeUntil(this.unsubscribe$)).subscribe();
+
   }
 
   ngOnDestroy() {
@@ -95,21 +70,17 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  goPago(parroquia) {
-    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', parroquia.id, 'pagos']);
+  show_addModal() {
+    jQuery(this.addModal.nativeElement).modal('show');
   }
 
-  enableEditar($event, estaparroquia) {
-
-  }
-
-  onSelect(event) {
-    console.log(event);
-  }
-
-  goDocumentos(parroquia) {
-    this.newMessage(parroquia.nombre);
-    this.router.navigate(['/diocesis', parroquia.diocesis, 'parroquia', parroquia.id, 'documentos']);
+  getColor(estado) {
+    switch (estado) {
+      case true:
+        return 'black';
+      case false:
+        return 'red';
+    }
   }
 
   deleteParroquia(parroquia) {
@@ -146,51 +117,45 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
     jQuery(this.editModal.nativeElement).modal('hide');
   }
 
+  goPago(parroquia) { }
+
+  goDocumentos(parroquia) {
+    this.newMessage(parroquia.nombre);
+    this.router.navigate(['/diocesis', parroquia.diocesis, 'parroquia', parroquia.id, 'documentos']);
+  }
+
   addParroquia() {
-    const mifecha = new Date(Date.now());
-    mifecha.setMonth(mifecha.getMonth() + 1);
-    const id = this.midiocesis + '_' + (this.addParroquiaForm.value.nombre).replace(/ /g, '');
-    const data: any = {
-      banco: this.addParroquiaForm.value.banco,
-      cuenta: this.addParroquiaForm.value.cuenta,
-      estado: true,
-      nombre: this.addParroquiaForm.value.nombre,
-      total_imagenes: 0,
-      diocesis: this.midiocesis,
-      parroquia: id,
-      usuarios: [],
-      documentos: [],
-      principal: this.addParroquiaForm.value.secretariaGeneral,
-      createdAt: Date.now(),
-      pago: 20,
-      nextPay: mifecha
-    };
+    // const mifecha = new Date(Date.now());
+    // mifecha.setMonth(mifecha.getMonth() + 1);
+    // const id = this.midiocesis + '_' + (this.addParroquiaForm.value.nombre).replace(/ /g, '');
+    // const data: any = {
+    //   banco: this.addParroquiaForm.value.banco,
+    //   cuenta: this.addParroquiaForm.value.cuenta,
+    //   estado: true,
+    //   nombre: this.addParroquiaForm.value.nombre,
+    //   total_imagenes: 0,
+    //   diocesis: this.midiocesis,
+    //   parroquia: id,
+    //   usuarios: [],
+    //   documentos: [],
+    //   principal: this.addParroquiaForm.value.secretariaGeneral,
+    //   createdAt: Date.now(),
+    //   pago: 20,
+    //   nextPay: mifecha
+    // };
 
-    this.afs.firestore.doc(`Parroquias/${id}`).get()
-      .then(docSnapshot => {
-        if (docSnapshot.exists) {
-          this.mensajeReject();
-          this.addParroquiaForm.reset();
-        } else {
-          this.parroquiaService.createParroquias(data);
-          this.addParroquiaForm.reset();
-          this.mensajeAccept();
-          jQuery(this.addModal.nativeElement).modal('hide');
-        }
-      });
-  }
-
-  show_addModal() {
-    jQuery(this.addModal.nativeElement).modal('show');
-  }
-
-  getColor(estado) {
-    switch (estado) {
-      case true:
-        return 'black';
-      case false:
-        return 'red';
-    }
+    // this.afs.firestore.doc(`Parroquias/${id}`).get()
+    //   .then(docSnapshot => {
+    //     if (docSnapshot.exists) {
+    //       this.mensajeReject();
+    //       this.addParroquiaForm.reset();
+    //     } else {
+    //       this.parroquiaService.createParroquias(data);
+    //       this.addParroquiaForm.reset();
+    //       this.mensajeAccept();
+    //       jQuery(this.addModal.nativeElement).modal('hide');
+    //     }
+    //   });
   }
 
   mensajeAccept() {

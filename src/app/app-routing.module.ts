@@ -3,10 +3,8 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { RequireUnauthGuard, RequireAuthGuard, EditorGuard, AdminGuard } from './auth/guards';
 import { DiocesisComponent } from './diocesis/components/diocesis.component';
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
-import { AccountComponent } from './account/components/account.component';
-import { PagoComponent } from './pago/pago/pago.component';
 import { ParroquiaResolverGuard } from './parroquia/parroquia-resolver.guard';
-import { ChatResolverGuard } from './chat/chat-resolver.guard';
+
 
 const routes: Routes = [
   {
@@ -20,7 +18,7 @@ const routes: Routes = [
     canActivate: [RequireAuthGuard]
   },
   {
-    path: 'diocesis/:d/parroquia/:p',
+    path: 'diocesis/:d/parroquia',
     loadChildren: () => import('./parroquia/parroquia.module').then(m => m.ParroquiaModule),
     canActivate: [EditorGuard],
     resolve: { parroquias: ParroquiaResolverGuard}

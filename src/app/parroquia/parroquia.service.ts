@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ParroquiaService {
-  private messageSource = new BehaviorSubject('default message');
+  private messageSource = new BehaviorSubject('Mi Parroquia');
   currentMessage = this.messageSource.asObservable();
 
   parroquiasCollection: AngularFirestoreCollection<any>;

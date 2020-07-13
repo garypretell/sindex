@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Input } from '@angular/core';
-import {Location} from '@angular/common';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Input, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Location } from '@angular/common';
 import { AuthService } from 'src/app/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,14 +15,16 @@ declare const $;
   templateUrl: './documento.component.html',
   styleUrls: ['./documento.component.css']
 })
-export class DocumentoComponent implements OnInit, OnDestroy {
+export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
   message: string;
 
   private unsubscribe$ = new Subject();
   @ViewChild('editModal') editModal: ElementRef;
+  docs$: Observable<any>;
   documentos$: Observable<any>;
   parroquia$: Observable<any>;
   documentotoEdit: any = {};
+  checkBoxValue: boolean;
 
   plantilla: boolean;
 
@@ -54,6 +56,7 @@ export class DocumentoComponent implements OnInit, OnDestroy {
     public parroquiaService: ParroquiaService
   ) {
     this.view = [innerWidth / 2.0, 300];
+    this.checkBoxValue = false;
   }
 
   sub;
@@ -62,10 +65,15 @@ export class DocumentoComponent implements OnInit, OnDestroy {
     this.sub = this.activatedroute.paramMap.pipe(map(params => {
       this.parroquia$ = this.afs.doc(`Parroquias/${params.get('p')}`).valueChanges();
       this.documentos$ = this.afs.collection('Documentos', ref => ref.where('parroquia', '==', params.get('p'))
-      .orderBy('name', 'asc')).valueChanges();
+        .orderBy('name', 'asc')).valueChanges();
       this.midiocesis = params.get('d');
       this.miparroquia = params.get('p');
     })).subscribe();
+    this.docs$ = this.afs.collection(`docs`).valueChanges({idField: 'id'});
+  }
+
+  ngAfterViewChecked() {
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
   ngOnDestroy() {
@@ -84,29 +92,38 @@ export class DocumentoComponent implements OnInit, OnDestroy {
 
   agregarDocumentos() {
     const documentos: any = [
-      {id: 'BAUTISMO', name: 'BAUTISMO', value: 0, total_aprox: 100000, Libros: 0,   principal: true, plantilla: true
-      , diocesis: this.midiocesis, parroquia: this.miparroquia, createdAt: Date.now()},
-      {id: 'CONFIRMACION', name: 'CONFIRMACION', value: 0, total_aprox: 100000, Libros: 0, principal: true, plantilla: true
-      , diocesis: this.midiocesis, parroquia: this.miparroquia, createdAt: Date.now()},
-      { id: 'DEFUNCION', name: 'DEFUNCION', value: 0, total_aprox: 100000, Libros: 0, principal: true, plantilla: true
-      , diocesis: this.midiocesis, parroquia: this.miparroquia, createdAt: Date.now()},
-      { id: 'MATRIMONIO', name: 'MATRIMONIO', value: 0, total_aprox: 100000, Libros: 0, principal: true, plantilla: true,
-       diocesis: this.midiocesis, parroquia: this.miparroquia, createdAt: Date.now()}];
+      {
+        id: 'BAUTISMO', name: 'BAUTISMO', value: 0, total_aprox: 100000, Libros: 0, principal: true, plantilla: true
+        , diocesis: this.midiocesis, parroquia: this.miparroquia, createdAt: Date.now()
+      },
+      {
+        id: 'CONFIRMACION', name: 'CONFIRMACION', value: 0, total_aprox: 100000, Libros: 0, principal: true, plantilla: true
+        , diocesis: this.midiocesis, parroquia: this.miparroquia, createdAt: Date.now()
+      },
+      {
+        id: 'DEFUNCION', name: 'DEFUNCION', value: 0, total_aprox: 100000, Libros: 0, principal: true, plantilla: true
+        , diocesis: this.midiocesis, parroquia: this.miparroquia, createdAt: Date.now()
+      },
+      {
+        id: 'MATRIMONIO', name: 'MATRIMONIO', value: 0, total_aprox: 100000, Libros: 0, principal: true, plantilla: true,
+        diocesis: this.midiocesis, parroquia: this.miparroquia, createdAt: Date.now()
+      }];
     documentos.map((m: any) => {
       const ruta = this.miparroquia + '_' + m.id;
       this.afs.doc(`Documentos/${ruta}`).set(m);
     });
-    this.afs.doc(`Parroquias/${this.miparroquia}`).set({registrar: true}, {merge: true});
+    this.afs.doc(`Parroquias/${this.miparroquia}`).set({ registrar: true }, { merge: true });
   }
 
   updateDocumento(documento) {
-    const id = documento.parroquia + '_' + documento.id;
+    const id = this.miparroquia + '_' + documento.id;
     this.afs.doc(`Documentos/${id}`).update(this.documentotoEdit);
     jQuery(this.editModal.nativeElement).modal('hide');
   }
 
   editDocumento(documento) {
-    const id = documento.parroquia + '_' + documento.id;
+    $('[data-toggle="tooltip"]').tooltip('hide');
+    const id = this.miparroquia + '_' + documento.id;
     this.afs.doc(`Documentos/${id}`).valueChanges().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.documentotoEdit = data;
     });
@@ -114,7 +131,8 @@ export class DocumentoComponent implements OnInit, OnDestroy {
   }
 
   backClicked() {
-    this.location.back();
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia]);
+    // this.location.back();
   }
 
   goLibro(documento) {

@@ -1,22 +1,28 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 // import Swiper from 'swiper/bundle';
 // import 'swiper/swiper-bundle.css';
-declare var $: any;
+declare var jQuery: any;
+declare const $;
 
 @Component({
   selector: 'app-libro',
   templateUrl: './libro.component.html',
   styleUrls: ['./libro.component.css']
 })
-export class LibroComponent implements OnInit, OnDestroy {
+export class LibroComponent implements OnInit, OnDestroy, AfterViewChecked {
   private unsubscribe$ = new Subject();
+  @ViewChild('myToast') myToast: ElementRef;
+  currentDate = new Date();
   midiocesis: any;
   miparroquia: any;
+  documento: any;
   midocumento: any;
+
+  topTen$: Observable<any>;
 
   constructor(
 
@@ -30,44 +36,16 @@ export class LibroComponent implements OnInit, OnDestroy {
     this.sub = this.activatedroute.paramMap.pipe(map(params => {
       this.midiocesis = params.get('d');
       this.miparroquia = params.get('p');
-      this.midocumento = params.get('doc');
+      this.documento = params.get('doc');
+      this.midocumento = this.miparroquia + '_' + this.documento;
+      this.topTen$ = this.afs.collection(`Libros`, ref => ref.where('diocesis', '==', this.midiocesis)
+      .where('parroquia', '==', this.miparroquia)
+      .where('documento', '==', this.midocumento).orderBy('createdAt', 'desc').limit(12)).valueChanges();
     })).subscribe();
+  }
 
-    // const mySwiper = new Swiper('.swiper-container', {
-    //   effect: 'cube',
-    //   grabCursor: true,
-    //   cubeEffect: {
-    //     shadow: true,
-    //     slideShadows: true,
-    //     shadowOffset: 20,
-    //     shadowScale: 0.94,
-    //   },
-    //   pagination: {
-    //     el: '.swiper-pagination',
-    //   },
-    // });
-
-    // const mySwiper = new Swiper('.swiper-container', {
-    //   // Optional parameters
-    //   direction: 'vertical',
-    //   loop: true,
-
-    //   // If we need pagination
-    //   pagination: {
-    //     el: '.swiper-pagination',
-    //   },
-
-    //   // Navigation arrows
-    //   navigation: {
-    //     nextEl: '.swiper-button-next',
-    //     prevEl: '.swiper-button-prev',
-    //   },
-
-    //   // And if we need scrollbar
-    //   scrollbar: {
-    //     el: '.swiper-scrollbar',
-    //   },
-    // });
+  ngAfterViewChecked() {
+    $('.toast').toast('show');
   }
 
   ngOnDestroy() {
@@ -84,4 +62,17 @@ export class LibroComponent implements OnInit, OnDestroy {
     this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, ]);
   }
 
+  showModal() {
+
+  }
+
+  mostrarTodo() {}
+
+  closeToast() {
+    alert('as');
+    jQuery(this.myToast.nativeElement).toast('hide');
+    $('#myToast').toast('hide');
+    $('.toast').toast('hide');
+    $('#myToast').toast('hide');
+  }
 }

@@ -18,53 +18,66 @@
   <div class="swiper-pagination"></div>
 </div> -->
 
-<div class="container">
-  <div class="shadow card">
-    <div class="imgBx" data-text="BAUTISMO" >
-      <img src="../../assets/sketch.png" alt="">
-    </div>
-    <div class="content">
-      <div>
-        <h3>BAUTISMO</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta at nesciunt itaque, officiis deserunt dolorem cupiditate quaerat possimus exercitationem ullam. Minima, quisquam fuga adipisci reprehenderit vel error animi iusto fugit?</p>
-        <a href="#">Read More</a>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item text-primary"><a role="button" (click)="goParroquia()">Parroquia</a></li>
+    <li class="breadcrumb-item text-primary"><a role="button" (click)="goDocumentos()">Documentos</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Libros</li>
+  </ol>
+</nav>
+<div *ngIf="(topTen$ | async) as topTen; else loading">
+  <div *ngIf="topTen.length > 0; else mensaje" >
+    <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-end align-items-center">
+      <div #myToast id="myToast" role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="false">
+        <div class="toast-header">
+          <img src="../../assets/indexing.ico" width="15" class="rounded mr-2" alt="...">
+          <strong class="mr-auto text-secondary">Sindex</strong>
+          <small>{{currentDate | date:'dd-MM-yyyy'}}</small>
+        </div>
+        <div class="toast-body">
+          Se mostrarán los <strong>12 últimos registros</strong> creados. <br>
+          Para mostrar todos los libros: <a role="button" (click)="mostrarTodo()" class="badge badge-primary text-white more">LISTADO</a>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="shadow card">
-    <div class="imgBx" data-text="MATRIMONIO" >
-      <img src="../../assets/startup.png" alt="">
-    </div>
-    <div class="content">
-      <div>
-        <h3>MATRIMONIO</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta at nesciunt itaque, officiis deserunt dolorem cupiditate quaerat possimus exercitationem ullam. Minima, quisquam fuga adipisci reprehenderit vel error animi iusto fugit?</p>
-        <a href="#">Read More</a>
-      </div>
-    </div>
-  </div>
-  <div class="shadow card">
-    <div class="imgBx" data-text="CONFIRMACIÓN" >
-      <img src="../../assets/data.png" alt="">
-    </div>
-    <div class="content">
-      <div>
-        <h3>CONFIRMACIÓN</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta at nesciunt itaque, officiis deserunt dolorem cupiditate quaerat possimus exercitationem ullam. Minima, quisquam fuga adipisci reprehenderit vel error animi iusto fugit?</p>
-        <a href="#">Read More</a>
-      </div>
-    </div>
-  </div>
-  <div class="shadow card">
-    <div class="imgBx" data-text="DEFUNCIÓN" >
-      <img src="../../assets/money.png" alt="">
-    </div>
-    <div class="content">
-      <div>
-        <h3>DEFUNCIÓN</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta at nesciunt itaque, officiis deserunt dolorem cupiditate quaerat possimus exercitationem ullam. Minima, quisquam fuga adipisci reprehenderit vel error animi iusto fugit?</p>
-        <a href="#">Read More</a>
+    
+    <div class="container">
+      <div class="row row-cols-1 row-cols-md-4 justify-content-start">
+        <ng-container *ngFor="let libro of topTen" >
+          <div class="col align-items-center text-center">
+            <a class="shadow card2 align-self-center" href="#">
+              <h3>Libro : {{libro.numLibro}}</h3>
+              <hr>
+              <button class="btn btn-outline-dark btn-sm m-2">Registrar</button>
+              <button class="btn btn-outline-secondary btn-sm">Listar</button>
+              <div class="go-corner" href="#">
+                <div class="go-arrow">
+                  →
+                </div>
+              </div>
+            </a>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #mensaje>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Hola!</strong> Actualmente no tienes ningún libro agregado a este documento. <strong>Agregue un nuevo
+          libro:<a class="btn" (click)="showModal()">
+              <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+          </a></strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+</ng-template>
+<ng-template #loading>
+  <div class="d-flex justify-content-center mt-5">
+    <div class="spinner-border text-info" role="status">
+    </div>
+    <strong class="text-info"> Loading... </strong>
+  </div>
+</ng-template>

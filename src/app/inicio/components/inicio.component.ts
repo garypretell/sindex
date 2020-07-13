@@ -4,7 +4,7 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { of, Observable, from, Subject } from 'rxjs';
-import { map, switchMap, tap, flatMap, concatMap, take, debounceTime, takeUntil } from 'rxjs/operators';
+import { map, switchMap, tap, flatMap, concatMap, take, debounceTime, takeUntil, mergeMap } from 'rxjs/operators';
 import {
   FormGroup,
   FormControl,
@@ -15,6 +15,7 @@ import {
 import { Router } from '@angular/router';
 import { DocumentoService } from 'src/app/documento/documento.service';
 import { ParroquiaService } from 'src/app/parroquia/parroquia.service';
+import { InicioService } from '../inicio.service';
 declare var jQuery: any;
 declare const $;
 
@@ -25,8 +26,9 @@ declare const $;
 })
 export class InicioComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject();
+  isAdmin: boolean;
   @ViewChild('myToast') myToast: ElementRef;
-  midata: any[];
+  midata: Observable<any>;
   view: any;
   pedidosForm: FormGroup;
   p: 1;
@@ -34,13 +36,16 @@ export class InicioComponent implements OnInit, OnDestroy {
   diocesis: any;
   parroquia: any;
   parroquias$: Observable<any>;
-  constructor(public formBuilder: FormBuilder,
-              private afs: AngularFirestore,
-              public auth: AuthService,
-              private router: Router,
-              public parroquiaService: ParroquiaService,
-              public documentoService: DocumentoService) {
-              this.view = [innerWidth / 1.5, 400];
+  constructor(
+    public formBuilder: FormBuilder,
+    private afs: AngularFirestore,
+    public auth: AuthService,
+    private router: Router,
+    public inicioService: InicioService,
+    public parroquiaService: ParroquiaService,
+    public documentoService: DocumentoService) {
+    this.view = [innerWidth / 1.5, 400];
+    this.isAdmin = false;
   }
 
   sub;
@@ -57,23 +62,31 @@ export class InicioComponent implements OnInit, OnDestroy {
     });
 
     const { uid } = await this.auth.getUser();
-    this.sub = this.afs.doc(`usuarios/${uid}`).valueChanges().subscribe(async (data: any) => {
+    this.sub = this.afs.doc(`usuarios/${uid}`).valueChanges().pipe(switchMap(async (data: any) => {
       if (data) {
         this.diocesis = data.diocesis;
         this.parroquia = data.parroquia;
         if (this.diocesis) {
-          this.parroquias$ =  this.parroquiaService.getParroquia(this.diocesis.id);
+          this.parroquias$ = this.parroquiaService.getParroquia(this.diocesis.id);
+          return this.parroquia;
         }
       } else {
         return of(null);
       }
-    });
+    }),
+      switchMap((m: any) => {
+        if (m) {
+          return this.afs.doc(`Parroquias/${m.id}`).valueChanges().pipe(map((data: any) => {
+            this.isAdmin = data.principal;
+            this.inicioService.changeValue(data.principal);
+            return this.isAdmin;
+          }));
+        } else {
+          return of(null);
+        }
+      })).subscribe();
 
-    this.sub = this.afs.collection('charts', ref => ref.where('code', '==', 'aa')).valueChanges()
-      .subscribe(data => {
-        this.midata = data;
-      });
-
+    this.midata = this.afs.collection('charts', ref => ref.where('code', '==', 'aa')).valueChanges();
     $('#myToast').toast('show');
   }
 
@@ -81,6 +94,10 @@ export class InicioComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
     // this.unsubscribe$.next();
     // this.unsubscribe$.complete();
+  }
+
+  administrar() {
+    this.router.navigate(['/diocesis', this.diocesis.id, 'parroquia']);
   }
 
   getColor(estado) {
@@ -122,7 +139,7 @@ export class InicioComponent implements OnInit, OnDestroy {
     });
   }
 
-  goParroquia(){
+  goParroquia() {
     this.router.navigate(['/diocesis', this.diocesis.id, 'parroquia', this.parroquia.id]);
   }
 

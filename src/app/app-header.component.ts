@@ -5,8 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/filter';
-import { Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, of } from 'rxjs';
+import { map, takeUntil, switchMap } from 'rxjs/operators';
 declare var jQuery: any;
 declare const $;
 
@@ -42,26 +42,22 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
 
     this.super = true;
   }
-  sub;
-  ngOnInit() {
 
-    this.sub = this.afAuth.authState.subscribe(data => {
-      if (data) {
-        this.name$ = data.displayName;
-        this.foto = data.photoURL;
-      }
-    });
+  async ngOnInit() {
 
-    this.sub = this.auth.user$.subscribe(data => {
+    const { uid } = await this.auth.getUser();
+    this.afs.doc(`usuarios/${uid}`).valueChanges().pipe(map((data: any) => {
       if (data) {
         this.super = data.roles.super;
+        this.name$ = data.displayName;
+        this.foto = data.foto;
+      }else{
+        return of(null);
       }
-    });
-
+    }), takeUntil(this.unsubscribe$)).subscribe();
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -90,13 +86,17 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
 
   }
 
-  goParroquia() {
-    this.auth.user$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+  async goParroquia() {
+    const { uid } = await this.auth.getUser();
+    this.afs.doc(`usuarios/${uid}`).valueChanges().pipe(map((data: any) => {
       if (data) {
-        this.codigo = data.diocesis.id;
+        const valor = data.diocesis;
+        this.codigo = valor.id;
         this.router.navigate(['/diocesis', this.codigo, 'parroquia', data.parroquia.id]);
+      } else {
+        return of(null);
       }
-    });
+    }), takeUntil(this.unsubscribe$)).subscribe();
   }
 
   goLibro() {

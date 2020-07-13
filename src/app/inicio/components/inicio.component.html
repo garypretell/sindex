@@ -74,8 +74,8 @@
             <div class="col-4">
               <p><strong>Parroquias</strong></p>
             </div>
-            <div class="col-4 text-right" *ngIf="auth.canDelete(auth.user$ | async)">
-              <a href="#" class="badge badge-primary" ><i class="fa fa-file-o" aria-hidden="true" > </i> Nuevo
+            <div class="col-5 text-right" *ngIf="isAdmin">
+              <a role="button" (click)="administrar()"  class="badge badge-primary text-white" ><i class="fa fa-file-o" aria-hidden="true" > </i> Administrar
               </a>
             </div>
           </div>
@@ -117,9 +117,12 @@
           <h4>
             <em> {{ diocesis?.nombre | uppercase }}</em>
           </h4>
-          <ngx-charts-advanced-pie-chart  [view]="view" [results]="midata"
+          <ng-container *ngIf="midata | async as data; else loading">
+            <ngx-charts-advanced-pie-chart  [view]="view" [results]="data"
             (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
           </ngx-charts-advanced-pie-chart>
+          </ng-container>
+          
           <hr />
           <div class="row">
             <div class="col-8">
@@ -149,6 +152,13 @@
           </div>
         </div>
       </div>
+    </div>
+  </ng-template>
+  <ng-template #loading>
+    <div class="d-flex justify-content-center mt-5">
+      <div class="spinner-border text-info" role="status">
+      </div>
+      <strong class="text-info"> Loading... </strong>
     </div>
   </ng-template>
 </body>

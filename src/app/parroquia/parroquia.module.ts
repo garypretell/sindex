@@ -10,10 +10,11 @@ import { ParroquiaComponent } from './components/parroquia.component';
 import { DocumentoComponent } from '../documento/components/documento.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LibroComponent } from '../libro/libro.component';
+import { ParroquiaDetailComponent } from './parroquia-detail/parroquia-detail.component';
 
 
 @NgModule({
-  declarations: [ParroquiaComponent, DocumentoComponent, LibroComponent],
+  declarations: [ParroquiaComponent, DocumentoComponent, LibroComponent, ParroquiaDetailComponent],
   imports: [
     CommonModule,
     FormsModule,
