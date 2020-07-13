@@ -66,7 +66,9 @@ export class LibroComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   }
 
-  mostrarTodo() {}
+  mostrarTodo() {
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos', this.documento, 'listado']);
+  }
 
   closeToast() {
     alert('as');

@@ -8,6 +8,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { FilterPipeModule } from 'ngx-filter-pipe';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,7 +30,7 @@ import { PlantillaComponent } from './plantilla/plantilla/plantilla.component';
     DiocesisComponent,
     MidiocesisComponent,
     PlantillaComponent
-  ],
+    ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -42,7 +43,8 @@ import { PlantillaComponent } from './plantilla/plantilla/plantilla.component';
     AngularFirestoreModule,
     NgxChartsModule,
     NgxPaginationModule,
-    FilterPipeModule
+    FilterPipeModule,
+    InfiniteScrollModule
   ],
   providers: [],
   bootstrap: [AppComponent]

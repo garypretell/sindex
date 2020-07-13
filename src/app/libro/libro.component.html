@@ -27,20 +27,17 @@
 </nav>
 <div *ngIf="(topTen$ | async) as topTen; else loading">
   <div *ngIf="topTen.length > 0; else mensaje" >
-    <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-end align-items-center">
-      <div #myToast id="myToast" role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="false">
-        <div class="toast-header">
-          <img src="../../assets/indexing.ico" width="15" class="rounded mr-2" alt="...">
-          <strong class="mr-auto text-secondary">Sindex</strong>
-          <small>{{currentDate | date:'dd-MM-yyyy'}}</small>
-        </div>
-        <div class="toast-body">
-          Se mostrarán los <strong>12 últimos registros</strong> creados. <br>
+    <div class="row justify-content-end">
+      <div class="col-5">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Importante!</strong> Actualmente se muestran los <strong>12 últimos libros</strong> creados. <br>
           Para mostrar todos los libros: <a role="button" (click)="mostrarTodo()" class="badge badge-primary text-white more">LISTADO</a>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
       </div>
     </div>
-    
     <div class="container">
       <div class="row row-cols-1 row-cols-md-4 justify-content-start">
         <ng-container *ngFor="let libro of topTen" >

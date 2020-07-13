@@ -1,0 +1,46 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item text-primary"><a role="button" (click)="goParroquia()">Parroquia</a></li>
+      <li class="breadcrumb-item text-primary"><a role="button" (click)="goDocumentos()">Documentos</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Libros</li>
+    </ol>
+  </nav>
+<div class="container">
+  <div id="content" class="row">
+    <ng-container *ngFor="let libro of page.data | async; trackBy: trackByFn">
+      <div class="col-md-3 p-2">
+        <a class="shadow card2 align-self-center" href="#">
+          <h3>Libro : {{ libro.numLibro }}</h3>
+          <hr />
+          <button class="btn btn-outline-dark btn-sm m-2">Registrar</button>
+          <button class="btn btn-outline-secondary btn-sm">Listar</button>
+          <div class="go-corner" href="#">
+            <div class="go-arrow">
+              →
+            </div>
+          </div>
+        </a>
+      </div>
+    </ng-container>
+  </div>
+  <div class="row justify-content-center">
+    <div class="alert alert-warning d-block text-center position-absolute">Cargando datos...</div>
+    <div
+      class="search-results"
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="onScroll()"
+    ></div>
+  </div>
+  <!-- <app-loading-spinner *ngIf="page.loading | async"></app-loading-spinner> -->
+
+  <div *ngIf="page.done | async" class="alert alert-primary text-center" role="alert">
+    Ya no hay más datos!
+    <a role="button" class="more" (click)="onTop()">
+      <strong
+        >Regresar <i class="fa fa-arrow-up" aria-hidden="true"></i
+      ></strong>
+    </a>
+  </div>
+</div>

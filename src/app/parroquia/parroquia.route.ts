@@ -6,6 +6,7 @@ import { PagoComponent } from '../pago/pago/pago.component';
 import { LibroComponent } from '../libro/libro.component';
 import { ParroquiaDetailComponent } from './parroquia-detail/parroquia-detail.component';
 import { AdminGuard } from '../auth/guards';
+import { TodosComponent } from '../libro/todos/todos.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,13 @@ const routes: Routes = [
             path: 'documentos',
             children: [
               { path: '', component: DocumentoComponent,  pathMatch: 'full' },
-              { path: ':doc/libros', component: LibroComponent }
+              { path: ':doc',
+                children: [
+                    { path: '', redirectTo: 'libros',  pathMatch: 'full' },
+                    { path: 'libros', component: LibroComponent },
+                    { path: 'listado', component: TodosComponent }
+                ]
+              }
             ]
           },
           {

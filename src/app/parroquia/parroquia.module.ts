@@ -11,10 +11,13 @@ import { DocumentoComponent } from '../documento/components/documento.component'
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LibroComponent } from '../libro/libro.component';
 import { ParroquiaDetailComponent } from './parroquia-detail/parroquia-detail.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { TodosComponent } from '../libro/todos/todos.component';
+import { PaginationService } from './pagination.service';
 
 
 @NgModule({
-  declarations: [ParroquiaComponent, DocumentoComponent, LibroComponent, ParroquiaDetailComponent],
+  declarations: [ParroquiaComponent, DocumentoComponent, LibroComponent, ParroquiaDetailComponent, TodosComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -22,7 +25,11 @@ import { ParroquiaDetailComponent } from './parroquia-detail/parroquia-detail.co
     ParroquiaRoutingModule,
     NgxChartsModule,
     NgxPaginationModule,
-    FilterPipeModule
+    FilterPipeModule,
+    InfiniteScrollModule
+  ],
+   providers: [
+    PaginationService
   ]
 })
 export class ParroquiaModule { }
