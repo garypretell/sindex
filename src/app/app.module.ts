@@ -29,7 +29,8 @@ import { PlantillaComponent } from './plantilla/plantilla/plantilla.component';
     AppHeaderComponent,
     DiocesisComponent,
     MidiocesisComponent,
-    PlantillaComponent
+    PlantillaComponent,
+
     ],
   imports: [
     BrowserModule,

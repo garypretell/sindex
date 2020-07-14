@@ -9,7 +9,7 @@ import { ParroquiaRoutingModule } from './parroquia.route';
 import { ParroquiaComponent } from './components/parroquia.component';
 import { DocumentoComponent } from '../documento/components/documento.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { LibroComponent } from '../libro/libro.component';
+import { LibroComponent } from '../libro/libro/libro.component';
 import { ParroquiaDetailComponent } from './parroquia-detail/parroquia-detail.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { TodosComponent } from '../libro/todos/todos.component';

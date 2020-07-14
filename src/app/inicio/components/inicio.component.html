@@ -1,4 +1,4 @@
-<body>
+<body *ngIf="(auth.user$) | async; else loading">
   <div
     *ngIf="!auth.canSuper(auth.user$ | async) && !auth.canDelete(auth.user$ | async) &&  !auth.canEdit(auth.user$ | async); else principal">
     <div class="shadow container bg-light mt-5">
@@ -154,11 +154,13 @@
       </div>
     </div>
   </ng-template>
-  <ng-template #loading>
-    <div class="d-flex justify-content-center mt-5">
-      <div class="spinner-border text-info" role="status">
-      </div>
-      <strong class="text-info"> Loading... </strong>
-    </div>
-  </ng-template>
+
 </body>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center mt-5">
+    <div class="spinner-border text-info" role="status">
+    </div>
+    <strong class="text-info"> Loading... </strong>
+  </div>
+</ng-template>

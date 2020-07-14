@@ -3,10 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { ParroquiaComponent } from './components/parroquia.component';
 import { DocumentoComponent } from '../documento/components/documento.component';
 import { PagoComponent } from '../pago/pago/pago.component';
-import { LibroComponent } from '../libro/libro.component';
+import { LibroComponent } from '../libro/libro/libro.component';
 import { ParroquiaDetailComponent } from './parroquia-detail/parroquia-detail.component';
 import { AdminGuard } from '../auth/guards';
 import { TodosComponent } from '../libro/todos/todos.component';
+import { ListadoComponent } from '../libro/listado/listado.component';
 
 const routes: Routes = [
   {
@@ -23,8 +24,17 @@ const routes: Routes = [
               { path: ':doc',
                 children: [
                     { path: '', redirectTo: 'libros',  pathMatch: 'full' },
-                    { path: 'libros', component: LibroComponent },
-                    { path: 'listado', component: TodosComponent }
+                    { path: 'listado', component: TodosComponent },
+                    { path: 'libros',
+                      children: [
+                        {path: '', component: LibroComponent,  pathMatch: 'full'},
+                        { path: ':l',
+                         children: [
+                           { path: '', component: ListadoComponent,  pathMatch: 'full'}
+                         ]
+                        }
+                      ]
+                    }
                 ]
               }
             ]

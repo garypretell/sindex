@@ -4,7 +4,9 @@ import { FormBuilder } from '@angular/forms';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { ParroquiaService } from 'src/app/parroquia/parroquia.service';
+import { map, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todos',
@@ -12,7 +14,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./todos.component.css']
 })
 export class TodosComponent implements OnInit, OnDestroy {
-
+  private unsubscribe$ = new Subject();
+  message: any;
   midiocesis: any;
   miparroquia: any;
   midocumento: any;
@@ -26,12 +29,14 @@ export class TodosComponent implements OnInit, OnDestroy {
     public afs: AngularFirestore,
     public auth: AuthService,
     public router: Router,
-    public activatedroute: ActivatedRoute
+    public activatedroute: ActivatedRoute,
+    public parroquiaService: ParroquiaService
   ) { }
 
   sub;
   ngOnInit() {
     this.elemento = document.getElementById('content');
+    this.parroquiaService.currentMessage.pipe(map(message => this.message = message), takeUntil(this.unsubscribe$)).subscribe();
     this.sub = this.activatedroute.paramMap.subscribe(params => {
       this.midiocesis = params.get('d');
       this.miparroquia = params.get('p');
@@ -44,6 +49,8 @@ export class TodosComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.page.reset();
     this.sub.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   scrollHandler(e) {

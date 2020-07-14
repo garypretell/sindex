@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ElementRef }
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Subject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
+import { ParroquiaService } from '../../parroquia/parroquia.service';
 // import Swiper from 'swiper/bundle';
 // import 'swiper/swiper-bundle.css';
 declare var jQuery: any;
@@ -14,6 +15,7 @@ declare const $;
   styleUrls: ['./libro.component.css']
 })
 export class LibroComponent implements OnInit, OnDestroy, AfterViewChecked {
+  message: any;
   private unsubscribe$ = new Subject();
   @ViewChild('myToast') myToast: ElementRef;
   currentDate = new Date();
@@ -29,10 +31,12 @@ export class LibroComponent implements OnInit, OnDestroy, AfterViewChecked {
     public router: Router,
     private afs: AngularFirestore,
     private activatedroute: ActivatedRoute,
+    public parroquiaService: ParroquiaService
   ) { }
 
   sub;
   ngOnInit() {
+    this.parroquiaService.currentMessage.pipe(map(message => this.message = message), takeUntil(this.unsubscribe$)).subscribe();
     this.sub = this.activatedroute.paramMap.pipe(map(params => {
       this.midiocesis = params.get('d');
       this.miparroquia = params.get('p');
@@ -70,11 +74,9 @@ export class LibroComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos', this.documento, 'listado']);
   }
 
-  closeToast() {
-    alert('as');
-    jQuery(this.myToast.nativeElement).toast('hide');
-    $('#myToast').toast('hide');
-    $('.toast').toast('hide');
-    $('#myToast').toast('hide');
+  goListado(libro) {
+    // tslint:disable-next-line:max-line-length
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos', this.documento, 'libros', libro.numLibro]);
+
   }
 }
