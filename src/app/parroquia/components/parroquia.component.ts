@@ -42,6 +42,7 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
 
   sub;
   ngOnInit() {
+
     this.sub = this.activatedroute.data.pipe(map((data: { parroquias: Observable<any[]> }) => {
       this.parroquias$ = data.parroquias;
     })).subscribe();
@@ -121,6 +122,7 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
 
   goDocumentos(parroquia) {
     this.newMessage(parroquia.nombre);
+    this.parroquiaService.temporal$.emit('aaaaaaasssssss');
     this.router.navigate(['/diocesis', parroquia.diocesis, 'parroquia', parroquia.id, 'documentos']);
   }
 
@@ -189,5 +191,4 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
   newMessage(message) {
     this.parroquiaService.changeMessage(message);
   }
-
 }

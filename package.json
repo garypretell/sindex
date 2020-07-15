@@ -23,6 +23,7 @@
     "@angular/router": "~9.1.4",
     "@angular/service-worker": "^10.0.3",
     "@swimlane/ngx-charts": "^14.0.0",
+    "angular-split": "^3.0.3",
     "firebase": "^7.15.1",
     "ngx-filter-pipe": "^2.1.2",
     "ngx-infinite-scroll": "^9.0.0",

@@ -40,9 +40,21 @@ export class ParroquiaDetailComponent implements OnInit, OnDestroy {
     this.parroquiaService.currentMessage.subscribe(message => this.message = message);
 
     this.sub = this.activatedroute.paramMap.pipe(map(params => {
-      this.miparroquia$ = this.afs.doc(`Parroquias/${params.get('p')}`).valueChanges();
       this.midiocesis = params.get('d');
       this.miparroquia = params.get('p');
+      this.afs.firestore.doc(`Parroquias/${params.get('p')}`).get()
+      .then(docSnapshot => {
+        if (!docSnapshot.exists) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Esta Parroquia no ha sido registrada!'
+          });
+          return this.router.navigate(['/Home']);
+        } else {
+          this.miparroquia$ = this.afs.doc(`Parroquias/${params.get('p')}`).valueChanges();
+        }
+      });
     })).subscribe();
 
   }
@@ -84,6 +96,16 @@ export class ParroquiaDetailComponent implements OnInit, OnDestroy {
 
   newMessage(message) {
     this.parroquiaService.changeMessage(message);
+  }
+
+  verifyData(parroquia) {
+    this.afs.firestore.doc(`Parroquias/${parroquia}`).get()
+      .then(docSnapshot => {
+        if (!docSnapshot.exists) {
+          alert('Esta Parroquia no ha sido registrada');
+          this.router.navigate(['/Home']);
+        }
+      });
   }
 
 }

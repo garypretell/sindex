@@ -14,10 +14,12 @@ import { ParroquiaDetailComponent } from './parroquia-detail/parroquia-detail.co
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { TodosComponent } from '../libro/todos/todos.component';
 import { PaginationService } from './pagination.service';
+import { AngularSplitModule } from 'angular-split';
+import { ListadoComponent } from '../libro/listado/listado.component';
 
 
 @NgModule({
-  declarations: [ParroquiaComponent, DocumentoComponent, LibroComponent, ParroquiaDetailComponent, TodosComponent],
+  declarations: [ParroquiaComponent, DocumentoComponent, LibroComponent, ParroquiaDetailComponent, TodosComponent, ListadoComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -26,7 +28,8 @@ import { PaginationService } from './pagination.service';
     NgxChartsModule,
     NgxPaginationModule,
     FilterPipeModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    AngularSplitModule
   ],
    providers: [
     PaginationService

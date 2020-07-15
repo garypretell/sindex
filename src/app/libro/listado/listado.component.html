@@ -1,1 +1,174 @@
-<p>listado works!</p>
+<div class="breadcrumb d-flex justify-content-between align-items-center">
+  <ol class="breadcrumb mb-0 p-0">
+    <li class="breadcrumb-item text-primary">
+      <a role="button" (click)="goParroquia()">Parroquia</a>
+    </li>
+    <li class="breadcrumb-item text-primary">
+      <a role="button" (click)="goDocumento()">Documentos</a>
+    </li>
+    <li class="breadcrumb-item text-primary">
+      <a role="button" (click)="goLibro()">Libros</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">{{ milibro }}</li>
+  </ol>
+  <button class="btn btn-sm btn-success">
+    <strong>{{ documento }} - {{ message }}</strong>
+  </button>
+</div>
+
+<ng-container *ngIf="registros$ | async as registros; else loading">
+  <ng-container *ngIf="registros.length > 0; else mensaje">
+    <div class="mt-2" style="width: 100%; height: 100vh;">
+      <as-split direction="horizontal">
+        <as-split-area size="20">
+          <div class="row">
+            <div class="col">
+              <div class="shadow card bg-primary text-white text-center m-2">
+                <h4>Buscar Documento</h4>
+                <small>
+                  <cite title="Source Title">*Todos los campos son requeridos</cite>
+                </small>
+              </div>
+            </div>
+          </div>
+          <hr class="mx-3" />
+          <form class="m-2">
+            <div class="form-row">
+              <div class="col mb-3">
+                <label for="apellidos">Apellidos</label>
+                <input type="search" class="form-control" id="apellidos" placeholder="Ingrese Apellidos" name="apellidos" [(ngModel)]="searchObject.apellidos" 
+                oninput="this.value = this.value.toUpperCase()" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col mb-3">
+                <label for="nombres">Nombres</label>
+                <input type="search" class="form-control" id="nombres" placeholder="Ingrese Nombres"  [(ngModel)]="searchObject.nombres"
+                name="nombres" oninput="this.value = this.value.toUpperCase()" />
+              </div>
+            </div>
+          </form>
+          <hr class="mx-5 mb-4" />
+          <div class="shadow card m-2">
+            <div class="card-body">
+              <h5 class="card-title">{{ documento }}</h5>
+              <hr />
+              <p class="card-text">
+                Para imprimir todos los registros pertenecientes a este libro,
+                haga click en imprimir.
+              </p>
+              <button id="imprimir" class="btn btn-outline-primary">
+                Imprimir
+                <svg  version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 480 480"
+                  style="enable-background: new 0 0 480 480;" xml:space="preserve">
+                  <g>
+                    <g>
+                      <path d="M472,160h-40v-56c0-4.418-3.582-8-8-8h-24V8c0-4.418-3.582-8-8-8H88c-4.418,0-8,3.582-8,8v88H56c-4.418,0-8,3.582-8,8v56
+                     H8c-4.418,0-8,3.582-8,8v224c0,4.418,3.582,8,8,8h72v72c0,4.418,3.582,8,8,8h304c4.418,0,8-3.582,8-8v-72h72c4.418,0,8-3.582,8-8
+                     V168C480,163.582,476.418,160,472,160z M400,112h16v48h-16V112z M96,16h288v144H96V16z M64,112h16v48H64V112z M80,352h-8v-24h8
+                     V352z M384,464H96V328h288V464z M464,384h-64v-16h16c4.418,0,8-3.582,8-8v-40c0-4.418-3.582-8-8-8H64c-4.418,0-8,3.582-8,8v40
+                     c0,4.418,3.582,8,8,8h16v16H16V176h448V384z M400,352v-24h8v24H400z" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <rect x="176" y="352" width="176" height="16" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <rect x="128" y="384" width="224" height="16" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <rect x="128" y="416" width="176" height="16" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <rect x="128" y="352" width="32" height="16" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M104,192H40c-4.418,0-8,3.582-8,8v32c0,4.418,3.582,8,8,8h64c4.418,0,8-3.582,8-8v-32C112,195.582,108.418,192,104,192z
+                      M96,224H48v-16h48V224z" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <rect x="128" y="224" width="80" height="16" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <rect x="224" y="224" width="16" height="16" />
+                    </g>
+                  </g>
+                  <g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </as-split-area>
+        <as-split-area size="80">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col">Nombres</th>
+                <th scope="col"># Partida</th>
+                <th scope="col">F. {{ documento | titlecase }}</th>
+                <th scope="col">F. de Registro</th>
+                <th scope="col">Parroquia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let item of registros
+                    | filterBy: searchObject
+                    | paginate: { itemsPerPage: 8, currentPage: p };
+                  let i = index
+                ">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.apellidos }}</td>
+                <td>{{ item.nombres }}</td>
+                <td>{{ item.numeroreg }}</td>
+                <td>{{ item.fecha }}</td>
+                <td>{{ item.fechareg }}</td>
+                <td>{{ item.parroquia.nombre }}</td>
+              </tr>
+              <!-- <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr> -->
+            </tbody>
+          </table>
+        </as-split-area>
+      </as-split>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #mensaje>
+  <div class="col-md-12">
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+      <strong>Mensaje!</strong> No existen documentos para esta búsqueda.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center mt-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <strong class="text-primary"> Loading... </strong>
+  </div>
+</ng-template>

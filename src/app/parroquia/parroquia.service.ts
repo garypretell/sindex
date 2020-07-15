@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ParroquiaService {
   private messageSource = new BehaviorSubject('Mi Parroquia');
+  temporal$ = new EventEmitter();
   currentMessage = this.messageSource.asObservable();
 
   parroquiasCollection: AngularFirestoreCollection<any>;

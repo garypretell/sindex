@@ -4,6 +4,8 @@ import { RequireUnauthGuard, RequireAuthGuard, EditorGuard, AdminGuard } from '.
 import { DiocesisComponent } from './diocesis/components/diocesis.component';
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
 import { ParroquiaResolverGuard } from './parroquia/parroquia-resolver.guard';
+import { PathResolveService } from './path-resolve.service';
+import { NotFoundComponent } from './not-found-component/not-found-component.component';
 
 
 const routes: Routes = [
@@ -46,6 +48,13 @@ const routes: Routes = [
         path: ':id', component: MidiocesisComponent, canActivate: [EditorGuard],
       }
     ]
+  },
+  {
+    path: '**',
+    // resolve: {
+    //   path: PathResolveService
+    // },
+    component: NotFoundComponent
   }
 ];
 

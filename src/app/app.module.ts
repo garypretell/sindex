@@ -9,6 +9,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { AngularSplitModule } from 'angular-split';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,16 +22,14 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
-import { PlantillaComponent } from './plantilla/plantilla/plantilla.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     AppHeaderComponent,
     DiocesisComponent,
-    MidiocesisComponent,
-    PlantillaComponent,
-
+    MidiocesisComponent
     ],
   imports: [
     BrowserModule,
@@ -45,7 +44,8 @@ import { PlantillaComponent } from './plantilla/plantilla/plantilla.component';
     NgxChartsModule,
     NgxPaginationModule,
     FilterPipeModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    AngularSplitModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

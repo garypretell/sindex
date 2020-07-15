@@ -32,50 +32,69 @@
     <strong>{{documento}} - {{ message }}</strong>
   </button>
 </div>
+
 <div *ngIf="(topTen$ | async) as topTen; else loading">
-  <div *ngIf="topTen.length > 0; else mensaje" >
-    <div class="row justify-content-end">
-      <div class="col">
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-          <strong>Importante!</strong> Actualmente se muestran los <strong>12 últimos libros</strong> creados. <br>
-          Para mostrar todos los libros: <a role="button" (click)="mostrarTodo()" class="badge badge-primary text-white more">LISTADO</a>
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+  <div *ngIf="topTen.length > 0; else mensaje">
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <div class="row row-cols-1 row-cols-sm-2">
+            <ng-container *ngFor="let libro of topTen">
+              <div class="col">
+                <a role="button" class="shadow card2 text-center">
+                  <h3>Libro : {{libro.numLibro}}</h3>
+                  <hr>
+                  <button class="btn btn-outline-dark btn-sm m-2">Registrar</button>
+                  <button class="btn btn-outline-secondary btn-sm" (click)="goListado(libro)">Partidas</button>
+                  <div class="go-corner" href="#">
+                    <div class="go-arrow">
+                      →
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-sm-12 order-first col-md-6">
+          <div class="shadow alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Importante!</strong> Actualmente se muestran los <strong>6 últimos libros</strong> creados. <br>
+            Para mostrar todos los libros: <a role="button" (click)="mostrarTodo()"
+              class="badge badge-primary text-white more">LISTADO</a>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="shadow-lg card text-left border border-primary">
+            <div class="card-body">
+              <h5 class="card-title">Buscar Libro</h5>
+              <input type="number" id="inputPassword6" class="form-control border border-primary" aria-describedby="passwordHelpInline"  placeholder="Número de Libro" [(ngModel)]="numLibro" [ngModelOptions]="{standalone: true}">
+              <div class="custom-control custom-radio mt-2">
+                <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" [(ngModel)]="tipoBusqueda" [value]="true">
+                <label class="custom-control-label justify-content-start" for="customRadio1">Registrar una partida </label>
+              </div>
+              <div class="custom-control custom-radio align-content-start">
+                <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" [(ngModel)]="tipoBusqueda" [value]="false">
+                <label class="custom-control-label justify-content-start" for="customRadio2">Mostrar Libro</label>
+              </div>
+              <button type="button" class="btn btn-primary mt-2" (click)="goLibro()" ><i class="fa fa-search" aria-hidden="true"> </i> Buscar</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-        <ng-container *ngFor="let libro of topTen" >
-          <div class="col">
-            <a role="button" class="shadow card2 text-center" >
-              <h3>Libro : {{libro.numLibro}}</h3>
-              <hr>
-              <button class="btn btn-outline-dark btn-sm m-2">Registrar</button>
-              <button class="btn btn-outline-secondary btn-sm" (click)="goListado(libro)" >Partidas</button>
-              <div class="go-corner" href="#">
-                <div class="go-arrow">
-                  →
-                </div>
-              </div>
-            </a>
-          </div>
-        </ng-container>
-      </div>
-    </div>
+    </div>  
   </div>
 </div>
 
 <ng-template #mensaje>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>Hola!</strong> Actualmente no tienes ningún libro agregado a este documento. <strong>Agregue un nuevo
-          libro:<a class="btn" (click)="showModal()">
-              <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
-          </a></strong>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-      </button>
+    <strong>Hola!</strong> Actualmente no tienes ningún libro agregado a este documento. <strong>Agregue un nuevo
+      libro:<a class="btn" (click)="showModal()">
+        <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+      </a></strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
 </ng-template>
 <ng-template #loading>

@@ -8,6 +8,7 @@ import { ParroquiaDetailComponent } from './parroquia-detail/parroquia-detail.co
 import { AdminGuard } from '../auth/guards';
 import { TodosComponent } from '../libro/todos/todos.component';
 import { ListadoComponent } from '../libro/listado/listado.component';
+import { BautismoComponent } from '../plantilla/bautismo/bautismo.component';
 
 const routes: Routes = [
   {
@@ -30,7 +31,8 @@ const routes: Routes = [
                         {path: '', component: LibroComponent,  pathMatch: 'full'},
                         { path: ':l',
                          children: [
-                           { path: '', component: ListadoComponent,  pathMatch: 'full'}
+                           { path: '', component: ListadoComponent,  pathMatch: 'full'},
+                           { path: 'registrar', component: BautismoComponent }
                          ]
                         }
                       ]
