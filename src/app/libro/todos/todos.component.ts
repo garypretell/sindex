@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { ParroquiaService } from 'src/app/parroquia/parroquia.service';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todos',
@@ -20,6 +20,9 @@ export class TodosComponent implements OnInit, OnDestroy {
   miparroquia: any;
   midocumento: any;
   documento: any;
+
+  diocesis: any;
+  parroquia: any;
 
   elemento: any;
 
@@ -44,6 +47,13 @@ export class TodosComponent implements OnInit, OnDestroy {
       this.midocumento = this.miparroquia + '_' + params.get('doc');
       this.page.init('Libros', 'numLibro', this.midiocesis, this.miparroquia, this.midocumento, { reverse: true, prepend: false });
     });
+
+    this.afs.doc(`Diocesis/${this.midiocesis}`).valueChanges().pipe(switchMap((m: any) => {
+      return this.afs.doc(`Parroquias/${this.miparroquia}`).valueChanges().pipe(map((data: any) => {
+        this.diocesis = {nombre: m.nombre, id: data.diocesis};
+        this.parroquia = {nombre: data.nombre, id: data.parroquia};
+      }));
+    }), takeUntil(this.unsubscribe$)).subscribe();
   }
 
   ngOnDestroy() {
@@ -72,17 +82,8 @@ export class TodosComponent implements OnInit, OnDestroy {
   }
 
   goRegistrar(libro) {
-
-    const array = ['BAUTISMO', 'MATRIMONIO', 'DEFUNCION', 'CONFIRMACION'];
-    const value = this.midocumento;
-    const isInArray = array.includes(value);
-    if (isInArray === true) {
-      this.router.navigate(['/Diocesis', this.midiocesis, 'Parroquia',
-      this.miparroquia, 'Documento', this.midocumento, 'Libro', libro.numLibro]);
-    }
-    console.log(isInArray);
-    // this.router.navigate(['/Diocesis', this.midiocesis, 'Parroquia', this.miparroquia,
-    //  'Documento', this.midocumento, 'Libro', libro.numLibro ]);
+      this.router.navigate(['/diocesis', this.midiocesis, 'parroquia',
+      this.miparroquia, 'documentos', this.documento, 'libros', libro.numLibro, 'registrar']);
   }
 
   goDocumentos() {
@@ -91,5 +92,10 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   goParroquia() {
     this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, ]);
+  }
+
+  goListado(libro) {
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia',
+    this.miparroquia, 'documentos', this.documento, 'libros', libro.numLibro]);
   }
 }

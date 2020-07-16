@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { AuthService } from 'src/app/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, switchMap } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { DocumentoService } from '../documento.service';
 import { ParroquiaService } from 'src/app/parroquia/parroquia.service';
@@ -30,6 +30,8 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   midiocesis: any;
   miparroquia: any;
+  diocesis: any;
+  parroquia: any;
 
   today: number = Date.now();
 
@@ -70,6 +72,13 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.miparroquia = params.get('p');
     })).subscribe();
     this.docs$ = this.afs.collection(`docs`).valueChanges({idField: 'id'});
+
+    this.afs.doc(`Diocesis/${this.midiocesis}`).valueChanges().pipe(switchMap((m: any) => {
+      return this.afs.doc(`Parroquias/${this.miparroquia}`).valueChanges().pipe(map((data: any) => {
+        this.diocesis = {nombre: m.nombre, id: data.diocesis};
+        this.parroquia = {nombre: data.nombre, id: data.parroquia};
+      }));
+    }), takeUntil(this.unsubscribe$)).subscribe();
   }
 
   ngAfterViewChecked() {

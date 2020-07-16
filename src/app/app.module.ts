@@ -24,6 +24,7 @@ import { environment } from '../environments/environment';
 import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -8,8 +8,8 @@
     </li>
     <li class="breadcrumb-item active" aria-current="page">Libros</li>
   </ol>
-  <button class="btn btn-sm btn-success">
-    <strong>{{documento}} - {{ message }}</strong>
+  <button class="btn btn-sm btn-success" *ngIf="parroquia" >
+    <strong>{{documento}} - {{ parroquia.nombre }}</strong>
   </button>
 </div>
 <div class="container">
@@ -19,12 +19,11 @@
         <a
           role="button"
           class="shadow card2 text-center"
-          href="#"
         >
           <h3>Libro : {{ libro.numLibro }}</h3>
           <hr />
-          <button class="btn btn-outline-dark btn-sm m-2">Registrar</button>
-          <button class="btn btn-outline-secondary btn-sm">Listar</button>
+          <button class="btn btn-outline-dark btn-sm m-2" (click)="goRegistrar(libro)"  >Registrar</button>
+          <button class="btn btn-outline-secondary btn-sm" (click)="goListado(libro)">Listar</button>
           <div class="go-corner" href="#">
             <div class="go-arrow">
               →

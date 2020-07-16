@@ -4,15 +4,15 @@
       <li class="breadcrumb-item text-primary"><a role="button" (click)="backClicked()">Parroquias</a></li>
       <li class="breadcrumb-item active" aria-current="page">Documentos</li>
     </ol>
-    <button class="btn btn-sm btn-success">
-      <strong>{{ message }}</strong>
+    <button class="btn btn-sm btn-success" *ngIf="parroquia" >
+      <strong>{{ parroquia.nombre }}</strong>
     </button>
   </div>
     <div class="custom-control custom-switch">
       <form class="form-inline">
         <input type="checkbox" class="custom-control-input" id="customSwitch1"
         [(ngModel)]="checkBoxValue" [ngModelOptions]="{ standalone: true }">
-        <label class="custom-control-label" for="customSwitch1">Estadísticas de {{message}}</label>
+        <label class="custom-control-label" for="customSwitch1" *ngIf="parroquia" >Estadísticas de {{ parroquia.nombre}}</label>
       </form>
     </div>
 </div>
@@ -46,8 +46,8 @@
         <div class="col mt-3" >
           <div class="shadow-lg card">
             <div class="card-body">
-              <h5 class="card-title">
-                {{message}}
+              <h5 class="card-title" *ngIf="parroquia">
+                {{parroquia.nombre}}
                 <small class="text-muted">(avance del proyecto)</small>
               </h5>
               <div class="row justify-content-center align-items-center mt-4">

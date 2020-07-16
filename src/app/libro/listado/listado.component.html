@@ -11,8 +11,8 @@
     </li>
     <li class="breadcrumb-item active" aria-current="page">{{ milibro }}</li>
   </ol>
-  <button class="btn btn-sm btn-success">
-    <strong>{{ documento }} - {{ message }}</strong>
+  <button class="btn btn-sm btn-success" *ngIf="parroquia" >
+    <strong>{{ documento }} - {{ parroquia.nombre }}</strong>
   </button>
 </div>
 
@@ -36,15 +36,16 @@
             <div class="form-row">
               <div class="col mb-3">
                 <label for="apellidos">Apellidos</label>
-                <input type="search" class="form-control" id="apellidos" placeholder="Ingrese Apellidos" name="apellidos" [(ngModel)]="searchObject.apellidos" 
-                oninput="this.value = this.value.toUpperCase()" />
+                <input type="search" class="form-control" id="apellidos" placeholder="Ingrese Apellidos"
+                  name="apellidos" [(ngModel)]="searchObject.apellidos"
+                  oninput="this.value = this.value.toUpperCase()" />
               </div>
             </div>
             <div class="form-row">
               <div class="col mb-3">
                 <label for="nombres">Nombres</label>
-                <input type="search" class="form-control" id="nombres" placeholder="Ingrese Nombres"  [(ngModel)]="searchObject.nombres"
-                name="nombres" oninput="this.value = this.value.toUpperCase()" />
+                <input type="search" class="form-control" id="nombres" placeholder="Ingrese Nombres"
+                  [(ngModel)]="searchObject.nombres" name="nombres" oninput="this.value = this.value.toUpperCase()" />
               </div>
             </div>
           </form>
@@ -57,9 +58,9 @@
                 Para imprimir todos los registros pertenecientes a este libro,
                 haga click en imprimir.
               </p>
-              <button id="imprimir" class="btn btn-outline-primary">
+              <button id="imprimir" class="btn btn-outline-primary" (click)="printLibro()">
                 Imprimir
-                <svg  version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 480 480"
                   style="enable-background: new 0 0 480 480;" xml:space="preserve">
                   <g>
@@ -107,7 +108,21 @@
                       <rect x="224" y="224" width="16" height="16" />
                     </g>
                   </g>
-                  <g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
                 </svg>
               </button>
             </div>
@@ -141,12 +156,6 @@
                 <td>{{ item.fechareg }}</td>
                 <td>{{ item.parroquia.nombre }}</td>
               </tr>
-              <!-- <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr> -->
             </tbody>
           </table>
         </as-split-area>
@@ -171,4 +180,63 @@
     <div class="spinner-border text-primary" role="status"></div>
     <strong class="text-primary"> Loading... </strong>
   </div>
+</ng-template>
+
+<div id="print-section" [hidden]='true'>
+  <div class="container-fluid" *ngIf="registros$ | async as mitemporal">
+
+    <body>
+      <table class='border'>
+        <tr class="text-center">
+          <th>Fecha:</th>
+          <th>Parroquia</th>
+          <th>Documento</th>
+          <th>Libro</th>
+          <th>Registros</th>
+        </tr>
+        <tr align='center'>
+          <th colspan='9' style='background:#f0f0f0'>{{diocesis?.nombre}}</th>
+        </tr>
+        <tr>
+          <td align='center'>{{ mifecha | date }}</td>
+          <td align='center'>{{ parroquia?.nombre }}</td>
+          <td align='center'>*{{documento}}*</td>
+          <td align='center'>{{milibro}}</td>
+          <td align='center'>{{mitemporal.length}}</td>
+        </tr>
+      </table>
+
+      <br />
+      <table class='border' *ngFor='let p of registros$ | async;trackBy: trackByFn; let i = index'>
+        <thead>
+          <tr>
+            <th></th>
+            <th># Partida </th>
+            <th>{{documento === 'MATRIMONIO' ? 'Esposo': 'Nombres'}}</th>
+            <th>{{documento === 'MATRIMONIO' ? 'Esposa': 'Apellidos'}}</th>
+            <th>F. {{documento | titlecase}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class='tablerowodd'>
+            <td align='center'>{{i+1}}</td>
+            <td>{{p.numeroreg}}</td>
+            <ng-container *ngIf="documento !=='MATRIMONIO'; else matrimonio" >
+              <td>{{p.nombres}}</td>
+              <td>{{p.apellidos}}</td>
+            </ng-container>
+            <td align='center'>{{p.fecha}}</td>
+          </tr>
+          <tr class='tableroweven'>
+            <td colspan='9' align='left'> </td>
+          </tr>
+        </tbody>
+      </table>
+    </body>
+
+  </div>
+</div>
+<ng-template #matrimonio>
+  <td>{{p.nombres}} {{p.apellidos}}</td>
+  <td>{{p.nombresM}} {{p.apellidosM}}</td>
 </ng-template>

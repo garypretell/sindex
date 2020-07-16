@@ -28,8 +28,8 @@
     </li>
     <li class="breadcrumb-item active" aria-current="page">Libros</li>
   </ol>
-  <button class="btn btn-sm btn-success">
-    <strong>{{documento}} - {{ message }}</strong>
+  <button class="btn btn-sm btn-success" *ngIf="parroquia">
+    <strong>{{documento}} - {{ parroquia.nombre }}</strong>
   </button>
 </div>
 
@@ -44,7 +44,7 @@
                 <a role="button" class="shadow card2 text-center">
                   <h3>Libro : {{libro.numLibro}}</h3>
                   <hr>
-                  <button class="btn btn-outline-dark btn-sm m-2">Registrar</button>
+                  <button class="btn btn-outline-dark btn-sm m-2" (click)="registrar(libro)" >Registrar</button>
                   <button class="btn btn-outline-secondary btn-sm" (click)="goListado(libro)">Partidas</button>
                   <div class="go-corner" href="#">
                     <div class="go-arrow">
@@ -67,9 +67,15 @@
           </div>
           <div class="shadow-lg card text-left border border-primary">
             <div class="card-body">
-              <h5 class="card-title">Buscar Libro</h5>
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Libro</h5>
+                <a role="button" class="text-primary mb-2" (click)="showModal()">
+                  <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+                </a>
+              </div>
+              
               <input type="number" id="inputPassword6" class="form-control border border-primary" aria-describedby="passwordHelpInline"  placeholder="Número de Libro" [(ngModel)]="numLibro" [ngModelOptions]="{standalone: true}">
-              <div class="custom-control custom-radio mt-2">
+              <div class="custom-control custom-radio mt-1">
                 <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" [(ngModel)]="tipoBusqueda" [value]="true">
                 <label class="custom-control-label justify-content-start" for="customRadio1">Registrar una partida </label>
               </div>
@@ -77,7 +83,7 @@
                 <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" [(ngModel)]="tipoBusqueda" [value]="false">
                 <label class="custom-control-label justify-content-start" for="customRadio2">Mostrar Libro</label>
               </div>
-              <button type="button" class="btn btn-primary mt-2" (click)="goLibro()" ><i class="fa fa-search" aria-hidden="true"> </i> Buscar</button>
+              <button type="button" class="btn btn-primary mt-3" (click)="goLibro()" ><i class="fa fa-search" aria-hidden="true"> </i> Buscar</button>
             </div>
           </div>
         </div>
@@ -104,3 +110,36 @@
     <strong class="text-info"> Loading... </strong>
   </div>
 </ng-template>
+
+<div #addMLibro class="modal fade" id="addMLibro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form" [formGroup]="addLibroForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registrar Libro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="nombre">Libro:</label>
+                            <input type="number" class="form-control" id="numLibro" name="numLibro"
+                                formControlName="numLibro">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" (click)="addLibro()" [disabled]="!addLibroForm.valid">Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

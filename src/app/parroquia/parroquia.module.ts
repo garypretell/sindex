@@ -16,10 +16,23 @@ import { TodosComponent } from '../libro/todos/todos.component';
 import { PaginationService } from './pagination.service';
 import { AngularSplitModule } from 'angular-split';
 import { ListadoComponent } from '../libro/listado/listado.component';
+import { BautismoComponent } from '../plantilla/bautismo/bautismo.component';
+import { PlantillaComponent } from '../plantilla/plantilla/plantilla.component';
+
+
 
 
 @NgModule({
-  declarations: [ParroquiaComponent, DocumentoComponent, LibroComponent, ParroquiaDetailComponent, TodosComponent, ListadoComponent],
+  declarations: [
+    ParroquiaComponent,
+    DocumentoComponent,
+    LibroComponent,
+    ParroquiaDetailComponent,
+    TodosComponent,
+    ListadoComponent,
+    PlantillaComponent,
+    BautismoComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
