@@ -18,8 +18,10 @@ import { AngularSplitModule } from 'angular-split';
 import { ListadoComponent } from '../libro/listado/listado.component';
 import { BautismoComponent } from '../plantilla/bautismo/bautismo.component';
 import { PlantillaComponent } from '../plantilla/plantilla/plantilla.component';
-
-
+import { MatrimonioComponent } from '../plantilla/matrimonio/matrimonio.component';
+import { ConfirmacionComponent } from '../plantilla/confirmacion/confirmacion.component';
+import { DefuncionComponent } from '../plantilla/defuncion/defuncion.component';
+import { PlantillaGeneralComponent } from '../plantilla/plantilla-general/plantilla-general.component';
 
 
 @NgModule({
@@ -31,7 +33,11 @@ import { PlantillaComponent } from '../plantilla/plantilla/plantilla.component';
     TodosComponent,
     ListadoComponent,
     PlantillaComponent,
-    BautismoComponent
+    PlantillaGeneralComponent,
+    BautismoComponent,
+    ConfirmacionComponent,
+    DefuncionComponent,
+    MatrimonioComponent
   ],
   imports: [
     CommonModule,

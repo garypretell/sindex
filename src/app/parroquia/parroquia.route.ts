@@ -9,6 +9,7 @@ import { AdminGuard } from '../auth/guards';
 import { TodosComponent } from '../libro/todos/todos.component';
 import { ListadoComponent } from '../libro/listado/listado.component';
 import { PlantillaComponent } from '../plantilla/plantilla/plantilla.component';
+import { PlantillaGeneralComponent } from '../plantilla/plantilla-general/plantilla-general.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,10 @@ const routes: Routes = [
           {
             path: 'pagos',
             component: PagoComponent
+          },
+          {
+            path: 'plantillas',
+            component: PlantillaGeneralComponent
           }
         ]
       }

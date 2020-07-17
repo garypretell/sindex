@@ -220,7 +220,31 @@
             </div>
         </as-split-area>
         <as-split-area size="15">
-
+          <div class="container-12">
+            <div class="row pt-2">
+              <div class="col-md-12" *ngFor="let libro of libros$ | async;trackBy: trackByFn">
+                <div class="card shadow m-2">
+                  <div class="card-body">
+                    <div class="p-2 border rounded">
+                      <div class="d-flex justify-content-center mb-1">
+                        <p></p>
+                        <div class="btn-group dropright">
+                          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Libro : {{libro.numLibro}}
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item more" (click)="goRegistrar(libro)">Registrar</a>
+                            <a class="dropdown-item" (click)="listar(libro)">Listar...</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </as-split-area>
     </as-split>
 </div>

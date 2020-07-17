@@ -1,5 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewContainerRef, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BautismoComponent } from '../bautismo/bautismo.component';
+import { ConfirmacionComponent } from '../confirmacion/confirmacion.component';
+import { DefuncionComponent } from '../defuncion/defuncion.component';
+import { MatrimonioComponent } from '../matrimonio/matrimonio.component';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { takeUntil, map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-plantilla',
@@ -22,5 +29,4 @@ export class PlantillaComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-
 }

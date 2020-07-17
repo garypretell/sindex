@@ -1,0 +1,7 @@
+<div class="d-flex flex-wrap">
+    <ng-container  *ngFor="let tab of tabs; let pos = index;" >
+        <button type="button" class="btn btn-primary m-2" (click)="changeTab(pos)">{{tab.title}}</button>
+    </ng-container>
+</div>
+<hr>
+<ng-container #figureContainer></ng-container>

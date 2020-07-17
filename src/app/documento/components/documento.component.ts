@@ -7,6 +7,8 @@ import { map, takeUntil, switchMap } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { DocumentoService } from '../documento.service';
 import { ParroquiaService } from 'src/app/parroquia/parroquia.service';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import Swal from 'sweetalert2';
 declare var jQuery: any;
 declare const $;
 
@@ -16,6 +18,7 @@ declare const $;
   styleUrls: ['./documento.component.css']
 })
 export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild('myModal') myModal: ElementRef;
   message: string;
 
   private unsubscribe$ = new Subject();
@@ -24,6 +27,7 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
   documentos$: Observable<any>;
   parroquia$: Observable<any>;
   documentotoEdit: any = {};
+  searchDoc: any = {};
   checkBoxValue: boolean;
 
   plantilla: boolean;
@@ -33,6 +37,7 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
   diocesis: any;
   parroquia: any;
 
+  public addDocumentoForm: FormGroup;
   today: number = Date.now();
 
   view: any[];
@@ -49,6 +54,7 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
   yAxisLabel = 'REGISTROS';
   nombreGrafica: any;
   constructor(
+    public formBuilder: FormBuilder,
     private location: Location,
     public auth: AuthService,
     public router: Router,
@@ -67,7 +73,7 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.sub = this.activatedroute.paramMap.pipe(map(params => {
       this.parroquia$ = this.afs.doc(`Parroquias/${params.get('p')}`).valueChanges();
       this.documentos$ = this.afs.collection('Documentos', ref => ref.where('parroquia', '==', params.get('p'))
-        .orderBy('name', 'asc')).valueChanges();
+        .orderBy('createdAt', 'desc')).valueChanges({idField: 'ids'});
       this.midiocesis = params.get('d');
       this.miparroquia = params.get('p');
     })).subscribe();
@@ -79,6 +85,10 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.parroquia = {nombre: data.nombre, id: data.parroquia};
       }));
     }), takeUntil(this.unsubscribe$)).subscribe();
+
+    this.addDocumentoForm = this.formBuilder.group({
+      nombre: ['', [Validators.required]]
+  });
   }
 
   ngAfterViewChecked() {
@@ -155,5 +165,68 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
     // }
     this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos', documento.id, 'libros']);
   }
+
+  getColor(documento) {
+    switch (documento) {
+      case true:
+        return 'green';
+      case false:
+        return 'black';
+    }
+  }
+
+  showModal() {
+    jQuery(this.myModal.nativeElement).modal('show');
+  }
+
+  addDocumento() {
+    const documento: any = {
+      id: (this.addDocumentoForm.value.nombre).replace(/ /g, ''),
+      nombre: this.addDocumentoForm.value.nombre,
+      name: this.addDocumentoForm.value.nombre,
+      Libros: 0,
+      principal: false,
+      diocesis: this.midiocesis,
+      parroquia: this.miparroquia,
+      plantilla: false,
+      value: 0,
+      createdAt: Date.now()
+    };
+    const ruta = this.miparroquia + '_' + documento.id;
+    this.afs.firestore.doc(`Documentos/${ruta}`).get()
+      .then(docSnapshot => {
+        if (docSnapshot.exists) {
+         alert('Este Documento ya existe!');
+         this.addDocumentoForm.reset();
+        }else {
+          this.afs.doc(`Documentos/${ruta}`).set(documento);
+          this.addDocumentoForm.reset();
+          jQuery(this.myModal.nativeElement).modal('hide');
+        }
+      });
+  }
+
+  deleteDocumento(documento) {
+    Swal.fire({
+      title: 'Esta seguro de eliminar este Documento?',
+      // text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Eliminar!'
+    }).then((result) => {
+      if (result.value) {
+        this.afs.doc(`Documentos/${documento.ids}`).delete();
+        Swal.fire(
+          'Eliminado!',
+          'El documento ha sido eliminado.',
+          'success'
+        );
+      }
+    });
+  }
+
 
 }

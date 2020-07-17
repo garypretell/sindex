@@ -33,7 +33,7 @@ export class BautismoComponent implements OnInit, OnDestroy {
   celebranteObs$: Observable<any>;
   celebranteObs2$: Observable<any>;
 
-  topTen$: Observable<any>;
+  libros$: Observable<any>;
   midiocesis: any;
   miparroquia: any;
   midocumento: any;
@@ -68,9 +68,9 @@ export class BautismoComponent implements OnInit, OnDestroy {
       this.miruta = this.midocumento + '_' + this.milibro;
       this.actualizarData(this.miruta);
 
-      this.topTen$ = this.afs.collection(`Libros`, ref => ref.where('diocesis', '==', this.midiocesis)
+      this.libros$ = this.afs.collection(`Libros`, ref => ref.where('diocesis', '==', this.midiocesis)
         .where('parroquia', '==', this.miparroquia)
-        .where('documento', '==', this.miparroquia + '_BAUTISMO').orderBy('createdAt', 'desc').limit(10)).valueChanges();
+        .where('documento', '==', this.miparroquia + '_BAUTISMO').orderBy('createdAt', 'desc').limit(6)).valueChanges();
     });
 
     this.afs.doc(`Diocesis/${this.midiocesis}`).valueChanges().pipe(switchMap((m: any) => {
@@ -211,5 +211,16 @@ export class BautismoComponent implements OnInit, OnDestroy {
   goLibro() {
     this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos', this.documento, 'libros']);
   }
+
+  goRegistrar(libro) {
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos', this.documento
+      , 'libros', libro.numLibro, 'registrar']);
+  }
+
+  listar(libro) {
+      this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos', this.documento
+      , 'libros', libro.numLibro]);
+  }
+
 
 }
