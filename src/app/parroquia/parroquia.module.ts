@@ -22,6 +22,10 @@ import { MatrimonioComponent } from '../plantilla/matrimonio/matrimonio.componen
 import { ConfirmacionComponent } from '../plantilla/confirmacion/confirmacion.component';
 import { DefuncionComponent } from '../plantilla/defuncion/defuncion.component';
 import { PlantillaGeneralComponent } from '../plantilla/plantilla-general/plantilla-general.component';
+import { TemplateComponent } from '../plantilla/template/template.component';
+import { PlantillaDirective } from '../plantilla/plantilla.directive';
+import { DragulaModule } from 'ng2-dragula';
+import { DefaultComponent } from '../plantilla/default/default.component';
 
 
 @NgModule({
@@ -37,7 +41,10 @@ import { PlantillaGeneralComponent } from '../plantilla/plantilla-general/planti
     BautismoComponent,
     ConfirmacionComponent,
     DefuncionComponent,
-    MatrimonioComponent
+    MatrimonioComponent,
+    TemplateComponent,
+    DefaultComponent,
+    PlantillaDirective
   ],
   imports: [
     CommonModule,
@@ -48,7 +55,8 @@ import { PlantillaGeneralComponent } from '../plantilla/plantilla-general/planti
     NgxPaginationModule,
     FilterPipeModule,
     InfiniteScrollModule,
-    AngularSplitModule
+    AngularSplitModule,
+    DragulaModule
   ],
    providers: [
     PaginationService

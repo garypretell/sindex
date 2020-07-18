@@ -1,0 +1,121 @@
+<div class="breadcrumb d-flex justify-content-between align-items-center">
+    <ol class="breadcrumb mb-0 p-0">
+        <li class="breadcrumb-item text-primary">
+            <a role="button" (click)="goParroquia()">Parroquia</a>
+        </li>
+        <li class="breadcrumb-item text-primary">
+            <a role="button" (click)="goDocumento()">Documentos</a>
+        </li>
+        <li class="breadcrumb-item text-primary">
+            <a role="button" (click)="goLibro()">Libros</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{ milibro }}</li>
+    </ol>
+    <button class="btn btn-sm btn-success" *ngIf="parroquia">
+        <strong>{{ documento }} - {{ parroquia.nombre }}</strong>
+    </button>
+</div>
+<ng-container>
+    <ng-container *ngIf="campos$ | async; let campos">
+        <div class="mt-2" style="width: 100%; height: 80vh;">
+            <as-split direction="horizontal">
+                <as-split-area size="20" class="contenedor">
+                    <div class="row">
+                        <div class="col">
+                            <div class="shadow card bg-primary text-white text-center m-2">
+                                <h4> Documento {{documento}}</h4>
+                                <small>
+                                    <cite title="Source Title">*Todos los campos son requeridos</cite>
+                                </small>
+                            </div>
+                            <form #formcontrol="ngForm" class="needs-validation m-2" novalidate>
+                                <ng-container>
+                                    <ng-container *ngFor="let data of campos.campos">
+                                        <div class="form-row"
+                                            *ngIf="data.estado == true && data.nombre !== 'N pagina' ">
+                                            <ng-container [ngSwitch]="data.tipo">
+                                                <ng-container *ngSwitchCase="'numerico'">
+                                                    <div class="col mb-3">
+                                                        <label for="apellidos">{{data.nombre}}</label>
+                                                        <input type="number" class="form-control text-uppercase field-focus"
+                                                            name="{{data.nombre}}" [(ngModel)]="newObject[data.nombre]"
+                                                            placeholder="{{data.nombre}}" (keyup.enter)="keytab($event)"
+                                                            autofocus required />
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container *ngSwitchDefault>
+                                                    <div class="col mb-3">
+                                                        <label for="apellidos">{{data.nombre}}</label>
+                                                        <input type="text" class="form-control text-uppercase field-focus"
+                                                            name="{{data.nombre}}" [(ngModel)]="newObject[data.nombre]"
+                                                            placeholder="{{data.nombre}}" (keyup.enter)="keytab($event)"
+                                                            autofocus required />
+                                                    </div>
+                                                </ng-container>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                                <button (click)="add(newObject)" class="btn btn-primary btn-lg btn-block"
+                                    [disabled]="!formcontrol.form.valid">Registrar</button>
+                            </form>
+                            <div class="text-primary text-center mt-0">
+                                <small>
+                                    <cite title="Source Title">*Todos los campos son requeridos</cite>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </as-split-area>
+                <as-split-area size="80" class="m-2">
+                    <div class="shadow alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Importante!</strong> Actualmente se muestran los últimos 6 registros(por usuario). <br>
+                         Si desea ver el <strong>listado completo</strong> de este libro, haga click en: <span role="button" class="badge badge-success">
+                            Libro {{milibro}} <i class="fa fa-book" aria-hidden="true"></i>
+                          </span>
+                      </div>
+                    <table class="table mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <ng-container *ngFor="let column of campos.campos  | filterBy: userFilterF">
+                                    <th scope="col" *ngIf="column.nombre !== 'N pagina' ">{{column.nombre | uppercase}}
+                                    </th>
+                                </ng-container>
+                                <th scope="col" class="text-center">ACCIONES</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <!-- <tr *ngFor="
+                              let item of registros
+                                | filterBy: searchObject
+                                | paginate: { itemsPerPage: 8, currentPage: p };
+                              let i = index
+                            ">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ item.apellidos }}</td>
+                            <td>{{ item.nombres }}</td>
+                            <td>{{ item.numeroreg }}</td>
+                            <td>{{ item.fecha }}</td>
+                            <td>{{ item.fechareg }}</td>
+                            <td>{{ item.parroquia.nombre }}</td>
+                          </tr> -->
+                        </tbody>
+                    </table>
+                </as-split-area>
+            </as-split>
+        </div>
+    </ng-container>
+</ng-container>
+
+<ng-template #loading>
+    <div class="d-flex justify-content-center mt-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <strong class="text-primary"> Loading... </strong>
+    </div>
+</ng-template>
+
+<ng-template #mensaje>
+    mensaje
+</ng-template>

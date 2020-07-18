@@ -43,21 +43,23 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
     this.super = true;
   }
 
+  sub;
   async ngOnInit() {
-
-    const { uid } = await this.auth.getUser();
-    this.afs.doc(`usuarios/${uid}`).valueChanges().pipe(map((data: any) => {
+    this.sub = this.auth.user$.pipe(switchMap(data => {
       if (data) {
-        this.super = data.roles.super;
-        this.name$ = data.displayName;
-        this.foto = data.foto;
-      }else{
+        return this.afs.doc(`usuarios/${data.uid}`).valueChanges().pipe(map((m: any) => {
+          this.super = m.roles.super;
+          this.name$ = m.displayName;
+          this.foto = m.foto;
+        }));
+      }else {
         return of(null);
       }
-    }), takeUntil(this.unsubscribe$)).subscribe();
+    })).subscribe();
   }
 
   ngOnDestroy() {
+    this.sub.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -100,13 +102,15 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   }
 
   goLibro() {
-    this.auth.user$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+    this.auth.user$.pipe(map(data => {
       if (data) {
         const diocesis = data.diocesis.id;
         const parroquia = data.parroquia.id;
         this.router.navigate(['/diocesis', diocesis, 'parroquia', parroquia, 'documentos']);
+      } else {
+        return of(null);
       }
-    });
+    }), takeUntil(this.unsubscribe$)).subscribe();
   }
 
   listado() {

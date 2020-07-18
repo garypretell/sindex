@@ -10,6 +10,7 @@ import { TodosComponent } from '../libro/todos/todos.component';
 import { ListadoComponent } from '../libro/listado/listado.component';
 import { PlantillaComponent } from '../plantilla/plantilla/plantilla.component';
 import { PlantillaGeneralComponent } from '../plantilla/plantilla-general/plantilla-general.component';
+import { TemplateComponent } from '../plantilla/template/template.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,7 @@ const routes: Routes = [
                 children: [
                     { path: '', redirectTo: 'libros',  pathMatch: 'full' },
                     { path: 'listado', component: TodosComponent },
+                    { path: 'template', component: TemplateComponent, canActivate: [AdminGuard] },
                     { path: 'libros',
                       children: [
                         {path: '', component: LibroComponent,  pathMatch: 'full'},

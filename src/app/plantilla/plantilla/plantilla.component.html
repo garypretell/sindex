@@ -4,7 +4,7 @@
         <div *ngSwitchCase="'CONFIRMACION'"><app-confirmacion></app-confirmacion></div>
         <div *ngSwitchCase="'DEFUNCION'"><app-defuncion></app-defuncion></div>
         <div *ngSwitchCase="'MATRIMONIO'"><app-matrimonio></app-matrimonio></div>
-        <div *ngSwitchDefault>error</div>
+        <div *ngSwitchDefault><app-default></app-default></div>
     </container-element>
 </ng-container>
 <ng-template #loading>
@@ -14,16 +14,3 @@
         <strong class="text-info"> Loading... </strong>
     </div>
 </ng-template>
-
-<!-- <section class="container app-container">
-    <div class="row">
-      <div class="pill" *ngFor="let tab of tabs; let pos = index;"
-           [ngClass]="{'pill-active': pos === activeTab}"
-           (click)="changeTab(pos)"
-      >
-        {{tab.title}}
-      </div>
-    </div>
-    <ng-container #figureContainer></ng-container>
-  
-  </section> -->

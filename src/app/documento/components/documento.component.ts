@@ -196,8 +196,12 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.afs.firestore.doc(`Documentos/${ruta}`).get()
       .then(docSnapshot => {
         if (docSnapshot.exists) {
-         alert('Este Documento ya existe!');
-         this.addDocumentoForm.reset();
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Este documento ya existe!',
+          });
+          this.addDocumentoForm.reset();
         }else {
           this.afs.doc(`Documentos/${ruta}`).set(documento);
           this.addDocumentoForm.reset();
@@ -226,6 +230,11 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
         );
       }
     });
+  }
+
+  goPlantilla(documento) {
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia,
+    'documentos', documento.id, 'template']);
   }
 
 

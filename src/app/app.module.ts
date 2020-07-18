@@ -10,6 +10,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AngularSplitModule } from 'angular-split';
+import { DragulaModule } from 'ng2-dragula';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -46,7 +47,8 @@ import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component'
     NgxPaginationModule,
     FilterPipeModule,
     InfiniteScrollModule,
-    AngularSplitModule.forRoot()
+    AngularSplitModule.forRoot(),
+    DragulaModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

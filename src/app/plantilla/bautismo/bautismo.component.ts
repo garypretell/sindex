@@ -218,7 +218,7 @@ export class BautismoComponent implements OnInit, OnDestroy {
   }
 
   listar(libro) {
-      this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos', this.documento
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos', this.documento
       , 'libros', libro.numLibro]);
   }
 

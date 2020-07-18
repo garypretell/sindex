@@ -178,12 +178,12 @@
                   </div>
                   <div class="d-flex w-100 justify-content-between">
                     <form>
-                      <button class="btn btn-outline-success btn-sm m-1" *ngIf="!documento.principal && auth.canDelete(auth.user$ | async)">Editar</button>
-                      <button class="btn btn-outline-danger btn-sm m-1" *ngIf="!documento.principal && auth.canDelete(auth.user$ | async)" (click)="deleteDocumento(documento)" >Eliminar</button>
+                      <span role="button" class="badge badge-danger align-self-center m-1"
+                      *ngIf="!documento.principal && auth.canDelete(auth.user$ | async)" (click)="deleteDocumento(documento)">Eliminar</span>
+                      <span role="button" class="badge badge-dark align-self-center m-1"
+                      *ngIf="!documento.principal && auth.canDelete(auth.user$ | async)" (click)="goPlantilla(documento)" >Plantilla</span>
                     </form>
                     <form>
-                      <span role="button" class="badge badge-dark align-self-center m-1"
-                      *ngIf="!documento.principal && auth.canDelete(auth.user$ | async)">Plantilla</span>
                       <span role="button" class="badge badge-secondary align-self-center m-1">Buscar</span>
                       <span role="button" class="badge badge-primary align-self-center m-1"
                         (click)="goLibro(documento)">Registrar</span>
