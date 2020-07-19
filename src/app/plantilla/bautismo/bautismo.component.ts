@@ -73,12 +73,10 @@ export class BautismoComponent implements OnInit, OnDestroy {
         .where('documento', '==', this.miparroquia + '_BAUTISMO').orderBy('createdAt', 'desc').limit(6)).valueChanges();
     });
 
-    this.afs.doc(`Diocesis/${this.midiocesis}`).valueChanges().pipe(switchMap((m: any) => {
-      return this.afs.doc(`Parroquias/${this.miparroquia}`).valueChanges().pipe(map((data: any) => {
-        this.diocesis = { nombre: m.nombre, id: data.diocesis };
-        this.parroquia = { nombre: data.nombre, id: data.parroquia };
-      }));
-    }), takeUntil(this.unsubscribe$)).subscribe();
+    this.auth.user$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.diocesis = data.diocesis;
+      this.parroquia = data.parroquia;
+    });
 
     this.addBautismoForm = this.formBuilder.group({
       nombres: ['', [Validators.required]],

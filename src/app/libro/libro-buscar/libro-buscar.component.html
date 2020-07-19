@@ -1,0 +1,85 @@
+<div class="mt-2" style="width: 100%; height: 80vh;">
+    <as-split direction="horizontal">
+        <as-split-area size="20" class="contenedor">
+            <div class="row">
+                <div class="col">
+                    <div class="shadow card bg-info text-white text-center m-2">
+                        <h4> Documento {{documento}}</h4>
+                        <small>
+                            <cite title="Source Title">*Filtrar Documentos</cite>
+                        </small>
+                    </div>
+                    <hr class="mx-5">
+                    <form>
+                        <ng-container *ngFor="let data of campos">
+                            <div class="form-row" *ngIf="data.estado == true">
+                                <ng-container [ngSwitch]="data.tipo">
+                                    <div dragula="DRAGULA_FACTS" class="w-100">
+                                        <ng-container *ngSwitchCase="'numerico'">
+                                            <div class="col mb-3" style="cursor: pointer;">
+                                                <label for="{{data.nombre}}">{{data.nombre}}</label>
+                                                <input type="number"
+                                                    class="form-control text-uppercase field-focus border border-info"
+                                                    name="{{data.nombre}}" [(ngModel)]="searchObject[data.nombre]" (keyup.enter)="keytab($event)"
+                                                    autofocus />
+                                            </div>
+                                        </ng-container>
+                                        <ng-container *ngSwitchDefault>
+                                            <div class="col mb-3" style="cursor: pointer;">
+                                                <label for="{{data.nombre}}">{{data.nombre}}</label>
+                                                <input type="text"
+                                                    class="form-control text-uppercase field-focus border border-info"
+                                                    oninput="this.value = this.value.toUpperCase()"
+                                                    name="{{data.nombre}}" [(ngModel)]="searchObject[data.nombre]" (keyup.enter)="keytab($event)"
+                                                    autofocus />
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </form>
+                    <div class="text-info text-center mt-0">
+                        <small>
+                            <cite title="Source Title">*Filtrar Documentos</cite>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </as-split-area>
+        <as-split-area size="80" class="m-2">
+            <div class="table-responsive">
+                <table class="table table-hover mt-3 text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" *ngFor="let column of campos | filterBy: userFilterF">
+                                {{column.nombre | uppercase}}
+                            </th>
+                            <th scope="col">ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            *ngFor="let item of registros | filterBy: searchObject | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
+                            <td>{{ 5 * (p -1) + i + 1}} </td>
+                            <td *ngFor="let col of campos | filterBy: userFilterF">
+                                {{item[col.nombre] }}
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm mr-2"
+                                    (click)="enableEditing($event, item)">
+                                    <i class="fa fa-pencil"></i> Edit</button>
+
+                                <button class="btn btn-outline-danger btn-sm" (click)="deleteRegistro(item)">
+                                    <i class="fa fa-trash"></i> Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls (pageChange)="p = $event" *ngIf="(registros).length > 0">
+                </pagination-controls>
+            </div>
+        </as-split-area>
+    </as-split>
+</div>

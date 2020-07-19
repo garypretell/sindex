@@ -35,7 +35,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
   subs = new Subscription();
 
   // tslint:disable-next-line:max-line-length
-  itemList: any[] = [{nombre: 'usuarioid', tipo: 'numerico'}, {nombre: 'fecharegistro', tipo: 'fecha'}, {nombre: 'N pagina', tipo: 'texto'}];
+  itemList: any[] = [{nombre: 'usuarioid', tipo: 'numerico'}, {nombre: 'fecharegistro', tipo: 'fecha'}];
   tipoArray: any[] = [{id: 1, nombre: 'texto'}, {id: 2, nombre: 'numerico'}, {id: 3, nombre: 'fecha'}, {id: 4, nombre: 'imagen'}];
   campos$: Observable<any>;
   constructor(
@@ -88,8 +88,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
   itemListSaveS() {
     const items: any[] = [
              {nombre: 'usuarioid', tipo: 'numerico', estado : 'principal'},
-             {nombre: 'fecharegistro', tipo: 'fecha',  estado : 'principal'},
-             {nombre: 'N pagina', tipo: 'texto',  estado : 'true'}
+             {nombre: 'fecharegistro', tipo: 'fecha',  estado : 'principal'}
      ];
     this.afs.doc(`Plantillas/${this.midocumento}`).set({parroquia: this.miparroquia, campos: items});
    }

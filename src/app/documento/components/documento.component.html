@@ -146,9 +146,7 @@
           <div class="shadow card">
             <div class="card-body ">
               <h5 class="card-title">Importante!!</h5>
-              <p class="text-muted">Si necesita que personalicemos su plantilla: creación de libros ordenados por
-                número, reportes y más... <br>
-                Póngase en contacto con nosotros: <span role="button" class="badge badge-dark"><i
+              <p class="text-muted">Para busquedas personalizadas de sus nuevas plantillas, póngase en contacto con nosotros. <br> <span role="button" class="badge badge-dark"><i
                     class="fa fa-envelope-o" aria-hidden="true"></i> Contacto
                 </span></p>
             </div>
@@ -163,7 +161,7 @@
               </span>
             </div>
           </div>
-          <input type="search" class="form-control text-uppercase mb-3" placeholder="Buscar Documento"
+          <input type="search" class="form-control text-uppercase border border-success mb-3" placeholder="Buscar Documento"
             [(ngModel)]="searchDoc.name" />
           <hr class="success" />
           <ng-container *ngIf="documentos$ | async as documentos; else loading">

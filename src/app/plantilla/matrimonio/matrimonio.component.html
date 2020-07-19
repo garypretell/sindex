@@ -1,1 +1,365 @@
-<p>matrimonio works!</p>
+<div style="width: 100%; height: 90vh">
+    <as-split direction="horizontal">
+        <as-split-area size="85" class="contenedor">
+            <div class="breadcrumb d-flex justify-content-between align-items-center">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item text-primary">
+                        <a role="button" (click)="goParroquia()">Parroquia</a>
+                    </li>
+                    <li class="breadcrumb-item text-primary">
+                        <a role="button" (click)="goDocumento()">Documentos</a>
+                    </li>
+                    <li class="breadcrumb-item text-primary">
+                        <a role="button" (click)="goLibro()">Libros</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ milibro }}</li>
+                </ol>
+                <button class="btn btn-sm btn-success" *ngIf="parroquia">
+                    <strong>{{ documento }} - {{ parroquia.nombre }}</strong>
+                </button>
+            </div>
+            <div class="card mr-2">
+                <div class="card-body">
+                    <div class="row justify-content-between">
+                        <h4 class="ml-3">
+                            <strong>
+                                <em>Matrimonios - Libro {{milibro}} </em>
+                            </strong>
+                        </h4>
+                        <div class="col-md-2 mb-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span style="font-size: 0.8rem;" class="input-group-text">#Partida</span>
+                                </div>
+                                <input type="number" class="form-control" id="partidaId" [(ngModel)]="registro"
+                                    [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                    style="font-size: 0.8rem;" />
+                            </div>
+                        </div>
+                    </div>
+                    <form [formGroup]="addMatrimonioForm" class="was-validated" novalidate>
+                        <div class="form-row letra">
+                            <div class="col-lg">
+                                <label for="fecha">Fecha de Matrimonio</label>
+                                <input type="date" class="form-control" id="fecha" formControlName="fecha" required />
+                            </div>
+                            <div class="col-lg">
+                                <label for="fechareg">Fecha de Registro</label>
+                                <input type="date" class="form-control" id="fechareg" formControlName="fechareg"
+                                    required />
+                            </div>
+                            <div class="col-lg">
+                                <label for="celebrante">Celebrante</label>
+                                <select class="custom-select text-uppercase" id="celebrante" [(ngModel)]="micelebrante"
+                                    (ngModelChange)="celebranteChanged(micelebrante)"
+                                    [ngModelOptions]="{standalone: true}" required>
+                                    <option selected disabled value="">Seleccione...</option>
+                                    <option [value]="d.nombre" *ngFor="let d of celebrantes;trackBy: trackByFn">
+                                        {{ d.nombre }}</option>
+                                </select>
+                            </div>
+                            <div class="col-lg" *ngIf="celebranteObs$ | async; let celebranteObs;">
+                                <label for="nomceleb">Nombre</label>
+                                <div class="input-group">
+                                    <select class="custom-select" id="nomceleb" formControlName="nomceleb" required>
+                                        <option selected disabled value="">Seleccione...</option>
+                                        <option [value]="d.nombre" *ngFor="let d of celebranteObs;trackBy: trackByFn">
+                                            {{ d.nombre }} </option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button (click)="formDirectorio1()" class="btn btn-primary btn-sm"
+                                            id="button-addon2">(+)</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p></p><br>
+                        <h5 class="card-title">Datos Esposo:</h5>
+                        <div class="form-row letra">
+                            <div class="col-md-4 mb-4">
+                                <label for="nombresBl">Nombres</label>
+                                <input type="text" class="form-control is-invalid text-uppercase" id="nombresB"
+                                    formControlName="nombres" oninput="this.value = this.value.toUpperCase()"
+                                    required />
+                                <!-- <div *ngIf="nombres.invalid && (nombres.dirty || nombres.touched)" class="invalid-feedback">
+                              Debe registrar los <strong>Nombres </strong> del Esposo.
+                            </div> -->
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <label for="apellidosBl">Apellidos</label>
+                                <input type="text" class="form-control is-invalid text-uppercase" id="apellidosB"
+                                    oninput="this.value = this.value.toUpperCase()" formControlName="apellidos"
+                                    required />
+                                <!-- <div *ngIf="apellidos.invalid && (apellidos.dirty || apellidos.touched)"
+                              class="invalid-feedback">
+                              Debe registrar los <strong>Apellidos </strong> del Esposo.
+                            </div> -->
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <label for="dni">Documento de identidad</label>
+                                <input
+                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                    type="number" maxlength="8" class="form-control is-invalid" id="dni" name="dni"
+                                    formControlName="dni" required />
+                            </div>
+                        </div>
+
+                        <div class="form-row letra">
+                            <div class="col-lg">
+                                <label for="nompadreP">Nombres del Padre</label>
+                                <input type="text" class="form-control is-invalid text-uppercase" id="nompadreP"
+                                    formControlName="nompadreP" required />
+                            </div>
+
+                            <div class="col-lg">
+                                <label for="nommadreP">Nombres de la Madre</label>
+                                <input type="text" class="form-control is-invalid text-uppercase" id="nommadreP"
+                                    formControlName="nommadreP" required />
+                            </div>
+
+                        </div> <br>
+
+                        <div class="form-row letra">
+                            <div class="col-lg">
+                                <label for="lugarP">Lugar de Bautismo(Diocesis-Parroquia)</label>
+                                <input type="text" class="form-control is-invalid text-uppercase" id="lugarP"
+                                    formControlName="lugarP" required />
+                            </div>
+
+                            <div class="col-lg">
+                                <label for="fechaP">Fecha de Bautismo</label>
+                                <input type="date" class="form-control is-invalid" id="fechaP" formControlName="fechaP"
+                                    required />
+                            </div>
+
+                            <div class="col-lg">
+                                <label for="libroP">Número de Libro</label>
+                                <input type="number" class="form-control is-invalid text-uppercase" id="libroP"
+                                    formControlName="libroP" required />
+                            </div>
+
+                            <div class="col-lg">
+                                <label for="regP">Número de Registro</label>
+                                <input type="number" class="form-control is-invalid text-uppercase" id="regP"
+                                    formControlName="regP" required />
+                            </div>
+
+                        </div>
+                        <hr> <br>
+                        <h5 class="card-title">Datos Esposa:</h5>
+                        <div class="form-row letra">
+                            <div class="col-md-4 mb-4">
+                                <label for="nombresM">Nombres</label>
+                                <input type="text" class="form-control is-invalid text-uppercase" id="nombresM"
+                                    formControlName="nombresM" oninput="this.value = this.value.toUpperCase()"
+                                    required />
+
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <label for="apellidosM">Apellidos</label>
+                                <input type="text" class="form-control is-invalid text-uppercase" id="apellidosM"
+                                    oninput="this.value = this.value.toUpperCase()" formControlName="apellidosM"
+                                    required />
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <label for="dniM">Documento de identidad</label>
+                                <input
+                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                    type="number" maxlength="8" class="form-control is-invalid" id="dniM" name="dniM"
+                                    formControlName="dniM" required />
+                            </div>
+                        </div>
+
+                        <div class="form-row letra">
+                            <div class="col-lg">
+                                <label for="nompadreM">Nombres del Padre</label>
+                                <input type="text" class="form-control is-invalid text-uppercase" id="nompadreM"
+                                    formControlName="nompadreM" required />
+                            </div>
+
+                            <div class="col-lg">
+                                <label for="nommadreM">Nombres de la Madre</label>
+                                <input type="text" class="form-control is-invalid text-uppercase" id="nommadreM"
+                                    formControlName="nommadreM" required />
+                            </div>
+
+                        </div> <br>
+
+                        <div class="form-row letra">
+                            <div class="col-lg">
+                                <label for="lugarM">Lugar de Bautismo(Diocesis-Parroquia)</label>
+                                <input type="text" class="form-control is-invalid text-uppercase" id="lugarM"
+                                    formControlName="lugarM" required />
+                            </div>
+
+                            <div class="col-lg">
+                                <label for="fechaM">Fecha de Bautismo</label>
+                                <input type="date" class="form-control is-invalid" id="fechaM" formControlName="fechaM"
+                                    required />
+                            </div>
+
+                            <div class="col-lg">
+                                <label for="libroM">Número de Libro</label>
+                                <input type="number" class="form-control is-invalid text-uppercase" id="libroM"
+                                    formControlName="libroM" required />
+                            </div>
+
+                            <div class="col-lg">
+                                <label for="regM">Número de Registro</label>
+                                <input type="number" class="form-control is-invalid text-uppercase" id="regM"
+                                    formControlName="regM" required />
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-row letra">
+                            <div class="col mb-2">
+                                <label for="celebrante">Doy Fe:</label>
+                                <select class="custom-select text-uppercase" id="celebrante2"
+                                    [(ngModel)]="micelebrante2" (ngModelChange)="celebranteChanged2($event)"
+                                    [ngModelOptions]="{standalone: true}" required>
+                                    <option selected disabled value="">Seleccione...</option>
+                                    <option [value]="d.nombre" *ngFor="let d of celebrantes;trackBy: trackByFn">
+                                        {{ d.nombre }}</option>
+                                </select>
+                            </div>
+                            <div class="col mb-2" *ngIf="celebranteObs2$ | async; let celebranteObs;">
+                                <label for="doyfe">Nombre</label>
+                                <div class="input-group">
+                                    <select class="custom-select" id="doyfe" formControlName="doyfe" required>
+                                        <option selected disabled value="">Seleccione...</option>
+                                        <option [value]="d.nombre" *ngFor="let d of celebranteObs;trackBy: trackByFn">
+                                            {{ d.nombre }} </option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button (click)="formDirectorio()" class="btn btn-primary btn-sm"
+                                            id="button-addon2">(+)</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row letra">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Comentarios:</span>
+                                </div>
+                                <textarea class="form-control text-uppercase" aria-label="With textarea"
+                                    formControlName="comentarios"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" (click)="addMatrimonio()"
+                                [disabled]="!addMatrimonioForm.valid">Save </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </as-split-area>
+        <as-split-area size="15" class="contenedor">
+            <div class="container-12">
+                <div class="row pt-2">
+                    <div class="col-md-12" *ngFor="let libro of libros$ | async;trackBy: trackByFn">
+                        <div class="card shadow m-2">
+                            <div class="card-body">
+                                <div class="p-2 border rounded">
+                                    <div class="d-flex justify-content-center mb-1">
+                                        <p></p>
+                                        <div class="btn-group dropright">
+                                            <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Libro : {{libro.numLibro}}
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item more" (click)="goRegistrar(libro)">Registrar</a>
+                                                <a class="dropdown-item" (click)="listar(libro)">Listar...</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </as-split-area>
+    </as-split>
+
+</div>
+
+<div #myModalDirectorio1 class="modal fade" id="myModalDirectorio1" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form" [formGroup]="addDirectorioForm" (ngSubmit)="addDirectorio()" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">AGREGAR {{ micelebrante | uppercase}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="nombreDirectorio">NOMBRE {{ micelebrante | uppercase}}:</label>
+                            <input type="text" class="form-control text-uppercase" id="nombreDirectorio1"
+                                name="nombreDirectorio1" formControlName="nombre">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="dniDirectorio">DNI:</label>
+                            <input
+                                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                type="number" maxlength="8" class="form-control text-uppercase" id="dniDirectorio"
+                                name="dniDirectorio" formControlName="dni">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!addDirectorioForm.valid">Save </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div #myModalDirectorio class="modal fade" id="myModalDirectorio" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form" [formGroup]="addDirectorioForm" (ngSubmit)="addDirectorio2()" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">AGREGAR {{ micelebrante2 | uppercase}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="nombreDirectorio">NOMBRE {{ micelebrante2 | uppercase}}:</label>
+                            <input type="text" class="form-control text-uppercase" id="nombreDirectorio"
+                                name="nombreDirectorio" formControlName="nombre">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="dniDirectorio2">DNI:</label>
+                            <input
+                                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                type="number" maxlength="8" class="form-control" id="dniDirectorio2"
+                                name="dniDirectorio2" formControlName="dni">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!addDirectorioForm.valid">Save </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

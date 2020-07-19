@@ -29,6 +29,7 @@ export class ListadoComponent implements OnInit, OnDestroy {
   miruta: any;
 
   registros$: Observable<any>;
+  campos$: Observable<any>;
   searchObject: any = {};
   p: any;
 
@@ -50,9 +51,10 @@ export class ListadoComponent implements OnInit, OnDestroy {
       this.milibro = params.get('l');
       this.miruta = this.midocumento + '_' + this.milibro;
       this.verifyData(this.miruta);
+      this.campos$ = this.afs.doc(`Plantillas/${this.midocumento}`).valueChanges();
       this.registros$ = this.afs.collection(`Registros`, ref => ref.where('diocesis.id', '==', this.midiocesis)
       .where('parroquia.id', '==', this.miparroquia).where('documento', '==', this.documento)
-      .where('libro', '==', parseFloat(this.milibro)).orderBy('numeroreg', 'asc')).valueChanges({ idField: 'id' });
+      .where('libro', '==', parseFloat(this.milibro)).orderBy('createdAt', 'asc')).valueChanges({ idField: 'id' });
     })).subscribe();
 
     this.afs.doc(`Diocesis/${this.midiocesis}`).valueChanges().pipe(switchMap((m: any) => {

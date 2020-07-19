@@ -26,6 +26,7 @@ import { TemplateComponent } from '../plantilla/template/template.component';
 import { PlantillaDirective } from '../plantilla/plantilla.directive';
 import { DragulaModule } from 'ng2-dragula';
 import { DefaultComponent } from '../plantilla/default/default.component';
+import { LibroBuscarComponent } from '../libro/libro-buscar/libro-buscar.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { DefaultComponent } from '../plantilla/default/default.component';
     MatrimonioComponent,
     TemplateComponent,
     DefaultComponent,
-    PlantillaDirective
+    PlantillaDirective,
+    LibroBuscarComponent
   ],
   imports: [
     CommonModule,
