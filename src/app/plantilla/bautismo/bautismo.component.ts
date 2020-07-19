@@ -25,7 +25,6 @@ export class BautismoComponent implements OnInit, OnDestroy {
   addDirectorioForm: FormGroup;
   addLibroForm: FormGroup;
   esconder: boolean;
-  selDisabled: boolean;
   registro: any;
   celebrantes: any[];
   micelebrante: any;
@@ -52,13 +51,12 @@ export class BautismoComponent implements OnInit, OnDestroy {
   ) {
 
     this.esconder = true;
-    this.selDisabled = true;
     this.celebrantes = [{ id: 1, nombre: 'Diacono' }, { id: 2, nombre: 'Obispo' }, { id: 3, nombre: 'Presbitero' }];
   }
 
   sub;
   ngOnInit() {
-    this.selDisabled = true;
+
     this.sub = this.activatedroute.paramMap.subscribe(params => {
       this.midiocesis = params.get('d');
       this.miparroquia = params.get('p');
