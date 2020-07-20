@@ -71,9 +71,20 @@ export class BautismoComponent implements OnInit, OnDestroy {
         .where('documento', '==', this.miparroquia + '_BAUTISMO').orderBy('createdAt', 'desc').limit(6)).valueChanges();
     });
 
-    this.auth.user$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.diocesis = data.diocesis;
-      this.parroquia = data.parroquia;
+    this.afs.doc(`Diocesis/${this.midiocesis}`).valueChanges().pipe(switchMap((m: any) => {
+      return this.afs.doc(`Parroquias/${this.miparroquia}`).valueChanges().pipe(map((data: any) => {
+        this.diocesis = {nombre: m.nombre, id: data.diocesis};
+        this.parroquia = {nombre: data.nombre, id: data.parroquia};
+      }));
+    }), takeUntil(this.unsubscribe$)).subscribe();
+
+    this.addLibroForm = this.formBuilder.group({
+      numLibro: ['', [Validators.required]],
+      contador: [''],
+      documento: [''],
+      diocesis: [''],
+      parroquia: [''],
+      createdAt: [''],
     });
 
     this.addBautismoForm = this.formBuilder.group({
@@ -105,6 +116,11 @@ export class BautismoComponent implements OnInit, OnDestroy {
       comentarios: [''],
       usuario: [''],
       createdAt: ['']
+    });
+
+    this.addDirectorioForm = this.formBuilder.group({
+      nombre: ['', [Validators.required]],
+      dni: ['', [Validators.required]],
     });
 
   }
@@ -148,7 +164,10 @@ export class BautismoComponent implements OnInit, OnDestroy {
     this.afs.doc(`Registros/${autoId}`).set(this.addBautismoForm.value, { merge: true });
     batch.commit().then(() => {
       const datos = { contador: firebase.firestore.FieldValue.increment(1) };
-      this.afs.doc(`Libros/${this.libro}`).set(datos, { merge: true });
+      const rutaDoc = this.miparroquia + '_' + this.documento;
+      const value = { value: firebase.firestore.FieldValue.increment(1) };
+      this.afs.doc(`Documentos/${rutaDoc}`).set(value, { merge: true });
+      this.afs.doc(`Libros/${this.miruta}`).set(datos, { merge: true });
       this.afs.doc(`docs/BAUTISMO`).set(datos, { merge: true });
       this.registro += 1;
       this.addBautismoForm.reset();
@@ -156,6 +175,46 @@ export class BautismoComponent implements OnInit, OnDestroy {
       this.micelebrante2 = 'Select One';
     });
 
+  }
+
+  addDirectorio() {
+    const directorio: any = {
+      nombre: this.addDirectorioForm.value.nombre,
+      dni: this.addDirectorioForm.value.dni,
+      diocesis: this.midiocesis,
+      parroquia: this.miparroquia
+    };
+
+    this.afs.firestore.doc(`${this.micelebrante}/${directorio.dni}`).get()
+      .then(docSnapshot => {
+        if (docSnapshot.exists) {
+          alert('Este Nombre ya se encuentra Registrado');
+          this.addDirectorioForm.reset();
+        } else {
+          this.afs.doc(`${this.micelebrante}/${directorio.dni}`).set(directorio);
+          this.addDirectorioForm.reset();
+        }
+      });
+  }
+
+  addDirectorio2() {
+    const directorio: any = {
+      nombre: this.addDirectorioForm.value.nombre,
+      dni: this.addDirectorioForm.value.dni,
+      diocesis: this.midiocesis,
+      parroquia: this.miparroquia
+    };
+
+    this.afs.firestore.doc(`${this.micelebrante2}/${directorio.dni}`).get()
+      .then(docSnapshot => {
+        if (docSnapshot.exists) {
+          alert('Este Nombre ya se encuentra Registrado');
+          this.addDirectorioForm.reset();
+        } else {
+          this.afs.doc(`${this.micelebrante2}/${directorio.dni}`).set(directorio);
+          this.addDirectorioForm.reset();
+        }
+      });
   }
 
   formDirectorio() {

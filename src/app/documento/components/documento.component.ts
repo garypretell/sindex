@@ -102,7 +102,7 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   onSelect(event) {
-    console.log(event);
+    // console.log(event);
   }
 
   onResize(event) {
@@ -151,18 +151,9 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   backClicked() {
     this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia]);
-    // this.location.back();
   }
 
   goLibro(documento) {
-    // const array = ['BAUTISMO', 'MATRIMONIO', 'DEFUNCION', 'CONFIRMACION'];
-    // const value = documento.nombre;
-    // const isInArray = array.includes(value);
-
-    // if ( isInArray === false) {
-    //   return this.router.navigate
-    //   (['/Diocesis', this.midiocesis, 'Parroquia', this.miparroquia, 'Documento', documento.nombre, 'Registro']);
-    // }
     this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos', documento.id, 'libros']);
   }
 
@@ -235,6 +226,22 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
   goPlantilla(documento) {
     this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia,
     'documentos', documento.id, 'template']);
+  }
+
+  buscarDocumentos(documento) {
+    const array = ['BAUTISMO', 'MATRIMONIO', 'DEFUNCION', 'CONFIRMACION'];
+    const value = documento.id;
+    const isInArray = array.includes(value);
+    if (isInArray) {
+      return this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia,
+      'documentos', documento.id, 'buscar']);
+    }
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'No tiene acceso a esta funcionalidad!',
+      footer: '<a href>Desea ponerse en contacto con el Administrador?</a>'
+    });
   }
 
 

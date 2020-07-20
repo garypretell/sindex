@@ -246,3 +246,90 @@
     </as-split-area>
   </as-split>
 </div>
+
+<div #myModalDirectorio1 class="modal fade" id="myModalDirectorio1" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form class="form" [formGroup]="addDirectorioForm" (ngSubmit)="addDirectorio()" novalidate>
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">AGREGAR {{ micelebrante | uppercase}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="nombreDirectorio">NOMBRE {{ micelebrante | uppercase}}:</label>
+              <input type="text" class="form-control text-uppercase" id="nombreDirectorio1" name="nombreDirectorio1"
+                formControlName="nombre" oninput="this.value = this.value.toUpperCase()">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label for="dniDirectorio">DNI:</label>
+              <input
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                type="number" maxlength="8" class="form-control text-uppercase" id="dniDirectorio" name="dniDirectorio"
+                formControlName="dni">
+            </div>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary" type="submit" [disabled]="!addDirectorioForm.valid">Save </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div #myModalDirectorio class="modal fade" id="myModalDirectorio" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form class="form" [formGroup]="addDirectorioForm" (ngSubmit)="addDirectorio2()" novalidate>
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">AGREGAR {{ micelebrante2 | uppercase}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="nombreDirectorio">NOMBRE:</label>
+              <input type="text" class="form-control text-uppercase" id="nombreDirectorio" name="nombreDirectorio"
+                formControlName="nombre" oninput="this.value = this.value.toUpperCase()">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label for="dniDirectorio2">DNI:</label>
+              <input
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                type="number" maxlength="8" class="form-control text-uppercase" id="dniDirectorio2"
+                name="dniDirectorio2" formControlName="dni">
+            </div>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary" type="submit" [disabled]="!addDirectorioForm.valid">Save </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

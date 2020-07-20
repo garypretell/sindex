@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewContainerRef, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-plantilla',
-  templateUrl: './plantilla.component.html',
-  styleUrls: ['./plantilla.component.css']
+  selector: 'app-buscar-registro',
+  templateUrl: './buscar-registro.component.html',
+  styleUrls: ['./buscar-registro.component.css']
 })
-export class PlantillaComponent implements OnInit, OnDestroy {
+export class BuscarRegistroComponent implements OnInit, OnDestroy {
   documento: any;
   constructor(
     private activatedroute: ActivatedRoute

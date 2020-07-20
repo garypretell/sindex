@@ -11,15 +11,16 @@
     </li>
     <li class="breadcrumb-item active" aria-current="page">{{ milibro }}</li>
   </ol>
-  <button class="btn btn-sm btn-success" *ngIf="parroquia" >
+  <button class="btn btn-sm btn-success" *ngIf="parroquia">
     <strong>{{ documento }} - {{ parroquia.nombre }}</strong>
   </button>
 </div>
 
 <ng-container *ngIf="registros$ | async as registros; else loading">
   <ng-container *ngIf="registros.length > 0; else mensaje">
-    <ng-container *ngIf="milibro === 'BAUTISMO' || milibro === 'CONFIRMACION' || milibro === 'DEFUNCION' || milibro === 'MATRIMONIO'; else default"   >
-      <div class="mt-2" style="width: 100%; height: 100vh;">
+    <ng-container
+      *ngIf="documento === 'BAUTISMO' || documento === 'CONFIRMACION' || documento === 'DEFUNCION' || documento === 'MATRIMONIO'; else default">
+      <div class="mt-2" style="width: 100%; height: 90vh;">
         <as-split direction="horizontal">
           <as-split-area size="20">
             <div class="row">
@@ -165,7 +166,7 @@
     </ng-container>
     <ng-template #default>
       <ng-container *ngIf="campos$ | async as campos">
-        <app-libro-buscar [registros]= registros  [campos]= campos.campos [documento] = documento ></app-libro-buscar>
+        <app-libro-buscar [registros]=registros [campos]=campos.campos [documento]=documento></app-libro-buscar>
       </ng-container>
     </ng-template>
   </ng-container>
@@ -230,10 +231,14 @@
           <tr class='tablerowodd'>
             <td align='center'>{{i+1}}</td>
             <td>{{p.numeroreg}}</td>
-            <ng-container *ngIf="documento !=='MATRIMONIO'; else matrimonio" >
+            <ng-container *ngIf="documento !=='MATRIMONIO'; else matrimonio">
               <td>{{p.nombres}}</td>
               <td>{{p.apellidos}}</td>
             </ng-container>
+            <ng-template #matrimonio>
+              <td>{{p.nombres}} {{p.apellidos}}</td>
+              <td>{{p.nombresM}} {{p.apellidosM}}</td>
+            </ng-template>
             <td align='center'>{{p.fecha}}</td>
           </tr>
           <tr class='tableroweven'>
@@ -242,10 +247,5 @@
         </tbody>
       </table>
     </body>
-
   </div>
 </div>
-<ng-template #matrimonio>
-  <td>{{p.nombres}} {{p.apellidos}}</td>
-  <td>{{p.nombresM}} {{p.apellidosM}}</td>
-</ng-template>

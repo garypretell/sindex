@@ -43,7 +43,7 @@
                                 </tr>
                             </thead>
                             <tbody dragula="MANY_ITEMS" [(dragulaModel)]='temp.campos'>
-                                <tr *ngFor="let x of temp.campos | filterBy: searchObjectS; let i = index">
+                                <tr *ngFor="let x of temp.campos | filterBy: searchObjectS; let i = index" style="cursor: pointer;">
                                     <ng-container *ngIf="x.estado !== 'principal'" >
                                         <td>{{ i-1 }}</td>
                                         <td [ngStyle]="{'color':getColor(x.estado)}" class="handle"> 🖐️

@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router, ActivatedRoute } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, switchMap, map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import * as firebase from 'firebase/app';
 declare var jQuery: any;
@@ -70,10 +70,12 @@ export class DefuncionComponent implements OnInit, OnDestroy {
         .where('documento', '==', this.miparroquia + '_DEFUNCION').orderBy('createdAt', 'desc').limit(6)).valueChanges();
     });
 
-    this.auth.user$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.diocesis = data.diocesis;
-      this.parroquia = data.parroquia;
-    });
+    this.afs.doc(`Diocesis/${this.midiocesis}`).valueChanges().pipe(switchMap((m: any) => {
+      return this.afs.doc(`Parroquias/${this.miparroquia}`).valueChanges().pipe(map((data: any) => {
+        this.diocesis = {nombre: m.nombre, id: data.diocesis};
+        this.parroquia = {nombre: data.nombre, id: data.parroquia};
+      }));
+    }), takeUntil(this.unsubscribe$)).subscribe();
 
     this.addParroquiaForm = this.formBuilder.group({
       diocesis: ['', [Validators.required]],
@@ -157,6 +159,9 @@ export class DefuncionComponent implements OnInit, OnDestroy {
     const batch = this.afs.firestore.batch();
     this.afs.doc(`Registros/${autoId}`).set(this.addDefuncionForm.value, { merge: true });
     batch.commit().then(() => {
+      const rutaDoc = this.miparroquia + '_' + this.documento;
+      const value = { value: firebase.firestore.FieldValue.increment(1) };
+      this.afs.doc(`Documentos/${rutaDoc}`).set(value, { merge: true });
       const datos = { contador: firebase.firestore.FieldValue.increment(1) };
       this.afs.doc(`Libros/${this.miruta}`).set(datos, { merge: true });
       this.afs.doc(`docs/DEFUNCION`).set(datos, { merge: true });

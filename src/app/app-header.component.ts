@@ -104,9 +104,9 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   goLibro() {
     this.auth.user$.pipe(map(data => {
       if (data) {
-        const diocesis = data.diocesis.id;
-        const parroquia = data.parroquia.id;
-        this.router.navigate(['/diocesis', diocesis, 'parroquia', parroquia, 'documentos']);
+        // const diocesis = data.diocesis.id;
+        // const parroquia = data.parroquia.id;
+        this.router.navigate(['/diocesis', data.diocesis.id, 'parroquia', data.parroquia.id, 'documentos']);
       } else {
         return of(null);
       }

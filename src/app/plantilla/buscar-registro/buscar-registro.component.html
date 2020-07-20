@@ -1,0 +1,16 @@
+<ng-container *ngIf="documento; else loading">
+    <container-element [ngSwitch]="documento">
+        <div *ngSwitchCase="'BAUTISMO'">BAUTISMO</div>
+        <div *ngSwitchCase="'CONFIRMACION'">CONFIRMACION</div>
+        <div *ngSwitchCase="'DEFUNCION'">DEFUNCION</div>
+        <div *ngSwitchCase="'MATRIMONIO'">MATRIMONIO</div>
+        <div *ngSwitchDefault>DEFAULT</div>
+    </container-element>
+</ng-container>
+<ng-template #loading>
+    <div class="d-flex justify-content-center mt-5">
+        <div class="spinner-border text-info" role="status">
+        </div>
+        <strong class="text-info"> Loading... </strong>
+    </div>
+</ng-template>
