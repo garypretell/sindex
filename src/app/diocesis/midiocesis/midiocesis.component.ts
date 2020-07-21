@@ -15,7 +15,7 @@ export class MidiocesisComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.activatedroute.paramMap.pipe(map(params => {
       // this.id = +params['id']; // (+) converts string 'id' to a number
-      this.id = params.get('id');
+      this.id = params.get('d');
    }));
   }
 

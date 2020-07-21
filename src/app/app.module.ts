@@ -16,22 +16,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppHeaderComponent } from './app-header.component';
 
-import { DiocesisComponent } from './diocesis/components/diocesis.component';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
-
-import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AppHeaderComponent,
-    DiocesisComponent,
-    MidiocesisComponent
-    ],
+      ],
   imports: [
     BrowserModule,
     HttpClientModule,

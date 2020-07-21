@@ -27,7 +27,8 @@ import { PlantillaDirective } from '../plantilla/plantilla.directive';
 import { DragulaModule } from 'ng2-dragula';
 import { DefaultComponent } from '../plantilla/default/default.component';
 import { LibroBuscarComponent } from '../libro/libro-buscar/libro-buscar.component';
-import { BuscarRegistroComponent } from '../plantilla/buscar-registro/buscar-registro.component';
+import { BuscarRegistroComponent } from '../busquedas/buscar-registro/buscar-registro.component';
+import { BuscarBautismoComponent } from '../busquedas/buscar-bautismo/buscar-bautismo.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { BuscarRegistroComponent } from '../plantilla/buscar-registro/buscar-reg
     PlantillaComponent,
     PlantillaGeneralComponent,
     BautismoComponent,
+    BuscarBautismoComponent,
     ConfirmacionComponent,
     DefuncionComponent,
     MatrimonioComponent,

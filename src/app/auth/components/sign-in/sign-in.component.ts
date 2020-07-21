@@ -46,7 +46,7 @@ export class SignInComponent implements OnInit {
 
   sub;
   ngOnInit() {
-    this.sub = this.afs.collection('charts', ref => ref.where('code', '==', 'aa')).valueChanges()
+    this.sub = this.afs.collection('docs', ref => ref.where('code', '==', 'principal')).valueChanges()
     .subscribe(data => {
       this.midata = data;
     });

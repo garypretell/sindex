@@ -67,6 +67,8 @@ export class InicioComponent implements OnInit, OnDestroy {
         this.diocesis = data.diocesis;
         this.parroquia = data.parroquia;
         if (this.diocesis) {
+          this.midata = this.afs.collection('Documentos', ref => ref.where('diocesis', '==', this.diocesis.id).where('estado', '==', 'diocesis' )
+          ).valueChanges({idField: 'ids'});
           this.parroquias$ = this.parroquiaService.getParroquia(this.diocesis.id);
           return this.parroquia;
         }
@@ -86,18 +88,27 @@ export class InicioComponent implements OnInit, OnDestroy {
         }
       })).subscribe();
 
-    this.midata = this.afs.collection('charts', ref => ref.where('code', '==', 'aa')).valueChanges();
+
+    // this.midata = this.afs.collection('charts', ref => ref.where('code', '==', 'aa')).valueChanges();
     $('#myToast').toast('show');
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-    // this.unsubscribe$.next();
-    // this.unsubscribe$.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
-  administrar() {
-    this.router.navigate(['/diocesis', this.diocesis.id, 'parroquia']);
+  async administrar() {
+    const { uid } = await this.auth.getUser();
+    this.afs.doc(`usuarios/${uid}`).valueChanges().pipe(map((data: any) => {
+      if (data) {
+        const diocesis = data.diocesis;
+        return this.router.navigate(['/diocesis', diocesis.id, 'parroquia']);
+      } else {
+        return of(null);
+      }
+    }), takeUntil(this.unsubscribe$)).subscribe();
   }
 
   getColor(estado) {

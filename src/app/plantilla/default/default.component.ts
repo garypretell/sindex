@@ -97,9 +97,11 @@ export class DefaultComponent implements OnInit, OnDestroy {
     registro.parroquia = this.parroquia;
     registro.documento = this.documento;
     this.afs.collection(`Registros`).add(registro);
+    const datos = { contador: firebase.firestore.FieldValue.increment(1) };
     const rutaDoc = this.miparroquia + '_' + this.documento;
     const value = { value: firebase.firestore.FieldValue.increment(1) };
     this.afs.doc(`Documentos/${rutaDoc}`).set(value, { merge: true });
+    this.afs.doc(`Libros/${this.miruta}`).set(datos, { merge: true });
     this.newObject = {};
     registro = null;
     // $('input:text:visible:first').focus();

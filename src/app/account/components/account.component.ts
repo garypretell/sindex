@@ -28,7 +28,7 @@ export class AccountComponent implements OnInit {
     this.validarCodigos = false;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
   verificarParroquia() {

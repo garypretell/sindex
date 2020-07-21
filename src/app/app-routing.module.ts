@@ -41,14 +41,14 @@ const routes: Routes = [
     loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
     canActivate: [RequireUnauthGuard]
   },
-  {
-    path: 'diocesis', component: DiocesisComponent, canActivate: [EditorGuard],
-    children: [
-      {
-        path: ':id', component: MidiocesisComponent, canActivate: [EditorGuard],
-      }
-    ]
-  },
+  // {
+  //   path: 'diocesis', component: DiocesisComponent, canActivate: [EditorGuard],
+  //   children: [
+  //     {
+  //       path: ':id', component: MidiocesisComponent, canActivate: [EditorGuard],
+  //     }
+  //   ]
+  // },
   {
     path: '**',
     // resolve: {

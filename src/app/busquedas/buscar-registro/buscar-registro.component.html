@@ -1,0 +1,172 @@
+<!-- <ng-container *ngIf="documento; else loading">
+    <container-element [ngSwitch]="documento">
+        <div *ngSwitchCase="'BAUTISMO'"><app-buscar-bautismo [documento] = documento></app-buscar-bautismo></div>
+        <div *ngSwitchCase="'CONFIRMACION'">CONFIRMACION</div>
+        <div *ngSwitchCase="'DEFUNCION'">DEFUNCION</div>
+        <div *ngSwitchCase="'MATRIMONIO'">MATRIMONIO</div>
+        <div *ngSwitchDefault>DEFAULT</div>
+    </container-element>
+</ng-container>
+<ng-template #loading>
+    <div class="d-flex justify-content-center mt-5">
+        <div class="spinner-border text-info" role="status">
+        </div>
+        <strong class="text-info"> Loading... </strong>
+    </div>
+</ng-template>
+{{principal}} -->
+
+<div class="breadcrumb d-flex justify-content-between align-items-center">
+    <ol class="breadcrumb mb-0 p-0">
+        <li class="breadcrumb-item text-primary">
+            <a role="button" (click)="goParroquia()">Parroquia</a>
+        </li>
+        <li class="breadcrumb-item text-primary">
+            <a role="button" (click)="goDocumento()">Documentos</a>
+        </li>
+    </ol>
+    <button class="btn btn-sm btn-success" *ngIf="parroquia">
+        <strong>{{ documento }} - {{ parroquia.nombre }}</strong>
+    </button>
+</div>
+
+<ng-container >
+    <!-- <ng-container *ngIf="registros.length > 0; else mensaje"> -->
+    <ng-container>
+        <ng-container
+            *ngIf="documento === 'BAUTISMO' || documento === 'CONFIRMACION' || documento === 'DEFUNCION' || documento === 'MATRIMONIO'; else default">
+            <div class="mt-2" style="width: 100%; height: 90vh;">
+                <as-split direction="horizontal">
+                    <as-split-area size="25">
+                        <div class="row">
+                            <div class="col">
+                                <div class="shadow card bg-primary text-white text-center m-2">
+                                    <h4>Buscar Documento</h4>
+                                    <small>
+                                        <cite title="Source Title">*Todos los campos son requeridos</cite>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="mx-3" />
+                        <form #formcontrol="ngForm" class="needs-validation m-2" novalidate class="m-2">
+                            <div class="form-row">
+                                <div class="col mb-3">
+                                    <label for="apellidos">Apellidos</label>
+                                    <input type="search" class="form-control" id="apellidos"
+                                        placeholder="Ingrese Apellidos" name="apellidos"
+                                        [(ngModel)]="searchObject.apellidos"
+                                        oninput="this.value = this.value.toUpperCase()" required />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col mb-3">
+                                    <label for="nombres">Nombres</label>
+                                    <input type="search" class="form-control" id="nombres" placeholder="Ingrese Nombres"
+                                        [(ngModel)]="searchObject.nombres" name="nombres"
+                                        oninput="this.value = this.value.toUpperCase()" required />
+                                </div>
+                            </div>
+                            <div class="form-row" *ngIf="fecha">
+                                <div class="col mb-3">
+                                    <label for="desde">Fecha Bautismo: </label>
+                                    <input type="date" class="form-control" id="desde"
+                                        placeholder="Fecha de {{documento | titlecase}}"
+                                        [(ngModel)]="searchObject.desde" name="desde"
+                                        oninput="this.value = this.value.toUpperCase()" required />
+                                </div>
+                            </div>
+                            <div class="form-row" *ngIf="fecha">
+                                <div class="col mb-3">
+                                    <label for="hasta">Fecha hasta: (<)</label>
+                                    <input type="date" class="form-control" id="hasta"
+                                        placeholder="Fecha de {{documento | titlecase}}"
+                                        [(ngModel)]="searchObject.hasta" name="hasta"
+                                        oninput="this.value = this.value.toUpperCase()" required />
+                                </div>
+                            </div>
+                            <button (click)="search(searchObject)" class="btn btn-primary btn-lg btn-block"
+                                [disabled]="!formcontrol.form.valid">Buscar</button>
+                        </form>
+                        <div class="text-primary text-center mt-0">
+                            <small>
+                                <cite title="Source Title">*Todos los campos son requeridos</cite>
+                            </small>
+                        </div>
+                        <hr class="mx-5 mb-4" />
+                        <div class="form-check m-2">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"
+                                [(ngModel)]="avanzada" [ngModelOptions]="{ standalone: true }" (ngModelChange)="searchAvanzada()">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Activar búsqueda avanzada.
+                            </label>
+                        </div>
+                        <div class="shadow card m-2" *ngIf="avanzada">
+                            <div class="card-body">
+                                <div class="form-check m-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"
+                                        [(ngModel)]="fecha" [ngModelOptions]="{ standalone: true }">
+                                    <label class="form-check-label" for="defaultCheck2">
+                                        Rango de Fechas.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </as-split-area>
+                    <as-split-area size="75">
+                        {{registros | json }}
+                        <table class="table" *ngIf="registros$ | async as registros">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Apellidos</th>
+                                    <th scope="col">Nombres</th>
+                                    <th scope="col"># Partida</th>
+                                    <th scope="col">F. {{ documento | titlecase }}</th>
+                                    <th scope="col">F. de Registro</th>
+                                    <th scope="col">Parroquia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of registros;  let i = index ">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ item.apellidos }}</td>
+                                    <td>{{ item.nombres }}</td>
+                                    <td>{{ item.numeroreg }}</td>
+                                    <td>{{ item.fecha | date: 'dd MMM yyyy' }}</td>
+                                    <td>{{ item.fechareg | date: 'dd MMM yyyy' }}</td>
+                                    <td>{{ item.parroquia.nombre }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </as-split-area>
+                </as-split>
+            </div>
+        </ng-container>
+        <ng-template #default>
+            <ng-container *ngIf="campos$ | async as campos">
+                <!-- <app-libro-buscar [registros]=registros [campos]=campos.campos [documento]=documento></app-libro-buscar> -->
+            </ng-container>
+        </ng-template>
+    </ng-container>
+</ng-container>
+
+
+
+<ng-template #mensaje>
+    <div class="col-md-12">
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <strong>Mensaje!</strong> No existen documentos para esta búsqueda.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #loading>
+    <div class="d-flex justify-content-center mt-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <strong class="text-primary"> Loading... </strong>
+    </div>
+</ng-template>

@@ -151,6 +151,9 @@ export class BautismoComponent implements OnInit, OnDestroy {
   async addBautismo() {
     const { uid } = await this.auth.getUser();
     const autoId = this.afs.createId();
+    this.addBautismoForm.get('fechanac').setValue(Date.parse(this.addBautismoForm.value.fechanac));
+    this.addBautismoForm.get('fechareg').setValue(Date.parse(this.addBautismoForm.value.fechareg));
+    this.addBautismoForm.get('fecha').setValue(Date.parse(this.addBautismoForm.value.fecha));
     this.addBautismoForm.get('celebrante').setValue(this.micelebrante);
     this.addBautismoForm.get('celebrante2').setValue(this.micelebrante2);
     this.addBautismoForm.get('libro').setValue(parseFloat(this.milibro));
@@ -167,8 +170,10 @@ export class BautismoComponent implements OnInit, OnDestroy {
       const rutaDoc = this.miparroquia + '_' + this.documento;
       const value = { value: firebase.firestore.FieldValue.increment(1) };
       this.afs.doc(`Documentos/${rutaDoc}`).set(value, { merge: true });
+      const rutaDio = this.midiocesis + '_' + this.documento;
+      this.afs.doc(`Documentos/${rutaDio}`).set(value, { merge: true });
       this.afs.doc(`Libros/${this.miruta}`).set(datos, { merge: true });
-      this.afs.doc(`docs/BAUTISMO`).set(datos, { merge: true });
+      this.afs.doc(`docs/BAUTISMO`).set(value, { merge: true });
       this.registro += 1;
       this.addBautismoForm.reset();
       this.micelebrante = 'Select One';

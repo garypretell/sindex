@@ -11,7 +11,8 @@ import { ListadoComponent } from '../libro/listado/listado.component';
 import { PlantillaComponent } from '../plantilla/plantilla/plantilla.component';
 import { PlantillaGeneralComponent } from '../plantilla/plantilla-general/plantilla-general.component';
 import { TemplateComponent } from '../plantilla/template/template.component';
-import { BuscarRegistroComponent } from '../plantilla/buscar-registro/buscar-registro.component';
+import { BuscarRegistroComponent } from '../busquedas/buscar-registro/buscar-registro.component';
+
 
 const routes: Routes = [
   {

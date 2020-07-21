@@ -159,12 +159,14 @@ export class DefuncionComponent implements OnInit, OnDestroy {
     const batch = this.afs.firestore.batch();
     this.afs.doc(`Registros/${autoId}`).set(this.addDefuncionForm.value, { merge: true });
     batch.commit().then(() => {
-      const rutaDoc = this.miparroquia + '_' + this.documento;
+      const rutaDio = this.midiocesis + '_' + this.documento;
       const value = { value: firebase.firestore.FieldValue.increment(1) };
+      this.afs.doc(`Documentos/${rutaDio}`).set(value, { merge: true });
+      const rutaDoc = this.miparroquia + '_' + this.documento;
       this.afs.doc(`Documentos/${rutaDoc}`).set(value, { merge: true });
       const datos = { contador: firebase.firestore.FieldValue.increment(1) };
       this.afs.doc(`Libros/${this.miruta}`).set(datos, { merge: true });
-      this.afs.doc(`docs/DEFUNCION`).set(datos, { merge: true });
+      this.afs.doc(`docs/DEFUNCION`).set(value, { merge: true });
       this.registro += 1;
       this.addDefuncionForm.reset();
       this.micelebrante = 'Select One';

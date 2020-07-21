@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, takeUntil, switchMap } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { DocumentoService } from '../documento.service';
 import { ParroquiaService } from 'src/app/parroquia/parroquia.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
@@ -69,26 +69,25 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   sub;
   ngOnInit() {
-    this.sub = this.parroquiaService.currentMessage.subscribe(message => this.message = message);
     this.sub = this.activatedroute.paramMap.pipe(map(params => {
       this.parroquia$ = this.afs.doc(`Parroquias/${params.get('p')}`).valueChanges();
       this.documentos$ = this.afs.collection('Documentos', ref => ref.where('parroquia', '==', params.get('p'))
-        .orderBy('createdAt', 'desc')).valueChanges({idField: 'ids'});
+        .orderBy('createdAt', 'desc')).valueChanges({ idField: 'ids' });
       this.midiocesis = params.get('d');
       this.miparroquia = params.get('p');
     })).subscribe();
-    this.docs$ = this.afs.collection(`docs`).valueChanges({idField: 'id'});
+    this.docs$ = this.afs.collection(`docs`).valueChanges({ idField: 'id' });
 
     this.afs.doc(`Diocesis/${this.midiocesis}`).valueChanges().pipe(switchMap((m: any) => {
       return this.afs.doc(`Parroquias/${this.miparroquia}`).valueChanges().pipe(map((data: any) => {
-        this.diocesis = {nombre: m.nombre, id: data.diocesis};
-        this.parroquia = {nombre: data.nombre, id: data.parroquia};
+        this.diocesis = { nombre: m.nombre, id: data.diocesis };
+        this.parroquia = { nombre: data.nombre, id: data.parroquia };
       }));
     }), takeUntil(this.unsubscribe$)).subscribe();
 
     this.addDocumentoForm = this.formBuilder.group({
       nombre: ['', [Validators.required]]
-  });
+    });
   }
 
   ngAfterViewChecked() {
@@ -109,7 +108,7 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.view = [event.target.innerWidth / 1.8, 300];
   }
 
-  agregarDocumentos() {
+  async agregarDocumentos() {
     const documentos: any = [
       {
         id: 'BAUTISMO', name: 'BAUTISMO', value: 0, total_aprox: 100000, Libros: 0, principal: true, plantilla: true
@@ -127,10 +126,41 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
         id: 'MATRIMONIO', name: 'MATRIMONIO', value: 0, total_aprox: 100000, Libros: 0, principal: true, plantilla: true,
         diocesis: this.midiocesis, parroquia: this.miparroquia, createdAt: Date.now()
       }];
+
+    const diocesisArray: any = [
+      {
+        id: 'BAUTISMO', name: 'BAUTISMO', value: 0, diocesis: this.midiocesis, estado: 'diocesis'
+      },
+      {
+        id: 'CONFIRMACION', name: 'CONFIRMACION', value: 0, diocesis: this.midiocesis, estado: 'diocesis'
+      },
+      {
+        id: 'DEFUNCION', name: 'DEFUNCION', value: 0, diocesis: this.midiocesis, estado: 'diocesis'
+      },
+      {
+        id: 'MATRIMONIO', name: 'MATRIMONIO', value: 0, diocesis: this.midiocesis, estado: 'diocesis'
+      }];
+
     documentos.map((m: any) => {
+      const rutaDiocesis = this.midiocesis + '_' + m.id;
       const ruta = this.miparroquia + '_' + m.id;
       this.afs.doc(`Documentos/${ruta}`).set(m);
     });
+
+    this.afs.doc(`Parroquias/${this.miparroquia}`).valueChanges().pipe(map((data: any) => {
+      if (data) {
+        const roles = data.principal;
+        if (roles) {
+          diocesisArray.map((m: any) => {
+            const rutaDiocesis = this.midiocesis + '_' + m.id;
+            this.afs.doc(`Documentos/${rutaDiocesis}`).set(m);
+          });
+        }
+      } else {
+        return of(null);
+      }
+    }), takeUntil(this.unsubscribe$)).subscribe();
+
     this.afs.doc(`Parroquias/${this.miparroquia}`).set({ registrar: true }, { merge: true });
   }
 
@@ -184,6 +214,7 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
       createdAt: Date.now()
     };
     const ruta = this.miparroquia + '_' + documento.id;
+    const rutaDiocesis = this.midiocesis + '_' + documento.id;
     this.afs.firestore.doc(`Documentos/${ruta}`).get()
       .then(docSnapshot => {
         if (docSnapshot.exists) {
@@ -193,7 +224,7 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
             text: 'Este documento ya existe!',
           });
           this.addDocumentoForm.reset();
-        }else {
+        } else {
           this.afs.doc(`Documentos/${ruta}`).set(documento);
           this.addDocumentoForm.reset();
           jQuery(this.myModal.nativeElement).modal('hide');
@@ -225,7 +256,7 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   goPlantilla(documento) {
     this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia,
-    'documentos', documento.id, 'template']);
+      'documentos', documento.id, 'template']);
   }
 
   buscarDocumentos(documento) {
@@ -234,7 +265,7 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
     const isInArray = array.includes(value);
     if (isInArray) {
       return this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia,
-      'documentos', documento.id, 'buscar']);
+        'documentos', documento.id, 'buscar']);
     }
     Swal.fire({
       icon: 'error',

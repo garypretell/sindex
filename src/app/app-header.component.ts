@@ -44,7 +44,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   }
 
   sub;
-  async ngOnInit() {
+  ngOnInit() {
     this.sub = this.auth.user$.pipe(switchMap(data => {
       if (data) {
         return this.afs.doc(`usuarios/${data.uid}`).valueChanges().pipe(map((m: any) => {
@@ -52,7 +52,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
           this.name$ = m.displayName;
           this.foto = m.foto;
         }));
-      }else {
+      } else {
         return of(null);
       }
     })).subscribe();
@@ -67,20 +67,6 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   signOut() {
     this.auth.signOut().then(() => {
       this.router.navigate(['/']);
-    });
-  }
-
-  go(dato) {
-    this.auth.user$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      if (data) {
-        const array = ['BAUTISMO', 'MATRIMONIO', 'DEFUNCION', 'CONFIRMACION'];
-        const value = dato;
-        const isInArray = array.includes(value);
-        if (isInArray === false) {
-          return this.router.navigate(['/Diocesis', data.diocesis.id, 'Parroquia', data.parroquia.id, 'Documento', dato, 'Registro']);
-        }
-        this.router.navigate(['/Diocesis', data.diocesis.id, 'Parroquia', data.parroquia.id, 'Documento', dato, 'Libros']);
-      }
     });
   }
 
@@ -101,12 +87,13 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
     }), takeUntil(this.unsubscribe$)).subscribe();
   }
 
-  goLibro() {
-    this.auth.user$.pipe(map(data => {
+  async goLibro() {
+    const { uid } = await this.auth.getUser();
+    this.afs.doc(`usuarios/${uid}`).valueChanges().pipe(map((data: any) => {
       if (data) {
-        // const diocesis = data.diocesis.id;
-        // const parroquia = data.parroquia.id;
-        this.router.navigate(['/diocesis', data.diocesis.id, 'parroquia', data.parroquia.id, 'documentos']);
+        const diocesis = data.diocesis;
+        const parroquia = data.parroquia;
+        return this.router.navigate(['/diocesis', diocesis.id, 'parroquia', parroquia.id, 'documentos']);
       } else {
         return of(null);
       }
@@ -117,13 +104,15 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
     // jQuery(this.myModal.nativeElement).modal('show');
   }
 
-  listar() {
-    this.auth.user$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+  async listar() {
+    const { uid } = await this.auth.getUser();
+    this.afs.doc(`usuarios/${uid}`).valueChanges().pipe(map((data: any) => {
       if (data) {
         const parroquia = data.parroquia.id;
         this.documentos$ = this.afs.doc(`Parroquias/${parroquia}`).valueChanges();
+      } else {
+        return of(null);
       }
-    });
+    }), takeUntil(this.unsubscribe$)).subscribe();
   }
-
 }

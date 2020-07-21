@@ -58,7 +58,7 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
     });
 
     this.inicioService.currentAdmin.pipe(map(admin => {
-      if (admin === false) {
+      if (!admin) {
         return this.router.navigate(['/Home']);
       }
     }), takeUntil(this.unsubscribe$)).subscribe();
