@@ -40,8 +40,8 @@
                     <as-split-area size="25">
                         <div class="row">
                             <div class="col">
-                                <div class="shadow card bg-primary text-white text-center m-2">
-                                    <h4>Buscar Documento</h4>
+                                <div class="shadow card bg-secondary text-white text-center m-2">
+                                    <h4>Buscar {{documento | titlecase}}</h4>
                                     <small>
                                         <cite title="Source Title">*Todos los campos son requeridos</cite>
                                     </small>
@@ -69,7 +69,7 @@
                             </div>
                             <div class="form-row" *ngIf="fecha">
                                 <div class="col mb-3">
-                                    <label for="desde">Fecha Bautismo: </label>
+                                    <label for="desde">Fecha Desde: (>=) </label>
                                     <input type="date" class="form-control" id="desde"
                                         placeholder="Fecha de {{documento | titlecase}}"
                                         [(ngModel)]="searchObject.desde" name="desde"
@@ -78,17 +78,17 @@
                             </div>
                             <div class="form-row" *ngIf="fecha">
                                 <div class="col mb-3">
-                                    <label for="hasta">Fecha hasta: (<)</label>
+                                    <label for="hasta">Fecha hasta: (<=)</label>
                                     <input type="date" class="form-control" id="hasta"
                                         placeholder="Fecha de {{documento | titlecase}}"
                                         [(ngModel)]="searchObject.hasta" name="hasta"
                                         oninput="this.value = this.value.toUpperCase()" required />
                                 </div>
                             </div>
-                            <button (click)="search(searchObject)" class="btn btn-primary btn-lg btn-block"
+                            <button (click)="search(searchObject)" class="btn btn-secondary btn-lg btn-block"
                                 [disabled]="!formcontrol.form.valid">Buscar</button>
                         </form>
-                        <div class="text-primary text-center mt-0">
+                        <div class="text-secondary text-center mt-0">
                             <small>
                                 <cite title="Source Title">*Todos los campos son requeridos</cite>
                             </small>
@@ -114,30 +114,31 @@
                         </div>
                     </as-split-area>
                     <as-split-area size="75">
-                        {{registros | json }}
-                        <table class="table" *ngIf="registros$ | async as registros">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Apellidos</th>
-                                    <th scope="col">Nombres</th>
-                                    <th scope="col"># Partida</th>
-                                    <th scope="col">F. {{ documento | titlecase }}</th>
-                                    <th scope="col">F. de Registro</th>
-                                    <th scope="col">Parroquia</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of registros;  let i = index ">
-                                    <td>{{ i + 1 }}</td>
-                                    <td>{{ item.apellidos }}</td>
-                                    <td>{{ item.nombres }}</td>
-                                    <td>{{ item.numeroreg }}</td>
-                                    <td>{{ item.fecha | date: 'dd MMM yyyy' }}</td>
-                                    <td>{{ item.fechareg | date: 'dd MMM yyyy' }}</td>
-                                    <td>{{ item.parroquia.nombre }}</td>
-                                </tr>
-                            </tbody>
+                        <table class="table text-center" *ngIf="registros as registros;">
+                            <ng-container *ngIf="registros.length > 0; else mensaje" >
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Apellidos</th>
+                                        <th scope="col">Nombres</th>
+                                        <th scope="col"># Partida</th>
+                                        <th scope="col">F. {{ documento | titlecase }}</th>
+                                        <th scope="col">F. de Registro</th>
+                                        <th scope="col">Parroquia</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of registros;  let i = index ">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ item.apellidos }}</td>
+                                        <td>{{ item.nombres }}</td>
+                                        <td>{{ item.numeroreg }}</td>
+                                        <td>{{ item.fecha | date: 'dd MMM yyyy' }}</td>
+                                        <td>{{ item.fechareg | date: 'dd MMM yyyy' }}</td>
+                                        <td>{{ item.parroquia.nombre }}</td>
+                                    </tr>
+                                </tbody>
+                            </ng-container>
                         </table>
                     </as-split-area>
                 </as-split>
@@ -155,8 +156,8 @@
 
 <ng-template #mensaje>
     <div class="col-md-12">
-        <div class="alert alert-primary alert-dismissible fade show" role="alert">
-            <strong>Mensaje!</strong> No existen documentos para esta búsqueda.
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Mensaje!</strong> No existen registros para esta búsqueda.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>

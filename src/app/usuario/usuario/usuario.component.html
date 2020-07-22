@@ -1,0 +1,12 @@
+<ng-container *ngIf="usuarios$ | async as usuarios; else loading">
+    {{usuarios | json}}
+</ng-container>
+
+<ng-template #loading>
+    <div class="d-flex justify-content-center mt-5">
+        <div class="spinner-border text-info" role="status">
+        </div>
+        <strong class="text-info"> Loading... </strong>
+    </div>
+</ng-template>
+<router-outlet></router-outlet>

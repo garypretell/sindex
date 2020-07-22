@@ -30,7 +30,6 @@ import { LibroBuscarComponent } from '../libro/libro-buscar/libro-buscar.compone
 import { BuscarRegistroComponent } from '../busquedas/buscar-registro/buscar-registro.component';
 import { BuscarBautismoComponent } from '../busquedas/buscar-bautismo/buscar-bautismo.component';
 
-
 @NgModule({
   declarations: [
     ParroquiaComponent,
@@ -51,6 +50,7 @@ import { BuscarBautismoComponent } from '../busquedas/buscar-bautismo/buscar-bau
     PlantillaDirective,
     LibroBuscarComponent,
     BuscarRegistroComponent
+
   ],
   imports: [
     CommonModule,

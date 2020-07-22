@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { RequireUnauthGuard, RequireAuthGuard, EditorGuard, AdminGuard } from './auth/guards';
-import { DiocesisComponent } from './diocesis/components/diocesis.component';
-import { MidiocesisComponent } from './diocesis/midiocesis/midiocesis.component';
 import { ParroquiaResolverGuard } from './parroquia/parroquia-resolver.guard';
-import { PathResolveService } from './path-resolve.service';
 import { NotFoundComponent } from './not-found-component/not-found-component.component';
+import { UsuarioResolverGuard } from './usuario/usuario-resolve.guard';
 
 
 const routes: Routes = [
@@ -41,19 +39,14 @@ const routes: Routes = [
     loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
     canActivate: [RequireUnauthGuard]
   },
-  // {
-  //   path: 'diocesis', component: DiocesisComponent, canActivate: [EditorGuard],
-  //   children: [
-  //     {
-  //       path: ':id', component: MidiocesisComponent, canActivate: [EditorGuard],
-  //     }
-  //   ]
-  // },
+  {
+    path: 'usuarios',
+    loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule),
+    canActivate: [EditorGuard],
+    resolve: { usuarios: UsuarioResolverGuard}
+  },
   {
     path: '**',
-    // resolve: {
-    //   path: PathResolveService
-    // },
     component: NotFoundComponent
   }
 ];

@@ -34,7 +34,7 @@
           Mis Documentos</a>
       </li>
       <li class="nav-item" *ngIf="auth.canDelete(auth.user$ | async)">
-        <a #proyectosLink routerLinkActive="active" class="nav-link more" [routerLink]="['/usuarios']">
+        <a #proyectosLink routerLinkActive="active" class="nav-link more" (click)="goUsuarios()">
           Usuarios</a>
       </li>
       <li class="nav-item dropdown" *ngIf="auth.canDelete(auth.user$ | async) && super === false">

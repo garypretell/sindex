@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { switchMap, map, takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
@@ -16,7 +16,7 @@ export class BuscarRegistroComponent implements OnInit, OnDestroy {
   principal: any;
   campos$: Observable<any>;
   registros$: Observable<any>;
-  registros: any[] = [];
+  registros: any[];
   p = 1;
   searchObject: any = {};
 
@@ -27,7 +27,8 @@ export class BuscarRegistroComponent implements OnInit, OnDestroy {
   midocumento: any;
   constructor(
     private activatedroute: ActivatedRoute,
-    public afs: AngularFirestore
+    public afs: AngularFirestore,
+    public router: Router,
   ) { }
 
   sub;
@@ -74,7 +75,6 @@ export class BuscarRegistroComponent implements OnInit, OnDestroy {
         this.registros = m.filter((f: any) => {
           return f.fecha >= Date.parse(this.searchObject.desde) && f.fecha <= Date.parse(this.searchObject.hasta);
         });
-        console.log(this.registros);
         return this.registros;
       })).subscribe();
     } else {
@@ -92,8 +92,13 @@ export class BuscarRegistroComponent implements OnInit, OnDestroy {
   }
 
   printLibro() { }
-  goDocumento() { }
-  goParroquia() { }
+  goParroquia() {
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia]);
+  }
+
+  goDocumento() {
+    this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'documentos']);
+  }
 
   searchAvanzada() {
     if (!this.avanzada) {
