@@ -29,6 +29,7 @@ import { DefaultComponent } from '../plantilla/default/default.component';
 import { LibroBuscarComponent } from '../libro/libro-buscar/libro-buscar.component';
 import { BuscarRegistroComponent } from '../busquedas/buscar-registro/buscar-registro.component';
 import { BuscarBautismoComponent } from '../busquedas/buscar-bautismo/buscar-bautismo.component';
+import { ReporteComponent } from '../usuario/reporte/reporte.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { BuscarBautismoComponent } from '../busquedas/buscar-bautismo/buscar-bau
     DefaultComponent,
     PlantillaDirective,
     LibroBuscarComponent,
-    BuscarRegistroComponent
+    BuscarRegistroComponent,
+    ReporteComponent
 
   ],
   imports: [

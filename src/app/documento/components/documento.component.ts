@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { AuthService } from 'src/app/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, takeUntil, switchMap } from 'rxjs/operators';
+import { map, takeUntil, switchMap, switchMapTo } from 'rxjs/operators';
 import { Observable, Subject, of } from 'rxjs';
 import { DocumentoService } from '../documento.service';
 import { ParroquiaService } from 'src/app/parroquia/parroquia.service';
@@ -273,6 +273,12 @@ export class DocumentoComponent implements OnInit, OnDestroy, AfterViewChecked {
       text: 'No tiene acceso a esta funcionalidad!',
       footer: '<a href>Desea ponerse en contacto con el Administrador?</a>'
     });
+  }
+
+  goReporte() {
+    this.auth.user$.pipe(map(m => {
+      this.router.navigate(['/diocesis', this.midiocesis, 'parroquia', this.miparroquia, 'usuarios', m.uid]);
+    }), takeUntil(this.unsubscribe$)).subscribe();
   }
 
 

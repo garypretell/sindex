@@ -14,6 +14,8 @@ import { TemplateComponent } from '../plantilla/template/template.component';
 import { BuscarRegistroComponent } from '../busquedas/buscar-registro/buscar-registro.component';
 import { UsuarioParroquiaComponent } from '../usuario/usuario-parroquia/usuario-parroquia.component';
 import { ParroquiaUsuarioResolverGuard } from './parroquia-usuario-resolver.guard';
+import { report } from 'process';
+import { ReporteComponent } from '../usuario/reporte/reporte.component';
 
 
 const routes: Routes = [
@@ -59,8 +61,17 @@ const routes: Routes = [
           },
           {
             path: 'usuarios',
-            component: UsuarioParroquiaComponent,
-            resolve: { usuariosParroquia: ParroquiaUsuarioResolverGuard}
+            children: [
+              {path: '', component: UsuarioParroquiaComponent,
+              canActivate: [AdminGuard],
+              resolve: { usuariosParroquia: ParroquiaUsuarioResolverGuard},  pathMatch: 'full'},
+              {path: ':u',
+              children: [
+                { path: '', redirectTo: 'reportes',  pathMatch: 'full'},
+                { path: 'reportes', component: ReporteComponent }
+              ]
+              }
+            ]
           }
         ]
       }
