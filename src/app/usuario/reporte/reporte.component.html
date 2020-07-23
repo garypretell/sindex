@@ -1,1 +1,14 @@
-<p>reporte works!</p>
+<div *ngFor="let app of midata$ | async">
+  <h4>{{app.name}}</h4>
+  {{(app.group).length}}
+    <ul>
+        <li *ngFor="let item of app.group">{{ item | json }}</li>
+    </ul>
+</div>
+
+<div *ngFor="let app of apps$ | async">
+    <h4>{{ app.id }}</h4>
+    <ul>
+        <li *ngFor="let item of app.group">{{ item | json }}</li>
+    </ul>
+</div>
