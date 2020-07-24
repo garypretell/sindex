@@ -1,0 +1,31 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="shadow card">
+                <div class="card-body">
+                    <h5 class="card-title">Directorio Eclesiástico</h5>
+                    <hr class="mt-1">
+                    <form [formGroup]="addDirectorioForm" (ngSubmit)="addDirectorio()">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Categoría:</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" formControlName="categoria"
+                                oninput="this.value = this.value.toUpperCase()" aria-describedby="emailHelp">
+                            <small id="emailHelp" class="form-text text-muted">*Este campo es obligatorio.</small>
+                        </div>
+                        <button class="btn btn-primary" type="submit"
+                            [disabled]="!addDirectorioForm.valid">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 mb-3 bg-light">
+            <div class="row">
+                <div class="col-sm-12 col-md-5">
+                    <strong><i>Buscar:</i></strong>
+                    <input type="search" name="limpiar" id="limpiar" class="form-control text-uppercase"
+                        [(ngModel)]="searchObject.categoria">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

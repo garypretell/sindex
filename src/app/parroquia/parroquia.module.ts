@@ -30,6 +30,8 @@ import { LibroBuscarComponent } from '../libro/libro-buscar/libro-buscar.compone
 import { BuscarRegistroComponent } from '../busquedas/buscar-registro/buscar-registro.component';
 import { BuscarBautismoComponent } from '../busquedas/buscar-bautismo/buscar-bautismo.component';
 import { ReporteComponent } from '../usuario/reporte/reporte.component';
+import { DirectorioComponent } from '../directorio/directorio.component';
+import { DirectorioDetailComponent } from '../directorio/directorio-detail/directorio-detail.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { ReporteComponent } from '../usuario/reporte/reporte.component';
     PlantillaDirective,
     LibroBuscarComponent,
     BuscarRegistroComponent,
-    ReporteComponent
+    ReporteComponent,
+    DirectorioComponent,
+    DirectorioDetailComponent
 
   ],
   imports: [

@@ -5,7 +5,7 @@ import { DocumentoComponent } from '../documento/components/documento.component'
 import { PagoComponent } from '../pago/pago/pago.component';
 import { LibroComponent } from '../libro/libro/libro.component';
 import { ParroquiaDetailComponent } from './parroquia-detail/parroquia-detail.component';
-import { AdminGuard, EditorGuard } from '../auth/guards';
+import { AdminGuard, EditorGuard, SuperGuard } from '../auth/guards';
 import { TodosComponent } from '../libro/todos/todos.component';
 import { ListadoComponent } from '../libro/listado/listado.component';
 import { PlantillaComponent } from '../plantilla/plantilla/plantilla.component';
@@ -16,6 +16,8 @@ import { UsuarioParroquiaComponent } from '../usuario/usuario-parroquia/usuario-
 import { ParroquiaUsuarioResolverGuard } from './parroquia-usuario-resolver.guard';
 import { report } from 'process';
 import { ReporteComponent } from '../usuario/reporte/reporte.component';
+import { DirectorioComponent } from '../directorio/directorio.component';
+import { DirectorioDetailComponent } from '../directorio/directorio-detail/directorio-detail.component';
 
 
 const routes: Routes = [
@@ -26,6 +28,17 @@ const routes: Routes = [
       { path: ':p',
         children: [
           { path: '', component: ParroquiaDetailComponent,  pathMatch: 'full' },
+          {
+            path: 'directorio',
+            children: [
+              {path: '', component: DirectorioComponent, canActivate: [AdminGuard], pathMatch: 'full'},
+              {path: ':di',
+              children: [
+                { path: '', component: DirectorioDetailComponent, canActivate: [AdminGuard], pathMatch: 'full'}
+              ]
+              }
+            ]
+          },
           {
             path: 'documentos',
             children: [

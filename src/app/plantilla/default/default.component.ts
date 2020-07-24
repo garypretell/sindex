@@ -91,7 +91,7 @@ export class DefaultComponent implements OnInit, OnDestroy {
 
   add(registro) {
     registro.libro = parseFloat(this.milibro);
-    registro.createdAt = Date.now();
+    registro.createdAt = Date.parse(new Date().toISOString().substring(0, 10));
     registro.usuarioid = firebase.auth().currentUser.uid;
     registro.diocesis = this.diocesis;
     registro.parroquia = this.parroquia;

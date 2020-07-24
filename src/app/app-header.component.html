@@ -43,11 +43,9 @@
           Directorio
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" [routerLink]="['/Diacono']">Diácono</a>
-          <a class="dropdown-item" [routerLink]="['/Obispo']">Obispo</a>
-          <a class="dropdown-item" [routerLink]="['/Presbitero']">Presbítero</a>
-          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="goDirectorio('Diacono')" >Diácono</a>
+          <a class="dropdown-item" (click)="goDirectorio('Obispo')">Obispo</a>
+          <a class="dropdown-item" (click)="goDirectorio('Presbitero')">Presbítero</a>
         </div>
       </li>
       <li class="nav-item" *ngIf="auth.canDelete(auth.user$ | async) && super === false">

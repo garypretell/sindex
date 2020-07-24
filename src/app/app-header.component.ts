@@ -128,4 +128,17 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
       }
     }), takeUntil(this.unsubscribe$)).subscribe();
   }
+
+  async goDirectorio(directorio) {
+    const { uid } = await this.auth.getUser();
+    this.afs.doc(`usuarios/${uid}`).valueChanges().pipe(map((data: any) => {
+      if (data) {
+        const diocesis = data.diocesis;
+        const parroquia = data.parroquia;
+        return this.router.navigate(['/diocesis', diocesis.id, 'parroquia',  parroquia.id, 'directorio', directorio]);
+      } else {
+        return of(null);
+      }
+    }), takeUntil(this.unsubscribe$)).subscribe();
+  }
 }

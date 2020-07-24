@@ -122,8 +122,11 @@ export class ParroquiaComponent implements OnInit, OnDestroy {
 
   goDocumentos(parroquia) {
     this.newMessage(parroquia.nombre);
-    this.parroquiaService.temporal$.emit('aaaaaaasssssss');
     this.router.navigate(['/diocesis', parroquia.diocesis, 'parroquia', parroquia.id, 'documentos']);
+  }
+
+  goUsuario(parroquia) {
+    this.router.navigate(['/diocesis', parroquia.diocesis, 'parroquia', parroquia.id, 'usuarios']);
   }
 
   addParroquia() {
