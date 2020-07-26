@@ -100,7 +100,7 @@ export class ReporteComponent implements OnInit, OnDestroy {
   }
 
   getFecha(usuario, fecha) {
-    return this.afs.collection('Registros', ref => ref.where('usuarioid', '==', usuario).where('createdAt', '==', fecha))
+    return this.afs.collection('Registros', ref => ref.where('usuario', '==', usuario).where('createdAt', '==', fecha))
       .valueChanges().pipe(map((m: any) => {
         this.midata$ =
           of(m).pipe(
@@ -119,7 +119,7 @@ export class ReporteComponent implements OnInit, OnDestroy {
   }
 
   getBetween(usuario, desde, hasta) {
-    return this.afs.collection('Registros', ref => ref.where('usuarioid', '==', usuario).where('createdAt', '>=', desde).where('createdAt', '<=', hasta).orderBy('createdAt'))
+    return this.afs.collection('Registros', ref => ref.where('usuario', '==', usuario).where('createdAt', '>=', desde).where('createdAt', '<=', hasta).orderBy('createdAt'))
       .valueChanges().pipe(map((m: any) => {
         this.midata$ =
           of(m).pipe(

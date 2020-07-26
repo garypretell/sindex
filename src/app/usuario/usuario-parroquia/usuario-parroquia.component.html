@@ -28,12 +28,14 @@
                     <hr class="mt-0 mb-0">
                     <div class="d-flex w-100 justify-content-between mt-2 mb-2">
                       <form>
-                        <button type="button" class="btn btn-outline-primary  m-1" (click)="editUsuario(usuario)" *ngIf="auth.canDelete(auth.user$ | async)"  >Editar</button>
-                        <button type="button" class="btn btn-outline-danger  m-1 " *ngIf="auth.canDelete(auth.user$ | async)"
-                          (click)="deleteUsusario(usuario)">Eliminar</button>
-                   </form>
+                        <button type="button" class="btn btn-outline-primary  m-1" (click)="editUsuario(usuario)"
+                          *ngIf="auth.canDelete(auth.user$ | async)">Editar</button>
+                        <button type="button" class="btn btn-outline-danger  m-1 "
+                          *ngIf="auth.canDelete(auth.user$ | async)" (click)="deleteUsusario(usuario)">Eliminar</button>
+                      </form>
                       <form>
-                        <button type="button" class="btn btn-outline-secondary  m-1 mr-2"  (click)="goReporte(usuario)" >Reportes</button>
+                        <button type="button" class="btn btn-outline-secondary  m-1 mr-2"
+                          (click)="goReporte(usuario)">Reportes</button>
                       </form>
                     </div>
                   </div>

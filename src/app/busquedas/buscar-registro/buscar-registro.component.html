@@ -56,7 +56,7 @@
                                     <input type="search" class="form-control" id="apellidos"
                                         placeholder="Ingrese Apellidos" name="apellidos"
                                         [(ngModel)]="searchObject.apellidos"
-                                        oninput="this.value = this.value.toUpperCase()" required />
+                                        oninput="this.value = this.value.toUpperCase()" (ngModelChange)="search()" required />
                                 </div>
                             </div>
                             <div class="form-row">
@@ -64,7 +64,7 @@
                                     <label for="nombres">Nombres</label>
                                     <input type="search" class="form-control" id="nombres" placeholder="Ingrese Nombres"
                                         [(ngModel)]="searchObject.nombres" name="nombres"
-                                        oninput="this.value = this.value.toUpperCase()" required />
+                                        oninput="this.value = this.value.toUpperCase()" (ngModelChange)="search()" required />
                                 </div>
                             </div>
                             <div class="form-row" *ngIf="fecha">
@@ -72,8 +72,8 @@
                                     <label for="desde">Fecha Desde: (>=) </label>
                                     <input type="date" class="form-control" id="desde"
                                         placeholder="Fecha de {{documento | titlecase}}"
-                                        [(ngModel)]="searchObject.desde" name="desde"
-                                        oninput="this.value = this.value.toUpperCase()" required />
+                                        [max]= "hasta" [(ngModel)]="desde"  [ngModelOptions]="{ standalone: true }" name="desde"
+                                        oninput="this.value = this.value.toUpperCase()" (ngModelChange)="search()" required />
                                 </div>
                             </div>
                             <div class="form-row" *ngIf="fecha">
@@ -81,11 +81,11 @@
                                     <label for="hasta">Fecha hasta: (<=)</label>
                                     <input type="date" class="form-control" id="hasta"
                                         placeholder="Fecha de {{documento | titlecase}}"
-                                        [(ngModel)]="searchObject.hasta" name="hasta"
-                                        oninput="this.value = this.value.toUpperCase()" required />
+                                        [min]="desde" [max]= "hoyF" [(ngModel)]="hasta"  [ngModelOptions]="{ standalone: true }"  name="hasta"
+                                        oninput="this.value = this.value.toUpperCase()" (ngModelChange)="search()" required />
                                 </div>
                             </div>
-                            <button (click)="search(searchObject)" class="btn btn-secondary btn-lg btn-block"
+                            <button (click)="search()" class="btn btn-secondary btn-lg btn-block"
                                 [disabled]="!formcontrol.form.valid">Buscar</button>
                         </form>
                         <div class="text-secondary text-center mt-0">
@@ -125,7 +125,8 @@
                                         <th scope="col">F. {{ documento | titlecase }}</th>
                                         <th scope="col">F. de Registro</th>
                                         <th scope="col">Parroquia</th>
-                                    </tr>
+                                        <th class="text-center" *ngIf="auth.canDelete(auth.user$ | async) && principal === true">Editar</th>
+                                        <th class="text-center" *ngIf="auth.canDelete(auth.user$ | async) && principal === true">Imprimir</th>                                    </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of registros;  let i = index ">
@@ -136,6 +137,15 @@
                                         <td>{{ item.fecha | date: 'dd MMM yyyy' }}</td>
                                         <td>{{ item.fechareg | date: 'dd MMM yyyy' }}</td>
                                         <td>{{ item.parroquia.nombre }}</td>
+                                        <td class="text-center" *ngIf="auth.canDelete(auth.user$ | async) && principal === true">
+                                            <button class="btn btn-sm btn-warning" (click)="enableEditing(item)">
+                                                <i class="fa fa-pencil"></i> Edit</button>
+                                        </td>
+                                        <td class="text-center" *ngIf="auth.canDelete(auth.user$ | async) && principal === true">
+                                            <button class="btn btn-sm btn-info" (mouseenter)="seleccionar(item)"
+                                                (click)="print(item)">
+                                                <i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </ng-container>
@@ -171,3 +181,13 @@
         <strong class="text-primary"> Loading... </strong>
     </div>
 </ng-template>
+<ng-container *ngIf="documento; else loading">
+    <container-element [ngSwitch]="documento">
+        <div *ngSwitchCase="'BAUTISMO'"><app-buscar-bautismo [editarRegistro] = editarRegistro  ></app-buscar-bautismo></div>
+        <div *ngSwitchCase="'CONFIRMACION'"><app-buscar-confirmacion  [editarRegistro] = editarRegistro></app-buscar-confirmacion></div>
+        <div *ngSwitchCase="'DEFUNCION'">DEFUNCION</div>
+        <div *ngSwitchCase="'MATRIMONIO'">MATRIMONIO</div>
+        <div *ngSwitchDefault>DEFAULT</div>
+    </container-element>
+</ng-container>
+

@@ -151,9 +151,9 @@ export class BautismoComponent implements OnInit, OnDestroy {
   async addBautismo() {
     const { uid } = await this.auth.getUser();
     const autoId = this.afs.createId();
-    this.addBautismoForm.get('fechanac').setValue(Date.parse(this.addBautismoForm.value.fechanac));
-    this.addBautismoForm.get('fechareg').setValue(Date.parse(this.addBautismoForm.value.fechareg));
-    this.addBautismoForm.get('fecha').setValue(Date.parse(this.addBautismoForm.value.fecha));
+    this.addBautismoForm.get('fechanac').setValue((this.addBautismoForm.value.fechanac));
+    this.addBautismoForm.get('fechareg').setValue((this.addBautismoForm.value.fechareg));
+    this.addBautismoForm.get('fecha').setValue((this.addBautismoForm.value.fecha));
     this.addBautismoForm.get('celebrante').setValue(this.micelebrante);
     this.addBautismoForm.get('celebrante2').setValue(this.micelebrante2);
     this.addBautismoForm.get('libro').setValue(parseFloat(this.milibro));
@@ -161,7 +161,7 @@ export class BautismoComponent implements OnInit, OnDestroy {
     this.addBautismoForm.get('diocesis').setValue(this.diocesis);
     this.addBautismoForm.get('parroquia').setValue(this.parroquia);
     this.addBautismoForm.get('usuario').setValue(uid);
-    this.addBautismoForm.get('createdAt').setValue(Date.now());
+    this.addBautismoForm.get('createdAt').setValue(Date.parse(new Date().toISOString().substring(0, 10)));
     this.addBautismoForm.get('documento').setValue('BAUTISMO');
     const batch = this.afs.firestore.batch();
     this.afs.doc(`Registros/${autoId}`).set(this.addBautismoForm.value, { merge: true });

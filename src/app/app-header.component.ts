@@ -32,6 +32,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   midiocesis: any;
   foto: any;
   documentos$: Observable<any>;
+  directorio$: Observable<any>;
   constructor(
     public auth: AuthService,
     public afAuth: AngularFireAuth,
@@ -45,6 +46,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
 
   sub;
   ngOnInit() {
+    this.directorio$ = this.afs.collection(`Directorio`).valueChanges();
     this.sub = this.auth.user$.pipe(switchMap(data => {
       if (data) {
         return this.afs.doc(`usuarios/${data.uid}`).valueChanges().pipe(map((m: any) => {

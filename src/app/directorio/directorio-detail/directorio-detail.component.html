@@ -1,0 +1,70 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="shadow card">
+                <div class="card-body">
+                    <h5 class="card-title">Agregar {{micategoria | titlecase}}</h5>
+                    <hr class="mt-1">
+                    <form [formGroup]="addDirectorioForm" (ngSubmit)="addDirectorio()">
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre" formControlName="nombre"
+                                oninput="this.value = this.value.toUpperCase()" aria-describedby="emailHelp">
+                            <small id="emailHelp" class="form-text text-muted">*Este campo es obligatorio.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="dni">Dni:</label>
+                            <input class="form-control" id="dni" formControlName="dni" minlength="8"
+                                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                type="number" maxlength="8" aria-describedby="emailHelp">
+                            <small id="emailHelp1" class="form-text text-muted">*8 números en total.</small>
+                        </div>
+                        <button class="btn btn-primary" type="submit"
+                            [disabled]="!addDirectorioForm.valid">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+
+            <ng-container *ngIf="directorio$ | async as users; else loading">
+                <ng-container *ngIf="users.length > 0; else mensaje">
+                    <ng-container *ngFor="let user of users">
+                        <div class="row row-cols-1 row-cols-sm-2">
+                            <div class="col">
+                                <a role="button" class="shadow card2 text-center">
+                                    <img src="https://ptetutorials.com/images/user-profile.png" class="m-3 rounded-circle" width="60" alt="...">
+                                    <h3> {{user.nombre }}</h3>
+                                    <hr>
+                                    <button class="btn btn-outline-danger btn-sm m-2"
+                                            (click)="deleteUser(user)">Eliminar</button>
+                                    <div class="go-corner" href="#">
+                                        <div class="go-arrow">
+                                            →
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <ng-template #mensaje>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                      <strong>Mensaje!</strong> Actualmente no tienes ningún {{micategoria| titlecase}} agregado a esta parroquia. <strong>Agregue un nuevo
+                        {{micategoria| titlecase}}.</strong>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                  </ng-template>
+            </ng-container>
+        </div>
+    </div>
+</div>
+<ng-template #loading>
+    <div class="d-flex justify-content-center mt-5">
+        <div class="spinner-border text-info" role="status">
+        </div>
+        <strong class="text-info"> Loading... </strong>
+    </div>
+</ng-template>

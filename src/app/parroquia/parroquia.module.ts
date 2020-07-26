@@ -12,6 +12,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LibroComponent } from '../libro/libro/libro.component';
 import { ParroquiaDetailComponent } from './parroquia-detail/parroquia-detail.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxKjuaModule } from 'ngx-kjua';
 import { TodosComponent } from '../libro/todos/todos.component';
 import { PaginationService } from './pagination.service';
 import { AngularSplitModule } from 'angular-split';
@@ -32,6 +33,7 @@ import { BuscarBautismoComponent } from '../busquedas/buscar-bautismo/buscar-bau
 import { ReporteComponent } from '../usuario/reporte/reporte.component';
 import { DirectorioComponent } from '../directorio/directorio.component';
 import { DirectorioDetailComponent } from '../directorio/directorio-detail/directorio-detail.component';
+import { BuscarConfirmacionComponent } from '../busquedas/buscar-confirmacion/buscar-confirmacion.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,8 @@ import { DirectorioDetailComponent } from '../directorio/directorio-detail/direc
     BuscarRegistroComponent,
     ReporteComponent,
     DirectorioComponent,
-    DirectorioDetailComponent
+    DirectorioDetailComponent,
+    BuscarConfirmacionComponent
 
   ],
   imports: [
@@ -68,7 +71,8 @@ import { DirectorioDetailComponent } from '../directorio/directorio-detail/direc
     FilterPipeModule,
     InfiniteScrollModule,
     AngularSplitModule,
-    DragulaModule
+    DragulaModule,
+    NgxKjuaModule
   ],
    providers: [
     PaginationService

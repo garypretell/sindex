@@ -46,23 +46,23 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <label for="lugar">Lugar Nacimiento</label>
-                                    <input type="text" class="form-control text-uppercase" id="lugar" name="lugar"
-                                        [(ngModel)]="editarRegistro.lugar">
+                                    <label for="lugar">Edad</label>
+                                    <input type="text" class="form-control text-uppercase" id="edad" name="edad"
+                                        [(ngModel)]="editarRegistro.edad">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <label for="fecha">Fecha Bautismo</label>
+                                    <label for="fecha">Fecha Confirmacion</label>
                                     <input type="date" class="form-control" id="fecha" name="fecha"
                                         [(ngModel)]="editarRegistro.fecha">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <label for="fechanac">Fecha Nacimiento</label>
-                                    <input type="date" class="form-control" id="fechanac" name="fechanac"
-                                        [(ngModel)]="editarRegistro.fechanac">
+                                    <label for="fechanac">Fecha Registro</label>
+                                    <input type="date" class="form-control" id="fechareg" name="fechareg"
+                                        [(ngModel)]="editarRegistro.fechareg">
                                 </div>
                             </div>
                             <div class="row">
@@ -84,13 +84,6 @@
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col">
-                                    <label for="lugarPadre">Lugar Nacimiento</label>
-                                    <input type="text" class="form-control text-uppercase" id="lugarPadre"
-                                        name="lugarPadre" [(ngModel)]="editarRegistro.lugarPadre">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
                                     <label for="nomMadre">Nombre Madre</label>
                                     <input type="text" class="form-control text-uppercase" id="nomMadre" name="nomMadre"
                                         [(ngModel)]="editarRegistro.nomMadre">
@@ -101,13 +94,6 @@
                                     <label for="apeMadre">Apellido Madre</label>
                                     <input type="text" class="form-control text-uppercase" id="apeMadre" name="apeMadre"
                                         [(ngModel)]="editarRegistro.apeMadre">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="lugarMadre">Lugar Nacimiento</label>
-                                    <input type="text" class="form-control text-uppercase" id="lugarMadre"
-                                        name="lugarMadre" [(ngModel)]="editarRegistro.lugarMadre">
                                 </div>
                             </div>
                             <div class="row">
@@ -148,103 +134,15 @@
                             </div>
                         </div>
                     </div>
+
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" (click)="updateBautismo()">Save </button>
+                    <button class="btn btn-primary" (click)="updateConfirmacion()">Save </button>
                 </div>
             </form>
         </div>
     </div>
-</div>
-
-<div id="print-section" [hidden]='true'>
-    <br><br>
-    <div class="row">
-        <div class="col-4">
-            <h4 style="font-size:1.4rem">{{ (datosImprimir)?.diocesis.nombre | uppercase }}</h4><br>
-            <h2 style="font-size:1.1rem">{{ (datosImprimir)?.parroquia.nombre | uppercase }} </h2><br>
-            <hr>
-            <div class="row justify-content-center">
-                <div class="col text-center">
-                    <ngx-kjua [renderAsync]="true" [size]="120" [cssClass]="'image-auto'" [text]="text" mode="label"
-                        fontcolor="#ff9818"></ngx-kjua>
-                </div>
-            </div>
-            <hr>
-            <br>
-            <h2 style="font-size:0.9rem;margin:-4.7% 0;">Libro: {{ (datosImprimir)?.libro }}</h2>
-            <hr class="mm"><br>
-            <h2 style="font-size:0.9rem;margin:-4.7% 0;">Número: {{ (datosImprimir)?.numeroreg }}</h2>
-            <hr class="mm"><br><br>
-            <h1 style="font-size:1.2rem;">Notas Marginales:</h1><br>
-            <a> {{ (datosImprimir)?.comentarios | uppercase }}</a>
-        </div>
-        <div class="col-8">
-            <p style="margin:-2.0% 0;">Año del Señor de {{yearBaut}} </p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;">el
-                dia&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{diaBaut}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del
-                mes de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{mesBaut | uppercase}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                en esta</p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;">Iglesia Parroquial:&nbsp;&nbsp;&nbsp;&nbsp;
-                {{ (datosImprimir)?.parroquia.nombre | uppercase }}</p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;">yo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{ (datosImprimir)?.celebrante | uppercase }} {{ (datosImprimir)?.nomceleb | uppercase }}</p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;">bauticé solemnemente a un niño nacido en
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ (datosImprimir)?.lugar | uppercase}}</p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;">el
-                dia&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{diaNac}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del
-                mes de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{mesNac | uppercase}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                del año de </p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;">{{yearNac }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hijo de
-                don:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{ (datosImprimir)?.nomPadre | uppercase }} {{ (datosImprimir)?.apePadre | uppercase }} </p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;"> natural
-                de:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{ (datosImprimir)?.lugarPadre | uppercase}}</p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;">y de doña:
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{ (datosImprimir)?.nomMadre | uppercase }} {{ (datosImprimir)?.apeMadre | uppercase }} </p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;"> natural
-                de:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{ (datosImprimir)?.lugarMadre | uppercase}}</p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;"> Púsele por
-                nombre:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>
-                    {{ (datosImprimir)?.nombres | uppercase }} {{ (datosImprimir)?.apellidos | uppercase }} </strong>
-            </p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;"> Fueron Padrinos
-                Don:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{ (datosImprimir)?.nomPadrino | uppercase }} {{ (datosImprimir)?.apePadrino | uppercase }} </p>
-            <hr class="mm"><br>
-            <p style="margin:-2.0% 0;"> y Doña:
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ (datosImprimir)?.nomMadrina | uppercase }}
-                {{ (datosImprimir)?.apeMadrina | uppercase }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de
-                lo que doy fe.</p>
-            <hr class="mm"><br>
-            <div class="row" style="margin:1.9% 0;">
-                <div class="col-8"></div>
-                <div class="col-4">---------------</div>
-            </div>
-            <div class="row" style="margin:-2.0% 0;">
-                <div class="col-8"></div>
-                <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firma</div>
-            </div>
-        </div>
-    </div>
-
 </div>
